@@ -1,0 +1,1 @@
+user_families_paths = ['.']

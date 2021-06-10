@@ -131,6 +131,9 @@ dmypy.json
 # PyCharm
 .idea
 
-# data and output
+# others
 data
 out
+apicache-py3
+throttle.ctrl
+pywikibot.lwp
