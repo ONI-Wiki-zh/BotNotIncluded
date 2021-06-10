@@ -5,6 +5,8 @@ import re
 import utils
 import os.path as path
 import luadata
+from collections import OrderedDict
+
 
 def sub_keywords(x):
     x = re.sub(r'(<style="\w+">)|(<link="\w+">)', '', x)
@@ -208,6 +210,6 @@ df = df.loc[:, cols]
 
 df.to_json(path.join(utils.DIR_OUT, "data_builds.json"), orient="records", force_ascii=False, indent=1)
 df.set_index("id", drop=False)
-d = df.set_index("id", drop=False).to_dict(orient="index")
+d = df.set_index("id", drop=False).to_dict(orient="index", into=OrderedDict)
 
-l_str = luadata.serialize(d, encoding="utf-8", indent="    ", indent_level=0)
+l_str = luadata.serialize(d, encoding="utf-8", indent=" " * 4, indent_level=0)
