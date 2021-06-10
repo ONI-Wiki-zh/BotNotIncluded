@@ -1,2 +1,2 @@
 # BotNotIncluded
-Pywikibot and other scripts for https://oxygennotincluded.fandom.com/zh/wiki/Oxygennotincluded_Wiki
+Pywikibot and other scripts for zh ONI wiki
