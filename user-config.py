@@ -1,1 +1,1 @@
-user_families_paths = ['.']
+user_families_paths = ['site_families']
