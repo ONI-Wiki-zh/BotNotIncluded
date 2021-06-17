@@ -31,16 +31,52 @@ def to_cap(s):
     return ''.join([w.title() for w in s.split('_')])
 
 
-def save_lua(f_name: str, df: pd.DataFrame):
-    for c in df.columns:
-        df[c] = df[c].where(df[c].notna(), None)
-    d = df.to_dict(orient="index", into=collections.OrderedDict)
-    l_str = luadata.serialize(d, encoding="utf-8", indent=" " * 4)
+def save_lua(f_name: str, data):
+    if isinstance(data, pd.DataFrame):
+        for c in data.columns:
+            data[c] = data[c].where(data[c].notna(), None)
+        data = data.to_dict(orient="index", into=collections.OrderedDict)
+    l_str = luadata.serialize(data, encoding="utf-8", indent=" " * 4)
     if not f_name.endswith(".lua"):
         f_name += ".lua"
-    with open(f_name, 'w') as f:
-        f.write("return " + l_str)
+    with open(f_name, 'wb') as f:
+        f.write(("return " + l_str).encode("utf-8"))
 
 
 pathlib.Path("out").mkdir(parents=True, exist_ok=True)
 
+if __name__ == '__main__':
+    import antlr4
+    from csharp.CSharpLexer import CSharpLexer
+    from csharp.CSharpParser import CSharpParser
+    from csharp.CSharpParserListener import CSharpParserListener
+    from csharp.CSharpParserVisitor import CSharpParserVisitor
+
+    input_stream = antlr4.FileStream("./data/code/BabyHatchHardConfig.cs")
+    lexer = CSharpLexer(input_stream)
+    stream = antlr4.CommonTokenStream(lexer)
+    parser = CSharpParser(stream)
+    tree = parser.compilation_unit()
+    oni_listener = CSharpParserListener()
+
+
+    def enter_using_namespace_directive(ctx):
+        print(1)
+
+
+    oni_listener.enterUsingNamespaceDirective = enter_using_namespace_directive
+    walker = antlr4.ParseTreeWalker()
+    walker.walk(oni_listener, tree)
+
+
+    class ONIVisitor(CSharpParserVisitor):
+        def visitCompilation_unit(self, ctx: CSharpParser.Compilation_unitContext):
+            print(ctx.getText())
+            return super().visitCompilation_unit(ctx)
+
+        def visitUsingNamespaceDirective(self, ctx: CSharpParser.UsingNamespaceDirectiveContext):
+            print(ctx.getText())
+            return super().visitUsingNamespaceDirective(ctx)
+
+
+    ONIVisitor().visit(tree)
