@@ -1,117 +1,191 @@
 import pywikibot
+import pywikibot.textlib as textlib
+
 import logging
 import pathlib
 import json
 import os.path as path
-import collections
 
 logging.getLogger().setLevel(logging.INFO)
 
 DIR_TMP = "tmp"
 PATH_CONFIG = path.join(DIR_TMP, "config.json")
+EDIT_SUMMARY = "PWB: move copy images from commons.mediawiki.org"
+pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
 
 
 class Config:
-    def __init__(self):
+    CODE_HEAD = '\033[95m'
+    CODE_BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    CODE_END = '\033[0m'
+
+    @staticmethod
+    def bold_head(s: str):
+        return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
+
+    def __init__(self, test=False):
+        self.test = test
         try:
             with open(PATH_CONFIG, 'rb') as fh:
                 self.config = json.loads(fh.read().decode('utf-8'))
-        except:
+        except FileNotFoundError:
             self.config = {"cate_map": {}}
 
-    def cate_map(self, ca: pywikibot.Category):
-        cate_name = ca.title(with_ns=False)
-        if cate_name in self.config["cate_map"]:
-            return self.config["cate_map"][cate_name]
-        return None
+    def cat_map(self, cat: pywikibot.Category, is_re=False):
+        cat_name = cat.title(with_ns=False)
+        if cat_name not in self.config["cate_map"]:
+            prompt = f"Please input category in Shmetro which matches " \
+                     f"'{self.bold_head(cat.title(with_ns=False))}' in Common; Type 'no' " \
+                     f"to discard this category"
+            if is_re:
+                prompt = "[CURRENTLY THIS CATEGORY IS FOR A REDIRECT PAGE]\n" + prompt
 
-    def cate_set(self, ca, sh_name):
-        cate_name = ca.title(with_ns=False)
-        self.config['cate_map'][cate_name] = sh_name
-        self.save()
+            name = input(prompt)
+            if name.lower() == "no":
+                name = False
+            elif name == "":
+                if "bsicon" in cat.title(with_ns=False).lower():
+                    name = cat.title(with_ns=False)
+                else:
+                    name = False
+            self.config['cate_map'][cat_name] = name
+            self.save()
+        return self.config["cate_map"][cat_name]
 
     def save(self):
-        s = json.dumps(self.config)
+        s = json.dumps(self.config, indent=4, sort_keys=True)
         with open(PATH_CONFIG, 'wb') as fh:
             fh.write(s.encode("utf-8"))
 
 
-config = Config()
+def sync_cate(source: pywikibot.Page, target: pywikibot.Page, config: Config, is_re=False, ):
+    new_cats = []
+    old_cats = list(target.categories())
+    for c_source in source.categories():
+        c_target_name = config.cat_map(c_source, is_re=is_re)
+        if not c_target_name:
+            continue
+        new_cat = pywikibot.Category(target.site, c_target_name)
+        c_target = pywikibot.Category(target.site, c_source.title(with_ns=False))
+        if c_source in old_cats:
+            target.text = textlib.replaceCategoryInPlace(target.text, c_target, new_cat, target.site)
+        else:
+            new_cats.append(new_cat)
+    target.text = textlib.replaceCategoryLinks(target.text, new_cats, target.site, addOnly=True)
 
-IGNORE_CATE = [
-    "CC-BY-SA-3.0",
-    "GFDL",
-    "License migration redundant",
-]
 
-pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
-summary = {
-    "file_used": 0,
-    "file_missed": 0,
-    "page_scaned": 0,
-    "non_svg": 0,
-    "not_found": 0,
-    "fixed": 0,
-    "downloaded": 0,
-    "redirected": 0,
-}
+def getFinalRedirectTarget(page: pywikibot.Page):
+    while page.isRedirectPage():
+        page = page.getRedirectTarget()
+    return page
 
-commons = pywikibot.Site("commons", "commons")
-shmetro = pywikibot.Site("zh", "shmetro")
 
-missed_files = set()
-all_pages = list(shmetro.allpages())
-for i, p in enumerate(all_pages):
-    for f in p.imagelinks():
-        summary["file_used"] += 1
-        if not f.exists():
-            missed_files.add(f.title())
+def get_files(target: pywikibot.Site, summary: dict):
+    scanned_files = set()
+    all_pages = list(target.allpages())
+    for i, p in enumerate(all_pages):
+        for f in p.imagelinks():
+            scanned_files.add(f.title())
+        logging.info(f"Page scanned: {i + 1}/{len(all_pages)}")
 
-    logging.info(f"Page scanned: {i + 1}/{len(all_pages)}")
-summary["page_scaned"] = len(all_pages)
-summary["file_missed"] = len(missed_files)
+    summary["page_scanned"] = len(all_pages)
+    summary["file_scanned"] = len(scanned_files)
+    return scanned_files
 
-for i, f in enumerate(missed_files):
-    sh_f = pywikibot.FilePage(shmetro, f)
-    if sh_f.exists():
-        summary["fixed"] += 1
-        continue
-    if not f.endswith(".svg"):
-        summary["non_svg"] += 1
-        continue
-    com_f = pywikibot.FilePage(commons, f)
-    if not com_f.exists():
-        summary["not_found"] += 1
-        continue
 
-    if com_f.isRedirectPage():
-        # create and save redirect page on shmetro
-        sh_f.text = com_f.text
-        sh_f.save()
-        summary["redirected"] += 1
+def save_page(page: pywikibot.Page, config: Config, summary):
+    if not config.test:
+        page.save(summary=EDIT_SUMMARY)
+        return
+    logging.info(f"[TEST MODE]: ======= BEGIN Simulate saving page '{page.title()}' with the following text =======\n"
+                 f"{page.text}")
+    logging.info(f"[TEST MODE]: ======= END Simulate saving page '{page.title()}' =======\n\n")
+    summary["page_saved"] += 1
 
-        # check and save source page
-        com_f_re = com_f.getRedirectTarget()
-        com_f_re_name = com_f_re.title(with_ns=False)
-        sh_f_re = pywikibot.FilePage(shmetro, com_f_re.title())
-        if sh_f_re.exists():
+
+def upload_file(page: pywikibot.FilePage, source: str, config: Config, summary, text=None, report_success=None):
+    if not config.test:
+        page.upload(source, text=text, report_success=report_success)
+        return
+    logging.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
+    summary["uploaded"] += 1
+
+
+def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: set, summary: dict, config: Config):
+    viewed_source_cat = set()
+    for i, f in enumerate(scanned_files):
+        f_target = pywikibot.FilePage(target, f)
+        if not f.endswith(".svg"):
+            summary["non_svg"] += 1
+            continue
+        f_source = pywikibot.FilePage(source, f)
+        if not f_source.exists():  # not found in commons
+            summary["not_found"] += 1
             continue
 
-        for cate in com_f_re.categories():
-            sh_cate = config.cate_map(cate)
+        # Solve redirect
+        redirected = False
+        while f_source.isRedirectPage():
+            # create and save redirect page on shmetro
+            if f_target.exists() and not f_target.isRedirectPage():
+                f_source = getFinalRedirectTarget(f_source)
+                logging.warning(
+                    f"Matches {f_target.title()} with {f_source.title()} because of mismatched redirect levels.")
+                break
 
-            # ask for cate map if not exists
-            if sh_cate is None:
-                cate_new_name = input(f"Input category in Shmetro which matches "
-                                      f"{cate.title(with_ns=False)} in Common; Type "
-                                      f"'no' discard this category")
-                if cate_new_name.lower() == "no":
-                    cate_new_name = False
-                config.cate_set(cate, cate_new_name)
+            f_target.set_redirect_target(
+                pywikibot.Page(target, f_target.getRedirectTarget().title(with_ns=True)), save=False, force=True)
+            sync_cate(f_source, f_target, config, is_re=True)
+            save_page(f_target, config, summary)
+            f_target = f_target.getRedirectTarget()
+            f_source = f_source.getRedirectTarget()
+            redirected = True
+        if redirected:
+            summary["redirected"] += 1
 
-            sh_cate = config.cate_map(cate)
-            if not sh_cate:
-                logging.info(f"Skipped {cate.title(with_ns=False)} when checking {sh_f_re}")
+        # get images
+        for cat_source in f_source.categories():
+            if cat_source in viewed_source_cat:
+                continue
+            cat_target_name = config.cat_map(cat_source)
+            if not cat_target_name:
+                logging.info(f"Skipped {cat_source.title(with_ns=False)} when checking {f_target}")
+                viewed_source_cat.add(cat_source)
                 continue
 
+            for sibling_source in cat_source.members(namespaces="File"):
+                sibling_target = pywikibot.FilePage(target, sibling_source.title(with_ns=False))
+                if not sibling_target.exists():
+                    upload_file(sibling_target, sibling_source.get_file_url(), config, summary, text="",
+                                report_success=True)
+                    sync_cate(sibling_source, sibling_target, config)
+                    save_page(sibling_target, config, summary)
+                else:
+                    sync_cate(sibling_source, sibling_target, config)
+                    save_page(sibling_target, config, summary)
+            viewed_source_cat.add(cat_source)
+        logging.info(f"\033[92mFile processed: {i + 1}/{len(scanned_files)}\033[0m\n\n")
 
+
+def main():
+    commons = pywikibot.Site("commons", "commons")
+    shmetro = pywikibot.Site("zh", "shmetro")
+    config = Config(test=True)
+    summary = {
+        "file_scanned": 0,
+        "page_scanned": 0,
+        "page_saved": 0,
+        "non_svg": 0,
+        "not_found": 0,
+        "uploaded": 0,
+        "redirected": 0,
+    }
+
+    file_set = get_files(shmetro, summary)
+    sync_files(commons, shmetro, file_set, summary, config)
+    print(json.dumps(summary))
+
+
+if __name__ == '__main__':
+    main()
