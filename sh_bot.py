@@ -14,6 +14,12 @@ EDIT_SUMMARY = "PWB: move copy images from commons.mediawiki.org"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
 
 
+def default_rule(source_cat_name: str):
+    if "bsicon" in source_cat_name.lower():
+        return source_cat_name
+    return False
+
+
 class Config:
     CODE_HEAD = '\033[95m'
     CODE_BOLD = '\033[1m'
@@ -24,8 +30,10 @@ class Config:
     def bold_head(s: str):
         return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
 
-    def __init__(self, test=False):
+    def __init__(self, test=False, mute=False, auto=False):
         self.test = test
+        self.mute = mute
+        self.auto = auto
         try:
             with open(PATH_CONFIG, 'rb') as fh:
                 self.config = json.loads(fh.read().decode('utf-8'))
@@ -41,14 +49,11 @@ class Config:
             if is_re:
                 prompt = "[CURRENTLY THIS CATEGORY IS FOR A REDIRECT PAGE]\n" + prompt
 
-            name = input(prompt)
+            name = "" if self.auto else input(prompt)
             if name.lower() == "no":
                 name = False
             elif name == "":
-                if "bsicon" in cat.title(with_ns=False).lower():
-                    name = cat.title(with_ns=False)
-                else:
-                    name = False
+                name = default_rule(cat.title(with_ns=False))
             self.config['cate_map'][cat_name] = name
             self.save()
         return self.config["cate_map"][cat_name]
@@ -97,18 +102,18 @@ def get_files(target: pywikibot.Site, summary: dict):
 def save_page(page: pywikibot.Page, config: Config, summary):
     if not config.test:
         page.save(summary=EDIT_SUMMARY)
-        return
-    logging.info(f"[TEST MODE]: ======= BEGIN Simulate saving page '{page.title()}' with the following text =======\n"
-                 f"{page.text}")
-    logging.info(f"[TEST MODE]: ======= END Simulate saving page '{page.title()}' =======\n\n")
+    elif not config.mute:
+        logging.info(f"[TEST MODE]: ======= BEGIN Simulate saving page '{page.title()}' with the following text =======\n"
+                     f"{page.text}")
+        logging.info(f"[TEST MODE]: ======= END Simulate saving page '{page.title()}' =======\n\n")
     summary["page_saved"] += 1
 
 
 def upload_file(page: pywikibot.FilePage, source: str, config: Config, summary, text=None, report_success=None):
     if not config.test:
         page.upload(source, text=text, report_success=report_success)
-        return
-    logging.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
+    elif not config.mute:
+        logging.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
     summary["uploaded"] += 1
 
 
@@ -120,14 +125,14 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
             summary["non_svg"] += 1
             continue
         f_source = pywikibot.FilePage(source, f)
-        if not f_source.exists():  # not found in commons
+        if not f_source.exists():  # not found in source site
             summary["not_found"] += 1
             continue
 
         # Solve redirect
         redirected = False
         while f_source.isRedirectPage():
-            # create and save redirect page on shmetro
+            # create and save redirect page on target site
             if f_target.exists() and not f_target.isRedirectPage():
                 f_source = getFinalRedirectTarget(f_source)
                 logging.warning(
@@ -171,7 +176,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
 def main():
     commons = pywikibot.Site("commons", "commons")
     shmetro = pywikibot.Site("zh", "shmetro")
-    config = Config(test=True)
+    config = Config(test=True, mute=True, auto=True)
     summary = {
         "file_scanned": 0,
         "page_scanned": 0,
