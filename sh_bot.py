@@ -32,10 +32,16 @@ class Config:
     def bold_head(s: str):
         return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
 
-    def __init__(self, test=False, mute=False, auto=False):
+    def __init__(self, test: bool = False, mute: bool = False, auto: bool = False, clear_old: bool = False):
         self.test = test
         self.mute = mute
         self.auto = auto
+        if clear_old:
+            ans = input("Are you sure you want to clear config history? Type yes to continue.\n")
+            if ans.lower() == "yes":
+                self.config = {"cate_map": {}}
+                return
+            raise Exception("Set `clear_old` to False and rerun the script to start with history")
         try:
             with open(PATH_CONFIG, 'rb') as fh:
                 self.config = json.loads(fh.read().decode('utf-8'))
@@ -76,7 +82,7 @@ class Config:
                 name = self._app_auto_rule(cat_name)
             if name is None:
                 prompt = f"Please input category in target site which matches '{self.bold_head(cat_name)}' in " \
-                         f"source site; Type 'no' to discard this category"
+                         f"source site; Type 'no' to discard this category\n"
                 if is_re:
                     prompt = "[CURRENTLY THIS CATEGORY IS USED IN A REDIRECT PAGE]\n" + prompt
                 name = input(prompt)
