@@ -6,13 +6,20 @@ from typing import Union
 
 import pywikibot
 import pywikibot.textlib as textlib
-
-logging.getLogger().setLevel(logging.INFO)
+import sys
 
 DIR_TMP = "tmp"
 PATH_CONFIG = path.join(DIR_TMP, "config.json")
 EDIT_SUMMARY = "PWB: move copy images from commons.mediawiki.org"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
+
+logger = logging.getLogger("bot_imtransfer")
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler(sys.stdout)
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 class Config:
@@ -50,12 +57,23 @@ class Config:
         """
         raise NotImplementedError()
 
+    def _app_default_rule(self, s: str):
+        out = self.default_rule(s)
+        if out is not None:
+            logger.info(f"Defuault rule applied to {s}, got {repr(out)}")
+        return out
+
+    def _app_auto_rule(self, s: str):
+        out = self.auto_rule(s)
+        logger.info(f"Auto rule applied to '{s}', got {repr(out)}")
+        return out
+
     def cat_map(self, cat: pywikibot.Category, is_re=False) -> Union[bool, str]:
         cat_name = cat.title(with_ns=False)
         if cat_name not in self.config["cate_map"]:
-            name = self.default_rule(cat_name)
+            name = self._app_default_rule(cat_name)
             if name is None and self.auto:
-                name = self.auto_rule(cat_name)
+                name = self._app_auto_rule(cat_name)
             if name is None:
                 prompt = f"Please input category in target site which matches '{self.bold_head(cat_name)}' in " \
                          f"source site; Type 'no' to discard this category"
@@ -64,7 +82,7 @@ class Config:
                 name = input(prompt)
 
             if name == "":
-                name = self.auto_rule(cat_name)
+                name = self._app_auto_rule(cat_name)
             elif isinstance(name, str) and name.lower() == "no":
                 name = False
             self.config['cate_map'][cat_name] = name
@@ -105,7 +123,7 @@ def get_files(target: pywikibot.Site, summary: dict):
     for i, p in enumerate(all_pages):
         for f in p.imagelinks():
             scanned_files.add(f.title())
-        logging.info(f"Page scanned: {i + 1}/{len(all_pages)}")
+        logger.info(f"Page scanned: {i + 1}/{len(all_pages)}")
 
     summary["page_scanned"] = len(all_pages)
     summary["file_scanned"] = len(scanned_files)
@@ -116,10 +134,16 @@ def save_page(page: pywikibot.Page, config: Config, summary):
     if not config.test:
         page.save(summary=EDIT_SUMMARY)
     elif not config.mute:
-        logging.info(
-            f"[TEST MODE]: ======= BEGIN Simulate saving page '{page.title()}' with the following text =======\n"
-            f"{page.text}")
-        logging.info(f"[TEST MODE]: ======= END Simulate saving page '{page.title()}' =======\n\n")
+        width = 80
+        page_width = len(page.title()) + 2
+        l_half = (width - page_width) // 2
+        l_half = max(2, l_half)
+        r_half = width - page_width - l_half
+        r_half = max(2, r_half)
+        logger.info(
+            f"[TEST MODE]: Simulate saving page:\n"
+            f"{'=' * l_half}'{page.title()}'{'=' * r_half}\n"
+            f"{page.text}\n{'=' * (l_half + page_width + r_half)}\n")
     summary["page_saved"] += 1
 
 
@@ -127,7 +151,7 @@ def upload_file(page: pywikibot.FilePage, source: str, config: Config, summary, 
     if not config.test:
         page.upload(source, text=text, report_success=report_success)
     elif not config.mute:
-        logging.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
+        logger.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
     summary["uploaded"] += 1
 
 
@@ -149,7 +173,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
             # create and save redirect page on target site
             if f_target.exists() and not f_target.isRedirectPage():
                 f_source = getFinalRedirectTarget(f_source)
-                logging.warning(
+                logger.warning(
                     f"Matches {f_target.title()} with {f_source.title()} because of mismatched redirect levels.")
                 break
 
@@ -169,7 +193,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
                 continue
             cat_target_name = config.cat_map(cat_source)
             if not cat_target_name:
-                logging.info(f"Skipped {cat_source.title(with_ns=False)} when checking {f_target}")
+                logger.info(f"Skipped {cat_source.title(with_ns=False)} when checking {f_target}")
                 viewed_source_cat.add(cat_source)
                 continue
 
@@ -184,7 +208,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
                     sync_cate(sibling_source, sibling_target, config)
                     save_page(sibling_target, config, summary)
             viewed_source_cat.add(cat_source)
-        logging.info(f"\033[92mFile processed: {i + 1}/{len(scanned_files)}\033[0m\n\n")
+        logger.info(f"\033[92mFile processed: {i + 1}/{len(scanned_files)}\033[0m\n\n")
 
 
 def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
@@ -218,7 +242,7 @@ if __name__ == '__main__':
             return False
 
 
-    config = ShmetroConf(test=True, mute=True, auto=True)
+    config = ShmetroConf(test=True, mute=False, auto=False)
     commons = pywikibot.Site("commons", "commons")
     shmetro = pywikibot.Site("zh", "shmetro")
     main(commons, shmetro, config)
