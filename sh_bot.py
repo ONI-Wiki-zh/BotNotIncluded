@@ -1,10 +1,10 @@
+import json
+import logging
+import os.path as path
+import pathlib
+
 import pywikibot
 import pywikibot.textlib as textlib
-
-import logging
-import pathlib
-import json
-import os.path as path
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -103,8 +103,9 @@ def save_page(page: pywikibot.Page, config: Config, summary):
     if not config.test:
         page.save(summary=EDIT_SUMMARY)
     elif not config.mute:
-        logging.info(f"[TEST MODE]: ======= BEGIN Simulate saving page '{page.title()}' with the following text =======\n"
-                     f"{page.text}")
+        logging.info(
+            f"[TEST MODE]: ======= BEGIN Simulate saving page '{page.title()}' with the following text =======\n"
+            f"{page.text}")
         logging.info(f"[TEST MODE]: ======= END Simulate saving page '{page.title()}' =======\n\n")
     summary["page_saved"] += 1
 
@@ -173,10 +174,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
         logging.info(f"\033[92mFile processed: {i + 1}/{len(scanned_files)}\033[0m\n\n")
 
 
-def main():
-    commons = pywikibot.Site("commons", "commons")
-    shmetro = pywikibot.Site("zh", "shmetro")
-    config = Config(test=True, mute=True, auto=True)
+def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
     summary = {
         "file_scanned": 0,
         "page_scanned": 0,
@@ -187,10 +185,13 @@ def main():
         "redirected": 0,
     }
 
-    file_set = get_files(shmetro, summary)
-    sync_files(commons, shmetro, file_set, summary, config)
+    file_set = get_files(target, summary)
+    sync_files(source, target, file_set, summary, conf)
     print(json.dumps(summary))
 
 
 if __name__ == '__main__':
-    main()
+    config = Config(test=True, mute=True, auto=True)
+    commons = pywikibot.Site("commons", "commons")
+    shmetro = pywikibot.Site("zh", "shmetro")
+    main(commons, shmetro, config)
