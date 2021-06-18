@@ -2,6 +2,7 @@ import json
 import logging
 import os.path as path
 import pathlib
+from typing import Union
 
 import pywikibot
 import pywikibot.textlib as textlib
@@ -12,12 +13,6 @@ DIR_TMP = "tmp"
 PATH_CONFIG = path.join(DIR_TMP, "config.json")
 EDIT_SUMMARY = "PWB: move copy images from commons.mediawiki.org"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
-
-
-def default_rule(source_cat_name: str):
-    if "bsicon" in source_cat_name.lower():
-        return source_cat_name
-    return False
 
 
 class Config:
@@ -40,20 +35,38 @@ class Config:
         except FileNotFoundError:
             self.config = {"cate_map": {}}
 
-    def cat_map(self, cat: pywikibot.Category, is_re=False):
+    def default_rule(self, s: str) -> Union[bool, None, str]:
+        """ Applied of no rules found in config JSON.
+        Return None to allow other rules like user input
+        Return False to ignore the input class
+        """
+        raise NotImplementedError()
+
+    def auto_rule(self, s: str) -> Union[bool, str]:
+        """ Applied when self.auto is turned on, or user input is
+        an empty string.
+        Return False to ignore the input class.
+        Must be complete and handle all string input.
+        """
+        raise NotImplementedError()
+
+    def cat_map(self, cat: pywikibot.Category, is_re=False) -> Union[bool, str]:
         cat_name = cat.title(with_ns=False)
         if cat_name not in self.config["cate_map"]:
-            prompt = f"Please input category in Shmetro which matches " \
-                     f"'{self.bold_head(cat.title(with_ns=False))}' in Common; Type 'no' " \
-                     f"to discard this category"
-            if is_re:
-                prompt = "[CURRENTLY THIS CATEGORY IS FOR A REDIRECT PAGE]\n" + prompt
+            name = self.default_rule(cat_name)
+            if name is None and self.auto:
+                name = self.auto_rule(cat_name)
+            if name is None:
+                prompt = f"Please input category in target site which matches '{self.bold_head(cat_name)}' in " \
+                         f"source site; Type 'no' to discard this category"
+                if is_re:
+                    prompt = "[CURRENTLY THIS CATEGORY IS USED IN A REDIRECT PAGE]\n" + prompt
+                name = input(prompt)
 
-            name = "" if self.auto else input(prompt)
-            if name.lower() == "no":
+            if name == "":
+                name = self.auto_rule(cat_name)
+            elif isinstance(name, str) and name.lower() == "no":
                 name = False
-            elif name == "":
-                name = default_rule(cat.title(with_ns=False))
             self.config['cate_map'][cat_name] = name
             self.save()
         return self.config["cate_map"][cat_name]
@@ -191,7 +204,21 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
 
 
 if __name__ == '__main__':
-    config = Config(test=True, mute=True, auto=True)
+    class ShmetroConf(Config):
+        def default_rule(self, s: str) -> Union[bool, None, str]:
+            if s.lower().startswith("bsicon/railway/set u"):
+                return s
+            if s.lower().startswith("bsicon/railway/set"):
+                return False
+            return
+
+        def auto_rule(self, s: str) -> Union[bool, None, str]:
+            if "bsicon" in s.lower():
+                return s
+            return False
+
+
+    config = ShmetroConf(test=True, mute=True, auto=True)
     commons = pywikibot.Site("commons", "commons")
     shmetro = pywikibot.Site("zh", "shmetro")
     main(commons, shmetro, config)
