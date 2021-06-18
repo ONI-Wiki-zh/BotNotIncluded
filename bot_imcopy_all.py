@@ -67,8 +67,12 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
 
 def getFinalRedirectTarget(page: pywikibot.Page):
     """ Continuously get redirect target until a non-redirect page encountered. """
-    while page.isRedirectPage():
-        page = page.getRedirectTarget()
+    try:
+        while page.isRedirectPage():
+            page = page.getRedirectTarget()
+    except pywikibot.exceptions.CircularRedirectError as e:
+        logger.warning(str(e))
+        return None
     return page
 
 
@@ -83,6 +87,9 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
     summary["scanned_files"] = len(imgs_source)
     for im_source in imgs_source:
         im_source = getFinalRedirectTarget(im_source)
+        if im_source is None:
+            summary["skipped"] += 1
+            continue
         assert isinstance(im_source, pywikibot.FilePage)
 
         target_title = im_source.title(with_ns=False)
@@ -95,7 +102,8 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
                 text += '\n'
             text += f"[[{source.code}:{target_title}]]"
             upload_file(im_target, url_source, conf, summary, text=text, report_success=True)
-        summary["skipped"] += 1
+        else:
+            summary["skipped"] += 1
 
     print(json.dumps(summary))
 
