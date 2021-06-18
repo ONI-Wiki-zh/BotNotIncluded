@@ -33,18 +33,21 @@ class Config:
         """ Format a string so it is shown in bold and as head in command line / stdout. """
         return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
 
-    def __init__(self, test: bool = False, mute: bool = None, auto: bool = False, clear_old: bool = False):
+    def __init__(self, test: bool = False, mute: bool = None, auto: bool = False, clear_old: bool = False,
+                 clear_pages: bool = False):
         """ Script config class, 2 methods of which need to be implemented by overriding.
 
         :param test: Enable test mode and avoid written to wiki site. Note that login is not required in this mode.
         :param mute: Block some verbose output, including the the page content to save. Default to False on test mode.
         :param auto: Apply auto_rule with out asking with input box
         :param clear_old: Clear old history containing rules defined before.
+        :param clear_pages: Clear context on existed pages.
         A double confirmation mechanism is implemented.
         """
         self.test = test
         self.mute = (not test) if mute is None else mute
         self.auto = auto
+        self.clear_pages = clear_pages
         if clear_old:
             ans = input("Are you sure you want to clear config history? Type yes to continue.\n")
             if ans.lower() == "yes":
@@ -143,6 +146,9 @@ def sync_cate(source: pywikibot.Page, target: pywikibot.Page, conf: Config, is_r
         else:
             new_cats.append(new_cat)
     target.text = textlib.replaceCategoryLinks(target.text, new_cats, target.site, addOnly=True)
+
+    if conf.clear_pages:
+        target.text = textlib.replaceCategoryLinks("", source.categories(), target.site)
 
 
 def getFinalRedirectTarget(page: pywikibot.Page):
@@ -306,7 +312,7 @@ if __name__ == '__main__':
             return False
 
 
-    config = ShmetroConf(test=True, mute=False, auto=False)
+    config = ShmetroConf(test=True, mute=False, auto=False, clear_pages=True)
     commons = pywikibot.Site("commons", "commons")
     shmetro = pywikibot.Site("zh", "shmetro")
     main(commons, shmetro, config)
