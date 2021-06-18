@@ -141,7 +141,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
                 break
 
             f_target.set_redirect_target(
-                pywikibot.Page(target, f_target.getRedirectTarget().title(with_ns=True)), save=False, force=True)
+                pywikibot.Page(target, f_source.getRedirectTarget().title(with_ns=True)), save=False, force=True)
             sync_cate(f_source, f_target, config, is_re=True)
             save_page(f_target, config, summary)
             f_target = f_target.getRedirectTarget()
