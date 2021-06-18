@@ -133,6 +133,8 @@ def sync_cate(source: pywikibot.Page, target: pywikibot.Page, conf: Config, is_r
     :param is_re: If these two pages are redirect pages.
     :return:
     """
+    def get_new_cat(c):
+        return pywikibot.Category(target.site, conf.cat_map(c, is_re=is_re))
     new_cats = []
     old_cats = list(target.categories())
     for c_source in source.categories():
@@ -148,7 +150,8 @@ def sync_cate(source: pywikibot.Page, target: pywikibot.Page, conf: Config, is_r
     target.text = textlib.replaceCategoryLinks(target.text, new_cats, target.site, addOnly=True)
 
     if conf.clear_pages:
-        target.text = textlib.replaceCategoryLinks("", source.categories(), target.site)
+        target.text = textlib.replaceCategoryLinks(
+            "", [get_new_cat(c) for c in source.categories() if conf.cat_map(c) is not False], target.site)
 
 
 def getFinalRedirectTarget(page: pywikibot.Page):
