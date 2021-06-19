@@ -82,6 +82,7 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
                 summary['upload errors'][source.title()] = {"url": page.full_url(), "error": str(exception)}
             else:
                 summary['upload errors'][source] = {"url": page.full_url(), "error": str(exception)}
+            summary["upload errors count"] += 1
 
         try:
             if isinstance(source, pywikibot.FilePage):
@@ -96,13 +97,15 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
                     logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}\n{str(e)}'")
             else:
                 page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
+            summary["uploaded"] += 1
         except pywikibot.exceptions.UploadError as e:
             handle_error(e)
         except pywikibot.exceptions.APIError as e:
             handle_error(e)
         except ValueError as e:
             handle_error(e)
-    summary["uploaded"] += 1
+    else:
+        summary["uploaded"] += 1
 
 
 def getFinalRedirectTarget(page: pywikibot.Page):
@@ -121,14 +124,16 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         "scanned_files": 0,
         "uploaded": 0,
         "skipped": 0,
-        "upload errors": {}
+        "upload errors": {},
+        "upload errors count": 0,
+        "matched files": [],
     }
 
     logger.info(f"Generating image list for all images on {source} ...")
     imgs_source = list(source.allimages())
 
     logger.info(f"Generating sha1 set for all images on {target} ...")
-    imgs_target = set(fp.latest_file_info.sha1 for fp in target.allimages())
+    imgs_target = {fp.latest_file_info.sha1: fp for fp in target.allimages()}
 
     summary["scanned_files"] = len(imgs_source)
     for i, im_source in enumerate(imgs_source):
@@ -149,10 +154,17 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
             im_target = pywikibot.FilePage(target, im_source.title(with_ns=False))
             upload_file(im_target, im_source, conf, summary, text=text, report_success=True)
         else:
+            im_target = imgs_target[im_source.latest_file_info.sha1]
+            summary["matched files"].append({
+                f"{source}_title": im_source.title(),
+                f"{source}_url": im_source.full_url(),
+                f"{target}_title": im_target.title(),
+                f"{target}_url": im_target.full_url(),
+            })
             summary["skipped"] += 1
 
-    logger.info(f"bot_imcopy_all finished. Here is a running summary"
-                f"{json.dumps(summary, sort_keys=True, indent=2)}")
+    logger.info(f"bot_imcopy_all finished. Here is a running summary:\n"
+                f"{json.dumps(summary, sort_keys=True, indent=2, ensure_ascii=False)}")
 
 
 if __name__ == '__main__':
