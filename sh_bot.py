@@ -7,6 +7,7 @@ from typing import Union, Set
 
 import pywikibot
 import pywikibot.textlib as textlib
+import utils
 
 DIR_TMP = "tmp"
 PATH_CONFIG = path.join(DIR_TMP, "config.json")
@@ -249,15 +250,15 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
     :param conf: Config object
     """
 
-    def name_no_ext(fp: pywikibot.FilePage):
-        return pathlib.Path(fp.title(as_filename=True, with_ns=False)).stem
+    def get_stem(fp: pywikibot.FilePage):
+        return utils.split_file_name(fp.title(as_filename=True, with_ns=False))[0]
 
     def get_ext(fp: pywikibot.FilePage):
-        return pathlib.Path(fp.title(as_filename=True, with_ns=False)).suffix
+        return utils.split_file_name(fp.title(as_filename=True, with_ns=False))[1]
 
     def sync_single_file(source_file: pywikibot.FilePage, target_site: pywikibot.Site):
-        if name_no_ext(source_file) in curr_extensions:
-            target_file_name = name_no_ext(source_file) + curr_extensions[name_no_ext(source_file)]
+        if get_stem(source_file) in curr_extensions:
+            target_file_name = get_stem(source_file) + curr_extensions[get_stem(source_file)]
         else:
             target_file_name = source_file.title(with_ns=False)
         target_file = pywikibot.FilePage(target_site, target_file_name)
@@ -276,11 +277,11 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
             sync_cate(source_file, target_file, conf)
             save_page(target_file, conf, summary)
         synced_file_page.add(target_file)
-        curr_extensions[name_no_ext(target_file)] = get_ext(target_file)
+        curr_extensions[get_stem(target_file)] = get_ext(target_file)
 
     viewed_source_cat = set()
     synced_file_page = set()
-    curr_extensions = {name_no_ext(fp): get_ext(fp) for fp in target.allimages()}
+    curr_extensions = {get_stem(fp): get_ext(fp) for fp in target.allimages()}
     for i, f in enumerate(scanned_files):
         f_target = pywikibot.FilePage(target, f)
         if not f.endswith(".svg"):

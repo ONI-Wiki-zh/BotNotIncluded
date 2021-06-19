@@ -43,6 +43,10 @@ def save_lua(f_name: str, data):
         f.write(("return " + l_str).encode("utf-8"))
 
 
+def split_file_name(filename: str):
+    return pathlib.Path(filename).stem, pathlib.Path(filename).suffix
+
+
 pathlib.Path("out").mkdir(parents=True, exist_ok=True)
 
 if __name__ == '__main__':

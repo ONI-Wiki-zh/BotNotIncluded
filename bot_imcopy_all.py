@@ -1,8 +1,15 @@
+import itertools
 import json
 import logging
+import os
+import os.path as path
+import pathlib
 import sys
+from typing import Union
 
 import pywikibot
+
+import utils
 
 logger = logging.getLogger("bot_imtransfer")
 logger.setLevel(logging.INFO)
@@ -11,6 +18,9 @@ ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
 ch.setFormatter(formatter)
 logger.addHandler(ch)
+
+DIR_TMP = "tmp"
+pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
 
 
 class Config:
@@ -36,7 +46,11 @@ class Config:
         self.edit_summary = edit_summary
 
 
-def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, text=None, report_success=None):
+counter = itertools.count()
+
+
+def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage], conf: Config, summary, text=None,
+                report_success=None):
     """ File uploading behavior under both normal and test mode. See **pywikibot.page.FilePage** for more details.
 
     :param page: File page to upload to
@@ -61,7 +75,18 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
-        page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
+        if isinstance(source, pywikibot.FilePage):
+            source_file_name = source.title(as_filename=True, with_ns=False)
+            file_path = path.join(
+                DIR_TMP, f"{next(counter)}{utils.split_file_name(source_file_name)}")
+            source.download(file_path)
+            page.upload(file_path, comment=conf.edit_summary, text=text, report_success=report_success)
+            try:
+                os.remove(file_path)
+            except Exception as e:
+                logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}'")
+        else:
+            page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
     summary["uploaded"] += 1
 
 
@@ -85,7 +110,10 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
 
     imgs_source = list(source.allimages())
     summary["scanned_files"] = len(imgs_source)
-    for im_source in imgs_source:
+    for i, im_source in enumerate(imgs_source):
+        if not conf.mute and i % 10 == 0:
+            logger.info(f"Scanned files: {i} / {summary['scanned_files']}")
+
         im_source = getFinalRedirectTarget(im_source)
         if im_source is None:
             summary["skipped"] += 1
@@ -111,5 +139,6 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
 if __name__ == '__main__':
     re0zh = pywikibot.Site("zh", "re0")
     re0en = pywikibot.Site("en", "re0")
+    re0zh.login()
     config = Config(test=True, mute=False, edit_summary="bot_imcopy_all by DDEle")
     main(source=re0en, target=re0zh, conf=config)
