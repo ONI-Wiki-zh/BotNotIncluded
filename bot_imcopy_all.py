@@ -124,12 +124,11 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         im_target = pywikibot.FilePage(target, target_title)
 
         if not im_target.exists():
-            url_source = im_source.get_file_url()
             text = "\n".join([x.astext() for x in im_source.iterlanglinks()])
             if text != '':
                 text += '\n'
             text += f"[[{source.code}:{target_title}]]"
-            upload_file(im_target, url_source, conf, summary, text=text, report_success=True)
+            upload_file(im_target, im_source, conf, summary, text=text, report_success=True)
         else:
             summary["skipped"] += 1
 
