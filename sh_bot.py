@@ -36,7 +36,7 @@ class Config:
         return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
 
     def __init__(self, test: bool = False, mute: bool = None, auto: bool = False, clear_old: bool = False,
-                 clear_pages: bool = False):
+                 clear_pages: bool = False, extend=False):
         """ Script config class, 2 methods of which need to be implemented by overriding.
 
         :param test: Enable test mode and avoid written to wiki site. Note that login is not required in this mode.
@@ -50,6 +50,7 @@ class Config:
         self.mute = (not test) if mute is None else mute
         self.auto = auto
         self.clear_pages = clear_pages
+        self.extend = extend
         if clear_old:
             ans = input("Are you sure you want to clear config history? Type yes to continue.\n")
             if ans.lower() == "yes":
@@ -194,9 +195,9 @@ def save_page(page: pywikibot.Page, conf: Config, summary):
         r_half = width - page_width - l_half
         r_half = max(2, r_half)
         logger.info(
-            f"{'[TEST MODE]: simulate' if conf.test else ''}"
+            f"{'[TEST MODE]: simulate ' if conf.test else ''}"
             f"saving page:\n"
-            f"{'=' * l_half}'{page.title()}'{'=' * r_half}\n"
+            f"{'=' * l_half}'{conf.bold_head(page.title())}'{'=' * r_half}\n"
             f"{page.text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
         page.save(summary=EDIT_SUMMARY)
@@ -223,7 +224,8 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
         r_half = width - page_width - l_half
         r_half = max(2, r_half)
         logger.info(
-            f"[TEST MODE]: Simulate saving page:\n"
+            f"{'[TEST MODE]: ' if conf.test else ''}"
+            f"UPLOAD file: '{source}': \n"
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
@@ -253,6 +255,29 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
     def get_ext(fp: pywikibot.FilePage):
         return pathlib.Path(fp.title(as_filename=True, with_ns=False)).suffix
 
+    def sync_single_file(source_file: pywikibot.FilePage, target_site: pywikibot.Site):
+        if name_no_ext(source_file) in curr_extensions:
+            target_file_name = name_no_ext(source_file) + curr_extensions[name_no_ext(source_file)]
+        else:
+            target_file_name = source_file.title(with_ns=False)
+        target_file = pywikibot.FilePage(target_site, target_file_name)
+
+        if target_file in synced_file_page:
+            return
+        if not target_file.exists():
+            file_path = path.join(
+                PATH_IMG, source_file.title(as_filename=True, with_ns=False))
+            source_file.download(file_path)
+            upload_file(target_file, file_path, conf, summary, text="",
+                        report_success=True)
+            sync_cate(source_file, target_file, conf)
+            save_page(target_file, conf, summary)
+        else:
+            sync_cate(source_file, target_file, conf)
+            save_page(target_file, conf, summary)
+        synced_file_page.add(target_file)
+        curr_extensions[name_no_ext(target_file)] = get_ext(target_file)
+
     viewed_source_cat = set()
     synced_file_page = set()
     curr_extensions = {name_no_ext(fp): get_ext(fp) for fp in target.allimages()}
@@ -280,46 +305,38 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
                 pywikibot.Page(target, f_source.getRedirectTarget().title(with_ns=True)), save=False, force=True)
             sync_cate(f_source, f_target, conf, is_re=True)
             save_page(f_target, conf, summary)
-            f_target = f_target.getRedirectTarget()
-            f_source = f_source.getRedirectTarget()
+            if not conf.test:
+                f_target = f_target.getRedirectTarget()
+                f_source = f_source.getRedirectTarget()
+
             redirected = True
+            if conf.test:
+                redirected = True
+                break  # Test mode can not handle redirect properly
+
         if redirected:
             summary["redirected"] += 1
+            if conf.test:
+                continue  # Test mode can not handle redirect properly
 
         # get images
-        for cat_source in f_source.categories():
-            if cat_source in viewed_source_cat:
-                continue
-            cat_target_name = conf.cat_map(cat_source)
-            if not cat_target_name:
-                logger.info(f"Skipped {cat_source.title(with_ns=False)} when checking {f_target}")
-                viewed_source_cat.add(cat_source)
-                continue
-
-            for sibling_source in cat_source.members(namespaces="File"):
-                sibling_source: pywikibot.FilePage
-                if name_no_ext(sibling_source) in curr_extensions:
-                    sibling_target_name = name_no_ext(sibling_source) + curr_extensions[name_no_ext(sibling_source)]
-                else:
-                    sibling_target_name = sibling_source.title(with_ns=False)
-                sibling_target = pywikibot.FilePage(target, sibling_target_name)
-
-                if sibling_target in synced_file_page:
+        if conf.extend:
+            for cat_source in f_source.categories():
+                if cat_source in viewed_source_cat:
                     continue
-                if not sibling_target.exists():
-                    file_path = path.join(
-                        PATH_IMG, sibling_source.title(as_filename=True, with_ns=False))
-                    sibling_source.download(file_path)
-                    upload_file(sibling_target, file_path, conf, summary, text="",
-                                report_success=True)
-                    sync_cate(sibling_source, sibling_target, conf)
-                    save_page(sibling_target, conf, summary)
-                else:
-                    sync_cate(sibling_source, sibling_target, conf)
-                    save_page(sibling_target, conf, summary)
-                synced_file_page.add(sibling_target)
-                curr_extensions[name_no_ext(sibling_target)] = get_ext(sibling_target)
-            viewed_source_cat.add(cat_source)
+                cat_target_name = conf.cat_map(cat_source)
+                if not cat_target_name:
+                    logger.info(f"Skipped {cat_source.title(with_ns=False)} when checking {f_target}")
+                    viewed_source_cat.add(cat_source)
+                    continue
+
+                for sibling_source in cat_source.members(namespaces="File"):
+                    sync_single_file(sibling_source, target)
+
+                viewed_source_cat.add(cat_source)
+        else:
+            sync_single_file(f_source, target)
+
         logger.info(f"\033[92mFile processed: {i + 1}/{len(scanned_files)}\033[0m\n\n")
 
 
@@ -354,7 +371,7 @@ if __name__ == '__main__':
             return False
 
 
-    config = ShmetroConf(test=True, mute=False, auto=False, clear_pages=True)
+    config = ShmetroConf(test=True, mute=False, auto=True, clear_old=True, clear_pages=True, extend=False)
     commons = pywikibot.Site("commons", "commons")
     shmetro = pywikibot.Site("zh", "shmetro")
     shmetro.login()
