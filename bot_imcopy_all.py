@@ -121,7 +121,10 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         "upload errors": {}
     }
 
+    logger.info(f"Generating image list for all images on {source}...")
     imgs_source = list(source.allimages())
+
+    logger.info(f"Generating sha1 set for all images on {target}...")
     imgs_target = set(fp.latest_file_info.sha1 for fp in target.allimages())
 
     summary["scanned_files"] = len(imgs_source)
