@@ -71,7 +71,7 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
         logger.info(
             f"\n"
             f"{'[test mode]: ' if conf.test else ''}"
-            f"UPLOAD file to page '{page.title()}' with '{source}'"
+            f"UPLOAD file to page '{page.title()}' with '{source}'\n"
             f"{'[test mode]: Simulate s' if conf.test else ''}saving page:\n".capitalize() +
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}")
@@ -79,9 +79,9 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
         def handle_error(exception):
             logger.warning(str(exception))
             if isinstance(source, pywikibot.FilePage):
-                summary['upload errors'][source.title()] = str(exception)
+                summary['upload errors'][source.title()] = {"url": page.full_url(), "error": str(exception)}
             else:
-                summary['upload errors'][source] = str(exception)
+                summary['upload errors'][source] = {"url": page.full_url(), "error": str(exception)}
 
         try:
             if isinstance(source, pywikibot.FilePage):
@@ -151,7 +151,8 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         else:
             summary["skipped"] += 1
 
-    print(json.dumps(summary, sort_keys=True))
+    logger.info(f"bot_imcopy_all finished. Here is a running summary"
+                f"{json.dumps(summary, sort_keys=True, indent=2)}")
 
 
 if __name__ == '__main__':
