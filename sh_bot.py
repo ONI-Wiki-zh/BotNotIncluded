@@ -133,8 +133,10 @@ def sync_cate(source: pywikibot.Page, target: pywikibot.Page, conf: Config, is_r
     :param is_re: If these two pages are redirect pages.
     :return:
     """
+
     def get_new_cat(c):
         return pywikibot.Category(target.site, conf.cat_map(c, is_re=is_re))
+
     new_cats = []
     old_cats = list(target.categories())
     for c_source in source.categories():
@@ -209,7 +211,7 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
     :param report_success: If to report success uploading.
     """
     if not conf.test:
-        page.upload(source, text=text, report_success=report_success)
+        page.upload(source, comment=EDIT_SUMMARY, text=text, report_success=report_success)
     elif not conf.mute:
         logger.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
     summary["uploaded"] += 1
