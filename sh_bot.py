@@ -10,8 +10,10 @@ import pywikibot.textlib as textlib
 
 DIR_TMP = "tmp"
 PATH_CONFIG = path.join(DIR_TMP, "config.json")
+PATH_IMG = path.join(DIR_TMP, "img")
 EDIT_SUMMARY = "PWB: move copy images from commons.mediawiki.org"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
+pathlib.Path(PATH_IMG).mkdir(parents=True, exist_ok=True)
 
 logger = logging.getLogger("bot_imtransfer")
 logger.setLevel(logging.INFO)
@@ -184,9 +186,7 @@ def save_page(page: pywikibot.Page, conf: Config, summary):
     :param conf: Config object
     :param summary: Summary object which records some statistics while running
     """
-    if not conf.test:
-        page.save(summary=EDIT_SUMMARY)
-    elif not conf.mute:
+    if not conf.mute:
         width = 80
         page_width = len(page.title()) + 2
         l_half = (width - page_width) // 2
@@ -197,6 +197,8 @@ def save_page(page: pywikibot.Page, conf: Config, summary):
             f"[TEST MODE]: Simulate saving page:\n"
             f"{'=' * l_half}'{page.title()}'{'=' * r_half}\n"
             f"{page.text}\n{'=' * (l_half + page_width + r_half)}\n")
+    if not conf.test:
+        page.save(summary=EDIT_SUMMARY)
     summary["page_saved"] += 1
 
 
@@ -210,10 +212,21 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
     :param text: Initial page text
     :param report_success: If to report success uploading.
     """
+    if not conf.mute:
+        logger.info(f"{'[TEST MODE]: ' if conf.test else ''}"
+                    f"UPLOAD file to page '{page.title()}' with '{source}'")
+        width = 80
+        page_width = len(page.title()) + 2
+        l_half = (width - page_width) // 2
+        l_half = max(2, l_half)
+        r_half = width - page_width - l_half
+        r_half = max(2, r_half)
+        logger.info(
+            f"[TEST MODE]: Simulate saving page:\n"
+            f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
+            f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
         page.upload(source, comment=EDIT_SUMMARY, text=text, report_success=report_success)
-    elif not conf.mute:
-        logger.info(f"[TEST MODE]: UPLOAD file to page '{page.title()}' with '{source}'")
     summary["uploaded"] += 1
 
 
@@ -270,11 +283,15 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
                 continue
 
             for sibling_source in cat_source.members(namespaces="File"):
+                sibling_source: pywikibot.FilePage
                 sibling_target = pywikibot.FilePage(target, sibling_source.title(with_ns=False))
                 if sibling_target in synced_file_page:
                     continue
                 if not sibling_target.exists():
-                    upload_file(sibling_target, sibling_source.get_file_url(), conf, summary, text="",
+                    file_path = path.join(
+                        PATH_IMG, sibling_source.title(as_filename=True, with_ns=False))
+                    sibling_source.download(file_path)
+                    upload_file(sibling_target, file_path, conf, summary, text="",
                                 report_success=True)
                     sync_cate(sibling_source, sibling_target, conf)
                     save_page(sibling_target, conf, summary)
@@ -320,4 +337,5 @@ if __name__ == '__main__':
     config = ShmetroConf(test=True, mute=False, auto=False, clear_pages=True)
     commons = pywikibot.Site("commons", "commons")
     shmetro = pywikibot.Site("zh", "shmetro")
+    shmetro.login()
     main(commons, shmetro, config)
