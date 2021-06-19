@@ -71,7 +71,7 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
         r_half = width - page_width - l_half
         r_half = max(2, r_half)
         logger.info(
-            f"[TEST MODE]: Simulate saving page:\n"
+            f"{'[test mode]: Simulate s' if conf.test else ''}saving page:\n".capitalize() +
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
@@ -109,6 +109,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
     }
 
     imgs_source = list(source.allimages())
+    imgs_target = set(utils.split_file_name(fp.title(with_ns=False))[0] for fp in target.allimages())
     summary["scanned_files"] = len(imgs_source)
     for i, im_source in enumerate(imgs_source):
         if not conf.mute and i % 10 == 0:
@@ -123,11 +124,11 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         target_title = im_source.title(with_ns=False)
         im_target = pywikibot.FilePage(target, target_title)
 
-        if not im_target.exists():
+        if utils.split_file_name(target_title)[0] not in imgs_target:
             text = "\n".join([x.astext() for x in im_source.iterlanglinks()])
             if text != '':
                 text += '\n'
-            text += f"[[{source.code}:{target_title}]]"
+            text += f"[[{source.code}:{im_source.title(with_ns=True)}]]"
             upload_file(im_target, im_source, conf, summary, text=text, report_success=True)
         else:
             summary["skipped"] += 1
