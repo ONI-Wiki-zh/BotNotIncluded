@@ -98,7 +98,7 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
                 page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
         except pywikibot.exceptions.UploadError as e:
             handle_error(e)
-        except pywikibot.exceptions.APIErroras as e:
+        except pywikibot.exceptions.APIError as e:
             handle_error(e)
         except ValueError as e:
             handle_error(e)
