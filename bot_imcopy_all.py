@@ -12,15 +12,18 @@ import pywikibot
 import utils
 
 logger = logging.getLogger("bot_imtransfer")
-logger.setLevel(logging.INFO)
 ch = logging.StreamHandler(sys.stdout)
-ch.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
 ch.setFormatter(formatter)
+ch_w = logging.StreamHandler(sys.stderr)
+ch_w.setLevel(logging.WARNING)
+ch_w.setFormatter(formatter)
 logger.addHandler(ch)
+logger.addHandler(ch_w)
 
 DIR_TMP = "tmp"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
+counter = itertools.count()  # a global counter to ensure tmp file name will not duplicate
 
 
 class Config:
@@ -34,19 +37,18 @@ class Config:
         """ Format a string so it is shown in bold and as head in command line / stdout. """
         return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
 
-    def __init__(self, test: bool = False, mute: bool = None, edit_summary="bot_imcopy_all by DDEle"):
+    def __init__(self, test: bool = False, edit_summary="bot_imcopy_all by DDEle", msg_level=None):
         """ Script config class
 
         :param test: Enable test mode and avoid written to wiki site. Note that login is not required in this mode.
-        :param mute: Block some verbose output, including the the page content to save. Default to False on test mode.
-        A double confirmation mechanism is implemented.
+        :param edit_summary: wiki edit summary
+        :param msg_level: the logging message level
         """
         self.test = test
-        self.mute = (not test) if mute is None else mute
         self.edit_summary = edit_summary
-
-
-counter = itertools.count()
+        if msg_level is None:
+            msg_level = logging.DEBUG if test else logging.INFO
+        logger.setLevel(msg_level)
 
 
 def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage], conf: Config, summary, text=None,
@@ -61,20 +63,19 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
     :param report_success: If to report success uploading.
     """
 
-    if not conf.mute:
-        width = 80
-        page_width = len(page.title()) + 2
-        l_half = (width - page_width) // 2
-        l_half = max(2, l_half)
-        r_half = width - page_width - l_half
-        r_half = max(2, r_half)
-        logger.info(
-            f"\n"
-            f"{'[test mode]: ' if conf.test else ''}"
-            f"UPLOAD file to page '{page.title()}' with '{source}'\n"
-            f"{'[test mode]: Simulate s' if conf.test else ''}saving page:\n".capitalize() +
-            f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
-            f"{text}\n{'=' * (l_half + page_width + r_half)}")
+    width = 80
+    page_width = len(page.title()) + 2
+    l_half = (width - page_width) // 2
+    l_half = max(2, l_half)
+    r_half = width - page_width - l_half
+    r_half = max(2, r_half)
+    logger.info(
+        f"{'[test mode]: ' if conf.test else ''}"
+        f"UPLOAD file to page '{page.title()}' with '{source}'\n")
+    logger.debug(
+        f"{'[test mode]: Simulate s' if conf.test else ''}saving page:\n".capitalize() +
+        f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
+        f"{text}\n{'=' * (l_half + page_width + r_half)}")
     if not conf.test:
         def handle_error(exception):
             logger.warning(str(exception))
@@ -137,7 +138,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
 
     summary["scanned_files"] = len(imgs_source)
     for i, im_source in enumerate(imgs_source):
-        if not conf.mute and i % 10 == 0:
+        if i % 100 == 0:
             logger.info(f"Scanned files: {i} / {summary['scanned_files']}")
 
         im_source = getFinalRedirectTarget(im_source)
@@ -171,5 +172,5 @@ if __name__ == '__main__':
     re0zh = pywikibot.Site("zh", "re0")
     re0en = pywikibot.Site("en", "re0")
     re0zh.login()
-    config = Config(test=True, mute=False, edit_summary="bot_imcopy_all by DDEle")
+    config = Config(test=True, edit_summary="bot_imcopy_all by DDEle", msg_level=logging.INFO)
     main(source=re0en, target=re0zh, conf=config)
