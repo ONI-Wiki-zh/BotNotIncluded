@@ -165,7 +165,7 @@ def getFinalRedirectTarget(page: pywikibot.Page):
     return page
 
 
-def get_files(target: pywikibot.Site, summary: dict):
+def get_files(target: pywikibot.Site, summary: dict) -> set[str]:
     """ Get all file used in a site. """
     scanned_files = set()
     all_pages = list(target.allpages())
@@ -231,7 +231,7 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
     summary["uploaded"] += 1
 
 
-def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: set, summary: dict, conf: Config):
+def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: set[str], summary: dict, conf: Config):
     """ Sync a set of files (together files which share categories with them on the source site) on target
     site with that on source site.
 
@@ -241,8 +241,16 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
     :param summary: Summary object which records some statistics while running
     :param conf: Config object
     """
+
+    def name_no_ext(fp: pywikibot.FilePage):
+        return pathlib.Path(fp.title(as_filename=True, with_ns=False)).stem
+
+    def get_ext(fp: pywikibot.FilePage):
+        return pathlib.Path(fp.title(as_filename=True, with_ns=False)).suffix
+
     viewed_source_cat = set()
     synced_file_page = set()
+    curr_extensions = {name_no_ext(fp): get_ext(fp) for fp in target.allimages()}
     for i, f in enumerate(scanned_files):
         f_target = pywikibot.FilePage(target, f)
         if not f.endswith(".svg"):
@@ -285,7 +293,12 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
 
             for sibling_source in cat_source.members(namespaces="File"):
                 sibling_source: pywikibot.FilePage
-                sibling_target = pywikibot.FilePage(target, sibling_source.title(with_ns=False))
+                if name_no_ext(sibling_source) in curr_extensions:
+                    sibling_target_name = curr_extensions[name_no_ext(sibling_source)] + name_no_ext(sibling_source)
+                else:
+                    sibling_target_name = sibling_source.title(with_ns=False)
+                sibling_target = pywikibot.FilePage(target, sibling_target_name)
+
                 if sibling_target in synced_file_page:
                     continue
                 if not sibling_target.exists():
@@ -300,6 +313,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
                     sync_cate(sibling_source, sibling_target, conf)
                     save_page(sibling_target, conf, summary)
                 synced_file_page.add(sibling_target)
+                curr_extensions[name_no_ext(sibling_target)] = get_ext(sibling_target)
             viewed_source_cat.add(cat_source)
         logger.info(f"\033[92mFile processed: {i + 1}/{len(scanned_files)}\033[0m\n\n")
 
