@@ -62,8 +62,6 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
     """
 
     if not conf.mute:
-        logger.info(f"{'[TEST MODE]: ' if conf.test else ''}"
-                    f"UPLOAD file to page '{page.title()}' with '{source}'")
         width = 80
         page_width = len(page.title()) + 2
         l_half = (width - page_width) // 2
@@ -71,9 +69,12 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
         r_half = width - page_width - l_half
         r_half = max(2, r_half)
         logger.info(
+            f"\n"
+            f"{'[test mode]: ' if conf.test else ''}"
+            f"UPLOAD file to page '{page.title()}' with '{source}'"
             f"{'[test mode]: Simulate s' if conf.test else ''}saving page:\n".capitalize() +
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
-            f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
+            f"{text}\n{'=' * (l_half + page_width + r_half)}")
     if not conf.test:
         def handle_error(exception):
             logger.warning(str(exception))
@@ -97,7 +98,9 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
                 page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
         except pywikibot.exceptions.UploadError as e:
             handle_error(e)
-        except pywikibot.exceptions.APIError as e:
+        except pywikibot.exceptions.APIErroras as e:
+            handle_error(e)
+        except ValueError as e:
             handle_error(e)
     summary["uploaded"] += 1
 
@@ -121,10 +124,10 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         "upload errors": {}
     }
 
-    logger.info(f"Generating image list for all images on {source}...")
+    logger.info(f"Generating image list for all images on {source} ...")
     imgs_source = list(source.allimages())
 
-    logger.info(f"Generating sha1 set for all images on {target}...")
+    logger.info(f"Generating sha1 set for all images on {target} ...")
     imgs_target = set(fp.latest_file_info.sha1 for fp in target.allimages())
 
     summary["scanned_files"] = len(imgs_source)
