@@ -79,7 +79,7 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
             if isinstance(source, pywikibot.FilePage):
                 source_file_name = source.title(as_filename=True, with_ns=False)
                 file_path = path.join(
-                    DIR_TMP, f"{next(counter)}{utils.split_file_name(source_file_name)}")
+                    DIR_TMP, f"{next(counter)}{utils.split_file_name(source_file_name)[1]}")
                 source.download(file_path)
                 page.upload(file_path, comment=conf.edit_summary, text=text, report_success=report_success)
                 try:
