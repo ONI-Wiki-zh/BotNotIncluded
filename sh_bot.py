@@ -11,7 +11,7 @@ import pywikibot.textlib as textlib
 DIR_TMP = "tmp"
 PATH_CONFIG = path.join(DIR_TMP, "config.json")
 PATH_IMG = path.join(DIR_TMP, "img")
-EDIT_SUMMARY = "PWB: move copy images from commons.mediawiki.org"
+EDIT_SUMMARY = "PWB: Copy images from commons.mediawiki.org"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
 pathlib.Path(PATH_IMG).mkdir(parents=True, exist_ok=True)
 
