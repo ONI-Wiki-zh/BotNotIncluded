@@ -227,7 +227,12 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
-        page.upload(source, comment=EDIT_SUMMARY, text=text, report_success=report_success)
+        try:
+            page.upload(source, comment=EDIT_SUMMARY, text=text, report_success=report_success)
+        except pywikibot.exceptions.APIError as e:
+            logger.warning(f"APIError occurred when trying to upload file {source}:\n{e}")
+        except Exception as e:
+            logger.warning(f"Error occurred when trying to upload file {source}:\n{e}")
     summary["uploaded"] += 1
 
 
