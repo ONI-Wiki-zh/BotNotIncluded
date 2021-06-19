@@ -81,6 +81,7 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
                 summary['upload errors'][source.title()] = str(exception)
             else:
                 summary['upload errors'][source] = str(exception)
+
         try:
             if isinstance(source, pywikibot.FilePage):
                 source_file_name = source.title(as_filename=True, with_ns=False)
@@ -121,7 +122,8 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
     }
 
     imgs_source = list(source.allimages())
-    imgs_target = set(utils.split_file_name(fp.title(with_ns=False))[0] for fp in target.allimages())
+    imgs_target = set(fp.latest_file_info.sha1 for fp in target.allimages())
+
     summary["scanned_files"] = len(imgs_source)
     for i, im_source in enumerate(imgs_source):
         if not conf.mute and i % 10 == 0:
@@ -133,14 +135,12 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
             continue
         assert isinstance(im_source, pywikibot.FilePage)
 
-        target_title = im_source.title(with_ns=False)
-        im_target = pywikibot.FilePage(target, target_title)
-
-        if utils.split_file_name(target_title)[0] not in imgs_target:
+        if im_source.latest_file_info.sha1 not in imgs_target:
             text = "\n".join([x.astext() for x in im_source.iterlanglinks()])
             if text != '':
                 text += '\n'
             text += f"[[{source.code}:{im_source.title(with_ns=True)}]]"
+            im_target = pywikibot.FilePage(target, im_source.title(with_ns=False))
             upload_file(im_target, im_source, conf, summary, text=text, report_success=True)
         else:
             summary["skipped"] += 1
