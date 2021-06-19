@@ -194,7 +194,8 @@ def save_page(page: pywikibot.Page, conf: Config, summary):
         r_half = width - page_width - l_half
         r_half = max(2, r_half)
         logger.info(
-            f"[TEST MODE]: Simulate saving page:\n"
+            f"{'[TEST MODE]: simulate' if conf.test else ''}"
+            f"saving page:\n"
             f"{'=' * l_half}'{page.title()}'{'=' * r_half}\n"
             f"{page.text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
