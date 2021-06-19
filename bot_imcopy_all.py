@@ -135,7 +135,10 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
     imgs_source = list(source.allimages())
 
     logger.info(f"Generating sha1 set for all images on {target} ...")
-    imgs_target = {fp.latest_file_info.sha1: fp for fp in target.allimages()}
+    imgs_target_sha1 = {fp.latest_file_info.sha1: fp for fp in target.allimages()}
+
+    logger.info(f"Generating file name stem set for all images on {target} ...")
+    imgs_target_stem = {utils.split_file_name(fp.title(with_ns=False))[0]: fp for fp in target.allimages()}
 
     summary["scanned_files"] = len(imgs_source)
     for i, im_source in enumerate(imgs_source):
@@ -148,7 +151,9 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
             continue
         assert isinstance(im_source, pywikibot.FilePage)
 
-        if im_source.latest_file_info.sha1 not in imgs_target:
+        same_sh1 = im_source.latest_file_info.sha1 in imgs_target_sha1
+        same_name = utils.split_file_name(im_source.title(with_ns=False))[0] in imgs_target_stem
+        if not same_sh1 and not same_name:
             text = "\n".join([x.astext() for x in im_source.iterlanglinks()])
             if text != '':
                 text += '\n'
@@ -156,8 +161,13 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
             im_target = pywikibot.FilePage(target, im_source.title(with_ns=False))
             upload_file(im_target, im_source, conf, summary, text=text, report_success=True)
         else:
-            im_target = imgs_target[im_source.latest_file_info.sha1]
+            if same_sh1:
+                im_target = imgs_target_sha1[im_source.latest_file_info.sha1]
+            else:
+                im_target = imgs_target_stem[utils.split_file_name(im_source.title(with_ns=False))[0]]
             summary["matched files"].append({
+                f"match_sha1": same_sh1,
+                f"match_name": same_name,
                 f"{source}_title": im_source.title(),
                 f"{source}_url": im_source.full_url(),
                 f"{target}_title": im_target.title(),
