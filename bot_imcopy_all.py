@@ -75,6 +75,12 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
+        def handle_error(exception):
+            logger.warning(str(exception))
+            if isinstance(source, pywikibot.FilePage):
+                summary['upload errors'][source.title()] = str(exception)
+            else:
+                summary['upload errors'][source] = str(exception)
         try:
             if isinstance(source, pywikibot.FilePage):
                 source_file_name = source.title(as_filename=True, with_ns=False)
@@ -85,15 +91,13 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
                 try:
                     os.remove(file_path)
                 except Exception as e:
-                    logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}'")
+                    logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}\n{str(e)}'")
             else:
                 page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
         except pywikibot.exceptions.UploadError as e:
-            logger.warning(str(e))
-            if isinstance(source, pywikibot.FilePage):
-                summary['upload errors'][source.title()] = str(e)
-            else:
-                summary['upload errors'][source] = str(e)
+            handle_error(e)
+        except pywikibot.exceptions.APIError as e:
+            handle_error(e)
     summary["uploaded"] += 1
 
 
