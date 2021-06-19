@@ -64,6 +64,23 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
     :param report_success: If to report success uploading.
     """
 
+    def handle_error(exception):
+        logger.warning(str(exception))
+        if isinstance(source, pywikibot.FilePage):
+            summary['upload errors'][source.title()] = {
+                "source_url": source.full_url(),
+                "source_path": path.join(DIR_TMP, f"{str(counter)}{utils.split_file_name(source_file_name)[1]}"),
+                "url": page.full_url(),
+                "error": str(exception),
+            }
+        else:
+            summary['upload errors'][source] = {
+                "source": source,
+                "url": page.full_url(),
+                "error": str(exception),
+            }
+        summary["upload errors count"] += 1
+
     width = 80
     page_width = len(page.title()) + 2
     l_half = (width - page_width) // 2
@@ -78,13 +95,6 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
         f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
         f"{text}\n{'=' * (l_half + page_width + r_half)}")
     if not conf.test:
-        def handle_error(exception):
-            logger.warning(str(exception))
-            if isinstance(source, pywikibot.FilePage):
-                summary['upload errors'][source.title()] = {"url": page.full_url(), "error": str(exception)}
-            else:
-                summary['upload errors'][source] = {"url": page.full_url(), "error": str(exception)}
-            summary["upload errors count"] += 1
 
         try:
             if isinstance(source, pywikibot.FilePage):
