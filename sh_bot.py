@@ -3,7 +3,7 @@ import logging
 import os.path as path
 import pathlib
 import sys
-from typing import Union
+from typing import Union, Set
 
 import pywikibot
 import pywikibot.textlib as textlib
@@ -165,7 +165,7 @@ def getFinalRedirectTarget(page: pywikibot.Page):
     return page
 
 
-def get_files(target: pywikibot.Site, summary: dict) -> set[str]:
+def get_files(target: pywikibot.Site, summary: dict) -> Set[str]:
     """ Get all file used in a site. """
     scanned_files = set()
     all_pages = list(target.allpages())
@@ -231,7 +231,7 @@ def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, te
     summary["uploaded"] += 1
 
 
-def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: set[str], summary: dict, conf: Config):
+def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Set[str], summary: dict, conf: Config):
     """ Sync a set of files (together files which share categories with them on the source site) on target
     site with that on source site.
 
@@ -294,7 +294,7 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: se
             for sibling_source in cat_source.members(namespaces="File"):
                 sibling_source: pywikibot.FilePage
                 if name_no_ext(sibling_source) in curr_extensions:
-                    sibling_target_name = curr_extensions[name_no_ext(sibling_source)] + name_no_ext(sibling_source)
+                    sibling_target_name = name_no_ext(sibling_source) + curr_extensions[name_no_ext(sibling_source)]
                 else:
                     sibling_target_name = sibling_source.title(with_ns=False)
                 sibling_target = pywikibot.FilePage(target, sibling_target_name)
