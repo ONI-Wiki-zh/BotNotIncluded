@@ -75,18 +75,25 @@ def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage]
             f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
             f"{text}\n{'=' * (l_half + page_width + r_half)}\n")
     if not conf.test:
-        if isinstance(source, pywikibot.FilePage):
-            source_file_name = source.title(as_filename=True, with_ns=False)
-            file_path = path.join(
-                DIR_TMP, f"{next(counter)}{utils.split_file_name(source_file_name)}")
-            source.download(file_path)
-            page.upload(file_path, comment=conf.edit_summary, text=text, report_success=report_success)
-            try:
-                os.remove(file_path)
-            except Exception as e:
-                logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}'")
-        else:
-            page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
+        try:
+            if isinstance(source, pywikibot.FilePage):
+                source_file_name = source.title(as_filename=True, with_ns=False)
+                file_path = path.join(
+                    DIR_TMP, f"{next(counter)}{utils.split_file_name(source_file_name)}")
+                source.download(file_path)
+                page.upload(file_path, comment=conf.edit_summary, text=text, report_success=report_success)
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}'")
+            else:
+                page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
+        except pywikibot.exceptions.UploadError as e:
+            logger.warning(str(e))
+            if isinstance(source, pywikibot.FilePage):
+                summary['upload errors'][source.title()] = str(e)
+            else:
+                summary['upload errors'][source] = str(e)
     summary["uploaded"] += 1
 
 
@@ -106,6 +113,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         "scanned_files": 0,
         "uploaded": 0,
         "skipped": 0,
+        "upload errors": {}
     }
 
     imgs_source = list(source.allimages())
@@ -133,7 +141,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         else:
             summary["skipped"] += 1
 
-    print(json.dumps(summary))
+    print(json.dumps(summary, sort_keys=True))
 
 
 if __name__ == '__main__':
