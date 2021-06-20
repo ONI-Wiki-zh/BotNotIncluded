@@ -37,7 +37,7 @@ class Config:
         return f"{Config.CODE_HEAD}{Config.CODE_BOLD}{s}{Config.CODE_END}{Config.CODE_END}"
 
     def __init__(self, test: bool = False, mute: bool = None, auto: bool = False, clear_old: bool = False,
-                 clear_pages: bool = False, extend=False):
+                 clear_pages: bool = False, extend=False, namespace: Union[str, int] = 0):
         """ Script config class, 2 methods of which need to be implemented by overriding.
 
         :param test: Enable test mode and avoid written to wiki site. Note that login is not required in this mode.
@@ -52,6 +52,7 @@ class Config:
         self.auto = auto
         self.clear_pages = clear_pages
         self.extend = extend
+        self.namespace = namespace
         if clear_old:
             ans = input("Are you sure you want to clear config history? Type yes to continue.\n")
             if ans.lower() == "yes":
@@ -77,6 +78,11 @@ class Config:
         Return False to ignore the input class.
         Must be complete and handle all string input.
         """
+        raise NotImplementedError()
+
+    def file_filter(self, s: str) -> bool:
+        """ Filter for desired pages to search for red-link images
+        (and consider their siblings if necessary) """
         raise NotImplementedError()
 
     def _app_default_rule(self, s: str):
@@ -170,7 +176,7 @@ def getFinalRedirectTarget(page: pywikibot.Page):
 def get_files(target: pywikibot.Site, summary: dict) -> Set[str]:
     """ Get all file used in a site. """
     scanned_files = set()
-    all_pages = list(target.allpages())
+    all_pages = list(target.allpages(namespace=config.namespace))
     for i, p in enumerate(all_pages):
         for f in p.imagelinks():
             scanned_files.add(f.title())
@@ -290,8 +296,8 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
     curr_extensions = {get_stem(fp): get_ext(fp) for fp in target.allimages()}
     for i, f in enumerate(scanned_files):
         f_target = pywikibot.FilePage(target, f)
-        if not f.endswith(".svg"):
-            summary["non_svg"] += 1
+        if not conf.file_filter(f):
+            summary["filtered"] += 1
             continue
         f_source = pywikibot.FilePage(source, f)
         if not f_source.exists():  # not found in source site
@@ -301,7 +307,6 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
         # Solve redirect
         redirected = False
         try:
-
             while f_source.isRedirectPage():
                 redirected = True
                 # create and save redirect page on target site
@@ -355,7 +360,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         "file_scanned": 0,
         "page_scanned": 0,
         "page_saved": 0,
-        "non_svg": 0,
+        "filtered": 0,
         "not_found": 0,
         "uploaded": 0,
         "redirected": 0,
@@ -379,6 +384,9 @@ if __name__ == '__main__':
             if "bsicon" in s.lower():
                 return s
             return False
+
+        def file_filter(self, s: str) -> bool:
+            return s.endswith('.svg')
 
 
     config = ShmetroConf(test=True, mute=False, auto=True, clear_old=True, clear_pages=True, extend=False)
