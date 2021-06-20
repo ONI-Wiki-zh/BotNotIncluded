@@ -294,26 +294,29 @@ def sync_files(source: pywikibot.Site, target: pywikibot.Site, scanned_files: Se
 
         # Solve redirect
         redirected = False
-        while f_source.isRedirectPage():
-            # create and save redirect page on target site
-            if f_target.exists() and not f_target.isRedirectPage():
-                f_source = getFinalRedirectTarget(f_source)
-                logger.warning(
-                    f"Matches {f_target.title()} with {f_source.title()} because of mismatched redirect levels.")
-                break
+        try:
 
-            f_target.set_redirect_target(
-                pywikibot.Page(target, f_source.getRedirectTarget().title(with_ns=True)), save=False, force=True)
-            sync_cate(f_source, f_target, conf, is_re=True)
-            save_page(f_target, conf, summary)
-            if not conf.test:
-                f_target = f_target.getRedirectTarget()
-                f_source = f_source.getRedirectTarget()
-
-            redirected = True
-            if conf.test:
+            while f_source.isRedirectPage():
                 redirected = True
-                break  # Test mode can not handle redirect properly
+                # create and save redirect page on target site
+                if f_target.exists() and not f_target.isRedirectPage():
+                    f_source = getFinalRedirectTarget(f_source)
+                    logger.warning(
+                        f"Matches {f_target.title()} with {f_source.title()} because of mismatched redirect levels.")
+                    break
+
+                f_target.set_redirect_target(
+                    pywikibot.Page(target, f_source.getRedirectTarget().title(with_ns=True)), save=False, force=True)
+                sync_cate(f_source, f_target, conf, is_re=True)
+                save_page(f_target, conf, summary)
+                if not conf.test:
+                    f_target = f_target.getRedirectTarget()
+                    f_source = f_source.getRedirectTarget()
+
+                if conf.test:
+                    break  # Test mode can not handle redirect properly
+        except Exception as e:
+            logger.warning(str(e))
 
         if redirected:
             summary["redirected"] += 1
