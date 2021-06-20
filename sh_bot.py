@@ -7,6 +7,7 @@ from typing import Union, Set
 
 import pywikibot
 import pywikibot.textlib as textlib
+
 import utils
 
 DIR_TMP = "tmp"
@@ -173,10 +174,10 @@ def getFinalRedirectTarget(page: pywikibot.Page):
     return page
 
 
-def get_files(target: pywikibot.Site, summary: dict) -> Set[str]:
+def get_files(target: pywikibot.Site, summary: dict, conf: Config) -> Set[str]:
     """ Get all file used in a site. """
     scanned_files = set()
-    all_pages = list(target.allpages(namespace=config.namespace))
+    all_pages = list(target.allpages(namespace=conf.namespace))
     for i, p in enumerate(all_pages):
         for f in p.imagelinks():
             scanned_files.add(f.title())
@@ -366,7 +367,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         "redirected": 0,
     }
 
-    file_set = get_files(target, summary)
+    file_set = get_files(target, summary, conf)
     sync_files(source, target, file_set, summary, conf)
     print(json.dumps(summary))
 
