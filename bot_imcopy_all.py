@@ -6,7 +6,7 @@ import os.path as path
 import pathlib
 import sys
 from typing import Union
-
+import mimetypes
 import pywikibot
 
 import utils
@@ -52,63 +52,68 @@ class Config:
         logger.setLevel(msg_level)
 
 
-def upload_file(page: pywikibot.FilePage, source: Union[str, pywikibot.FilePage], conf: Config, summary, text=None,
+def upload_file(site_target: pywikibot.Site, source: pywikibot.FilePage, conf: Config, summary, text=None,
                 report_success=None):
     """ File uploading behavior under both normal and test mode. See **pywikibot.page.FilePage** for more details.
 
-    :param page: File page to upload to
+    :param site_target:
     :param source: path or url of the image to be uploaded
     :param conf: Config object
     :param summary: Summary object which records some statistics while running
     :param text: Initial page text
     :param report_success: If to report success uploading.
     """
+    if hasattr(source.latest_file_info, 'mime'):
+        ext = mimetypes.guess_extension(source.latest_file_info.mime)
+    else:
+        source_file_name = source.title(as_filename=True, with_ns=False)
+        source.get_file_history()
+        ext = utils.split_file_name(source_file_name)[1]
+    file_stem = utils.split_file_name(source.title(as_filename=True, with_ns=False))[0]
+    target: pywikibot.FilePage = pywikibot.FilePage(site_target, f"{file_stem}{ext}")
 
     def handle_error(exception):
         logger.warning(str(exception))
         if isinstance(source, pywikibot.FilePage):
             summary['upload errors'][source.title()] = {
                 "source_url": source.full_url(),
-                "source_path": path.join(DIR_TMP, f"{str(counter)}{utils.split_file_name(source_file_name)[1]}"),
-                "url": page.full_url(),
+                "source_path": path.join(
+                    DIR_TMP,
+                    f"{str(counter)}{utils.split_file_name(source.title(as_filename=True, with_ns=False))[1]}"
+                ),
+                "url": target.full_url(),
                 "error": str(exception),
             }
         else:
             summary['upload errors'][source] = {
                 "source": source,
-                "url": page.full_url(),
+                "url": target.full_url(),
                 "error": str(exception),
             }
         summary["upload errors count"] += 1
 
     width = 80
-    page_width = len(page.title()) + 2
+    page_width = len(target.title()) + 2
     l_half = (width - page_width) // 2
     l_half = max(2, l_half)
     r_half = width - page_width - l_half
     r_half = max(2, r_half)
     logger.info(
         f"{'[test mode]: ' if conf.test else ''}"
-        f"UPLOAD file to page '{page.title()}' with '{source}'\n")
+        f"UPLOAD file to page '{target.title()}' with '{source}'\n")
     logger.debug(
         f"{'[test mode]: Simulate s' if conf.test else ''}saving page:\n".capitalize() +
-        f"{'=' * l_half} {conf.bold_head(page.title())} {'=' * r_half}\n"
+        f"{'=' * l_half} {conf.bold_head(target.title())} {'=' * r_half}\n"
         f"{text}\n{'=' * (l_half + page_width + r_half)}")
     if not conf.test:
-
         try:
-            if isinstance(source, pywikibot.FilePage):
-                source_file_name = source.title(as_filename=True, with_ns=False)
-                file_path = path.join(
-                    DIR_TMP, f"{next(counter)}{utils.split_file_name(source_file_name)[1]}")
-                source.download(file_path)
-                page.upload(file_path, comment=conf.edit_summary, text=text, report_success=report_success)
-                try:
-                    os.remove(file_path)
-                except Exception as e:
-                    logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}\n{str(e)}'")
-            else:
-                page.upload(source, comment=conf.edit_summary, text=text, report_success=report_success)
+            file_path = path.join(DIR_TMP, target.title(as_filename=True, with_ns=False))
+            source.download(file_path)
+            target.upload(file_path, comment=conf.edit_summary, text=text, report_success=report_success)
+            try:
+                os.remove(file_path)
+            except Exception as e:
+                logger.warning(f"Error occurs when then trying to clear tmp file: '{file_path}\n{str(e)}'")
             summary["uploaded"] += 1
         except pywikibot.exceptions.UploadError as e:
             handle_error(e)
@@ -144,11 +149,26 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
     logger.info(f"Generating image list for all images on {source} ...")
     imgs_source = list(source.allimages())
 
-    logger.info(f"Generating sha1 set for all images on {target} ...")
-    imgs_target_sha1 = {fp.latest_file_info.sha1: fp for fp in target.allimages()}
-
-    logger.info(f"Generating file name stem set for all images on {target} ...")
-    imgs_target_stem = {utils.split_file_name(fp.title(with_ns=False))[0]: fp for fp in target.allimages()}
+    logger.info(f"Generating the set for all images on {target} ...")
+    imgs_target_sha1 = {}
+    imgs_target_stem = {}
+    for fp in target.allpages(namespace="File"):  # use all pages to include redirect pages
+        fp: pywikibot.Page
+        imgs_target_stem[utils.split_file_name(fp.title(with_ns=False))[0].replace(' ', '_')] = fp
+        if fp.isRedirectPage():
+            final_target = getFinalRedirectTarget(fp)
+            if not isinstance(final_target, pywikibot.FilePage):
+                logger.warning(f"Found a pages in File name which redirect "
+                               f"to a non-file page: '{fp.create_short_link()}'")
+                continue
+        elif isinstance(fp, pywikibot.FilePage):
+            try:
+                imgs_target_sha1[fp.latest_file_info.sha1] = fp
+            except pywikibot.exceptions.PageRelatedError as e:
+                logger.warning(str(e))
+        else:
+            logger.warning(f"Found a non-file page in File name space: '{fp.create_short_link()}'")
+            continue
 
     summary["scanned_files"] = len(imgs_source)
     for i, im_source in enumerate(imgs_source):
@@ -162,19 +182,22 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
         assert isinstance(im_source, pywikibot.FilePage)
 
         same_sh1 = im_source.latest_file_info.sha1 in imgs_target_sha1
-        same_name = utils.split_file_name(im_source.title(with_ns=False))[0] in imgs_target_stem
+        same_name = utils.split_file_name(im_source.title(with_ns=False))[0].replace(' ', '_') in imgs_target_stem
         if not same_sh1 and not same_name:
+            im_source = pywikibot.FilePage(source, im_source.title())  # seems that imgs from allimages drops some info
+            if hasattr(im_source.latest_file_info, 'mime') and im_source.latest_file_info.mime == "video/youtube":
+                summary["skipped"] += 1
+                continue
             text = "\n".join([x.astext() for x in im_source.iterlanglinks()])
             if text != '':
                 text += '\n'
             text += f"[[{source.code}:{im_source.title(with_ns=True)}]]"
-            im_target = pywikibot.FilePage(target, im_source.title(with_ns=False))
-            upload_file(im_target, im_source, conf, summary, text=text, report_success=True)
+            upload_file(target, im_source, conf, summary, text=text, report_success=True)
         else:
             if same_sh1:
                 im_target = imgs_target_sha1[im_source.latest_file_info.sha1]
             else:
-                im_target = imgs_target_stem[utils.split_file_name(im_source.title(with_ns=False))[0]]
+                im_target = imgs_target_stem[utils.split_file_name(im_source.title(with_ns=False))[0].replace(' ', '_')]
             summary["matched files"].append({
                 f"match_sha1": same_sh1,
                 f"match_name": same_name,
@@ -187,6 +210,7 @@ def main(source: pywikibot.Site, target: pywikibot.Site, conf: Config):
 
     logger.info(f"bot_imcopy_all finished. Here is a running summary:\n"
                 f"{json.dumps(summary, sort_keys=True, indent=2, ensure_ascii=False)}")
+    return summary
 
 
 if __name__ == '__main__':
@@ -194,4 +218,4 @@ if __name__ == '__main__':
     re0en = pywikibot.Site("en", "re0")
     re0zh.login()
     config = Config(test=True, edit_summary="bot_imcopy_all by DDEle", msg_level=logging.INFO)
-    main(source=re0en, target=re0zh, conf=config)
+    report = main(source=re0en, target=re0zh, conf=config)
