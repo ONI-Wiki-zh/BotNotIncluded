@@ -188,21 +188,24 @@ def save_page(page: pywikibot.Page, conf: Config, summary):
     :param conf: Config object
     :param summary: Summary object which records some statistics while running
     """
-    if not conf.mute:
-        width = 80
-        page_width = len(page.title()) + 2
-        l_half = (width - page_width) // 2
-        l_half = max(2, l_half)
-        r_half = width - page_width - l_half
-        r_half = max(2, r_half)
-        logger.info(
-            f"{'[TEST MODE]: simulate ' if conf.test else ''}"
-            f"saving page:\n"
-            f"{'=' * l_half}'{conf.bold_head(page.title())}'{'=' * r_half}\n"
-            f"{page.text}\n{'=' * (l_half + page_width + r_half)}\n")
-    if not conf.test:
-        page.save(summary=EDIT_SUMMARY)
-    summary["page_saved"] += 1
+    try:
+        if not conf.mute:
+            width = 80
+            page_width = len(page.title()) + 2
+            l_half = (width - page_width) // 2
+            l_half = max(2, l_half)
+            r_half = width - page_width - l_half
+            r_half = max(2, r_half)
+            logger.info(
+                f"{'[TEST MODE]: simulate ' if conf.test else ''}"
+                f"saving page:\n"
+                f"{'=' * l_half}'{conf.bold_head(page.title())}'{'=' * r_half}\n"
+                f"{page.text}\n{'=' * (l_half + page_width + r_half)}\n")
+        if not conf.test:
+            page.save(summary=EDIT_SUMMARY)
+        summary["page_saved"] += 1
+    except Exception as e:
+        logger.error(str(e))
 
 
 def upload_file(page: pywikibot.FilePage, source: str, conf: Config, summary, text=None, report_success=None):
