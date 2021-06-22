@@ -6,6 +6,7 @@ import re
 import pywikibot
 
 import utils
+from typing import Dict
 
 
 def test():
@@ -35,12 +36,17 @@ def download_en_images():
             f.download(path.join(dest, t))
 
 
-def update_data():
-    site = pywikibot.Site("zh", "oni")
-    data_files = {  # local data file name -> wiki page suffix
+def get_data_file_list() -> Dict[str, str]:
+    """ all file stem - wiki_page pairs defined here will be tried to upload. """
+
+    # fixed pairs
+    name_map = {  # local data file name -> wiki page suffix
         "building": "data/Buildings",
         "critter": "data/Critters",
+        "Elements": "data/Elements",
     }
+
+    # all starts with "i18n_strings_"
     i18_prefix = "i18n_strings_"
     for i18_file in os.listdir(utils.DIR_OUT):
         if not path.isfile(path.join(utils.DIR_OUT, i18_file)):
@@ -51,9 +57,15 @@ def update_data():
         gs = m.groups()
         if len(gs) != 1:
             continue
-        data_files[i18_file[:-4]] = f"i18n/{gs[0].capitalize()}"
+        name_map[i18_file[:-4]] = f"i18n/{gs[0].capitalize()}"
+    return name_map
+
+
+def update_data():
+    site = pywikibot.Site("zh", "oni")
 
     comment = None
+    data_files = get_data_file_list()
     for local_file in data_files:
         f_path = path.join(utils.DIR_OUT, local_file) + ".lua"
         if not path.exists(f_path):
