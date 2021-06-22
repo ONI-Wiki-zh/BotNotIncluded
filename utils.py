@@ -5,6 +5,7 @@ import pathlib
 import babel.messages.pofile as pofile
 import luadata
 import pandas as pd
+from typing import  Union
 
 DIR_DATA = "data"
 DIR_OUT = "out"
@@ -31,7 +32,7 @@ def to_cap(s):
     return ''.join([w.title() for w in s.split('_')])
 
 
-def save_lua(f_name: str, data):
+def save_lua(f_name: str, data: Union[pd.DataFrame, dict]):
     if isinstance(data, pd.DataFrame):
         for c in data.columns:
             data[c] = data[c].where(data[c].notna(), None)
