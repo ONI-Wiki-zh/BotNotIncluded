@@ -140,7 +140,7 @@ class SubTags:
 
 df.dropna(inplace=True, subset=['context'])
 df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
-df[df.prefix == "Ui"] = "UI"
+df.loc[df.prefix == "Ui", "predix"] = "UI"
 df.id = df.id.apply(SubTags.simple_sub)
 df.string = df.string.apply(SubTags.simple_sub)
 df = df.apply(SubTags(df, "oni"), axis="columns")
