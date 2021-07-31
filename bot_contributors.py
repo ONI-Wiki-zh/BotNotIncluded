@@ -2,10 +2,9 @@ import pywikibot
 import collections
 
 
-def bot_contributors(site:pywikibot.Site):
+def bot_contributors(site: pywikibot.Site):
     counter = collections.Counter()
     errors = []
-
     for i, ns in enumerate(site.namespaces):
         if ns < 0:
             continue
@@ -29,4 +28,3 @@ def bot_contributors(site:pywikibot.Site):
 if __name__ == '__main__':
     oni_zh = pywikibot.Site("zh", "oni")
     c = bot_contributors(oni_zh)
-
