@@ -4,8 +4,9 @@ import logging
 import utils
 import bot
 import collections
+import pandas as pd
 
-df = utils.get_str_data()
+df: pd.DataFrame = utils.get_str_data()
 
 
 class SubTags:
@@ -132,7 +133,7 @@ class SubTags:
         self.curr = x
         x.id = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh', en_is_link), x.string)
-        x.id = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'en' , en_is_link), x.id)
+        x.id = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'zh', en_is_link), x.string)
 
         return x
@@ -140,7 +141,7 @@ class SubTags:
 
 df.dropna(inplace=True, subset=['context'])
 df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
-df.loc[df.prefix == "Ui", "predix"] = "UI"
+df.loc[df.prefix == "Ui", "prefix"] = "UI"
 df.id = df.id.apply(SubTags.simple_sub)
 df.string = df.string.apply(SubTags.simple_sub)
 df = df.apply(SubTags(df, "oni"), axis="columns")
@@ -151,3 +152,11 @@ for prefix in df.prefix.unique():
     data["zh"] = df_prefix["string"].to_dict(collections.OrderedDict)
     data["en"] = df_prefix["id"].to_dict(collections.OrderedDict)
     utils.save_lua(path.join(utils.DIR_OUT, f"i18n_strings_{prefix.lower()}"), data)
+
+# Generate OmegaT glossary_po.txt
+glossary_text = ""
+for i, row in df.iterrows():
+    if "\n" not in row.id and "\n" not in row.string:
+        glossary_text += f"{row.id}\t{row.string}\n"
+with open(path.join(utils.DIR_OUT, "glossary_po.txt"), "wb") as text_file:
+    text_file.write(glossary_text.encode("utf-8"))
