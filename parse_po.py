@@ -120,12 +120,50 @@ class SubTags:
 
     @staticmethod
     def simple_sub(s):
+        ori = s
         s = re.sub(r'\n+', '<br/>', s)
-        s = re.sub(r'<color=#(\w+)>(.*?)</color>', r'<span style="color:#\g<1>;">\g<2></span>', s)
+        s = re.sub(r'<color=#(.+?)>(.*?)</color>', r'<span style="color:#\g<1>;">\g<2></span>', s)
         s = re.sub(r'<size=.+?>(.*?)</size>', r'\g<1>', s)
         s = re.sub(r'<smallcaps>(.*?)</smallcaps>', r'<span class="ingame-smallcaps">\g<1></span>', s)
         s = re.sub(r'^<link=".+?">(.*?)</link>$', r'\g<1>', s)
+        s = re.sub(r'<alpha=#(.+?)>((.|\n)*?)</color>',
+                   lambda m: f"<span style='opacity:{int(m.group(1), 16) / int('ff', 16):.2f}'>"
+                             f"{m.group(2)}</span>", s)
+        s = re.sub(r'<indent=(.+?)>((.|\n)*?)</indent>',
+                   lambda m: f"<span class='ingame-indent' "
+                             f"style='padding-left:{m.group(1)}'>{m.group(2)}</span>", s)
+        # again
+        s = re.sub(r'<indent=(.+?)>((.|\n)*?)</indent>',
+                   lambda m: f"<span class='ingame-indent' "
+                             f"style='padding-left:{m.group(1)}'>{m.group(2)}</span>", s)
 
+        # rollback unbalanced tags
+        s = re.sub(r'<color=#(.+?)>(.*?)$', r'<span style="color:#\g<1>;">\g<2></span>', s)
+        s = re.sub(r'<size=.+?>(.*?)$', r'\g<1>', s)
+        s = re.sub(r'<smallcaps>(.*?)$', r'<span class="ingame-smallcaps">\g<1></span>', s)
+        s = re.sub(r'<alpha=#(.+?)>((.|\n)*?)$',
+                   lambda m: f"<span style='opacity:{int(m.group(1), 16) / int('ff', 16):.2f}'>"
+                             f"{m.group(2)}</span>", s)
+        s = re.sub(r'<indent=(.+?)>((.|\n)*?)$',
+                   lambda m: f"<span class='ingame-indent' "
+                             f"style='padding-left:{m.group(1)}'>{m.group(2)}</span>", s)
+        s = re.sub(
+            r'</color>|'
+            r'</size>|'
+            r'</indent>', "", s)
+
+        def unbalanced(m):
+            logging.warning(f"remove unbalanced tag \"{m.group(0)}\" from:\n{ori}")
+            return ""
+
+        s = re.sub(
+            r'<color=#(\w+)>|'
+            r'<size=.+?>|'
+            r'<smallcaps>|'
+            r'<alpha=#(\w\w)>|'
+            r'</color>|'
+            r'</size>|'
+            r'</indent>', unbalanced, s)
         return s
 
     def __call__(self, x):
