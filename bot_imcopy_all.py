@@ -11,16 +11,7 @@ import pywikibot
 
 import utils
 
-logger = logging.getLogger("bot_imtransfer")
-formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
-ch = logging.StreamHandler(sys.stdout)
-ch.setFormatter(formatter)
-ch.addFilter(lambda r: r.levelno < logging.WARNING)
-ch_w = logging.StreamHandler(sys.stderr)
-ch_w.setLevel(logging.WARNING)
-ch_w.setFormatter(formatter)
-logger.addHandler(ch)
-logger.addHandler(ch_w)
+logger = utils.getLogger("bot_imtransfer")
 
 DIR_TMP = "tmp"
 pathlib.Path(DIR_TMP).mkdir(parents=True, exist_ok=True)
