@@ -1,11 +1,13 @@
 import collections
 import os.path as path
 import pathlib
+import logging
+import sys
 
 import babel.messages.pofile as pofile
 import luadata
 import pandas as pd
-from typing import  Union
+from typing import Union
 
 DIR_DATA = "data"
 DIR_OUT = "out"
@@ -13,7 +15,8 @@ DIR_CODE = path.join(DIR_DATA, "code")
 ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
 
 
-def get_str_data(po_name="strings_preinstalled_zh_klei.po"):
+def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
+                         "\\OxygenNotIncluded_Data\\StreamingAssets\\strings\\strings_preinstalled_zh_klei.po"):
     with open(path.join(DIR_DATA, po_name), 'rb') as f:
         while (l := f.readline()) != b'\n':
             pass
@@ -32,7 +35,7 @@ def to_cap(s):
     return ''.join([w.title() for w in s.split('_')])
 
 
-def save_lua(f_name: str, data: Union[pd.DataFrame, dict]):
+def save_lua(f_name: str, data: Union[pd.DataFrame, dict, list]):
     if isinstance(data, pd.DataFrame):
         for c in data.columns:
             data[c] = data[c].where(data[c].notna(), None)
@@ -40,12 +43,27 @@ def save_lua(f_name: str, data: Union[pd.DataFrame, dict]):
     l_str = luadata.serialize(data, encoding="utf-8", indent=" " * 4)
     if not f_name.endswith(".lua"):
         f_name += ".lua"
+    pathlib.Path(f_name).parent.mkdir(parents=True, exist_ok=True)
     with open(f_name, 'wb') as f:
         f.write(("return " + l_str).encode("utf-8"))
 
 
 def split_file_name(filename: str):
     return pathlib.Path(filename).stem, pathlib.Path(filename).suffix
+
+
+def getLogger(name: str):
+    logger = logging.getLogger(name)
+    formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
+    ch = logging.StreamHandler(sys.stdout)
+    ch.setFormatter(formatter)
+    ch.addFilter(lambda r: r.levelno < logging.WARNING)
+    ch_w = logging.StreamHandler(sys.stderr)
+    ch_w.setLevel(logging.WARNING)
+    ch_w.setFormatter(formatter)
+    logger.addHandler(ch)
+    logger.addHandler(ch_w)
+    return logger
 
 
 pathlib.Path("out").mkdir(parents=True, exist_ok=True)
