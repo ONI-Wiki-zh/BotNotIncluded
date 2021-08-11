@@ -2,7 +2,7 @@ import os.path as path
 import pathlib
 import os
 import re
-
+import itertools
 import pywikibot
 
 import utils
@@ -28,7 +28,10 @@ def download_en_images():
     s = pywikibot.Site("en", "oni")
     dest = path.join(utils.DIR_OUT, "en images")
     pathlib.Path(dest).mkdir(parents=True, exist_ok=True)
-    files = s.categorymembers(pywikibot.Category(s, "Copyright Fairuse"))
+    files = itertools.chain(
+        s.categorymembers(pywikibot.Category(s, "Duplicant images")),
+        s.categorymembers(pywikibot.Category(s, "Copyright Fairuse")),
+    )
     for f in files:
         if isinstance(f, pywikibot.FilePage):
             t = f.title(with_ns=False)
@@ -41,9 +44,11 @@ def get_data_file_list() -> Dict[str, str]:
 
     # fixed pairs
     name_map = {  # local data file name -> wiki page suffix
-        "building": "data/Buildings",
-        "critter": "data/Critters",
+        # "building": "data/Buildings",
+        # "critter": "data/Critters",
         "Elements": "data/Elements",
+        "TextAsset/Personalities": "data/TextAsset/Personalities",
+        "codex": "data/Codex",
     }
 
     # all starts with "i18n_strings_"
@@ -63,7 +68,8 @@ def get_data_file_list() -> Dict[str, str]:
 
 def update_data():
     site = pywikibot.Site("zh", "oni")
-
+    a = pywikibot.Page(site, "版本/FA-471883")
+    a.interwiki(expand=True)
     comment = None
     data_files = get_data_file_list()
     for local_file in data_files:
@@ -73,15 +79,22 @@ def update_data():
             continue
         page = pywikibot.Page(site, f"module:{data_files[local_file]}")
         with open(f_path, "rb") as f:
-            page.text = f.read().decode('utf-8')
-            if comment is None:
-                comment = input("Edit comment")
-            page.save(f"Pywikibot: {comment}")
+            new_text = f.read().decode('utf-8')
+            if not (page.exists() and page.text == new_text):
+                page.text = new_text
+                if comment is None:
+                    comment = input("Edit comment")
+                page.save(f"Pywikibot: {comment}")
+
+        # doc page
         doc_page = pywikibot.Page(site, f"module:{data_files[local_file]}/doc")
-        doc_page.text = "{{游戏版权}}"
-        doc_page.save(f"Pywikibot: {comment}")
+        new_doc = "{{游戏版权}}"
+        if not (doc_page.exists() and doc_page.text == new_doc):
+            doc_page.text = new_doc
+            doc_page.save(f"Pywikibot: {comment}")
     print("Done")
 
 
 if __name__ == '__main__':
-    update_data()
+    # update_data()
+    pass
