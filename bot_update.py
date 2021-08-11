@@ -1,5 +1,7 @@
 import pywikibot
 
+zh_contributors = ["DDElephant", "Xheepey87"]
+
 
 def bot_update(site: pywikibot.Site, source: pywikibot.Site):
     to_update = {
@@ -17,8 +19,15 @@ def bot_update(site: pywikibot.Site, source: pywikibot.Site):
         source_page = pywikibot.Page(source_links[0])
         if not source_page.exists():
             to_update["non-existence"].append(p)
-        elif p.latest_revision.timestamp < source_page.latest_revision.timestamp:
-            to_update["outdated"].append(p)
+        else:
+            for r in source_page.revisions():
+                if r.user in zh_contributors:
+                    continue
+                if "zh link".upper() in r.comment.upper():
+                    continue
+                if r.timestamp > p.latest_revision.timestamp:
+                    to_update["outdated"].append(p)
+                break
 
     log_page = pywikibot.Page(site, "project:Log/Sync EN")
     log_page.text = f"本页面更新于 UTC {pywikibot.datetime.datetime.utcnow()}，" \
