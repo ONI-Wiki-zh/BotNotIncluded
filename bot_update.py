@@ -1,6 +1,6 @@
 import pywikibot
 
-zh_contributors = ["DDElephant", "Xheepey87"]
+zh_contributors = ["DDElephant", "DDElephantBot", "Xheepey87"]
 
 
 def bot_update(site: pywikibot.Site, source: pywikibot.Site):
