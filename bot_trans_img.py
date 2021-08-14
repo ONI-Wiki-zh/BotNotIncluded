@@ -3,7 +3,7 @@ import utils
 import os
 
 logger = utils.getLogger("trans_image")
-limit = 3
+limit = float("inf")
 
 blq = pywikibot.Site("zh", "bolanqiu")
 mblq = pywikibot.Site("zh", "zhblq")
@@ -21,11 +21,11 @@ def sync_file(source_page):
         for e in es:
             if e.code in ['exists', 'page-exists']:
                 pass
-            elif e.code in ["duplicateversions", 'was-deleted', 'duplicate-archive']:
-                logger.warning(f"Ignored error: {e.message}")
+            elif e.code in ["duplicateversions", 'was-deleted', 'duplicate-archive', "nochange", 'uploadstash-exception']:
+                logger.warning(f"\"{f_name}\": Ignored error: {e.message}")
             else:
                 ret = False
-                logger.warning(f"Skip \"{f_name}\" due to error: {e.message}")
+                logger.warning(f"\"{f_name}\": Skipped due to error: {e.message}")
         return ret
 
     hs = source_page.get_file_history()
@@ -37,7 +37,7 @@ def sync_file(source_page):
 
         uploaded = target_p.upload(f_name, comment=comment, ignore_warnings=allow_exist)
         if uploaded:
-            logger.info(f"File \"{f_name}\" synced.")
+            logger.info(f"\"{f_name}\": File synced.")
         os.remove(f_name)
 
 
