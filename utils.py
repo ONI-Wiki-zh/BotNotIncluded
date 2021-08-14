@@ -54,6 +54,7 @@ def split_file_name(filename: str):
 
 def getLogger(name: str):
     logger = logging.getLogger(name)
+    logger.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
     ch = logging.StreamHandler(sys.stdout)
     ch.setFormatter(formatter)
@@ -61,8 +62,17 @@ def getLogger(name: str):
     ch_w = logging.StreamHandler(sys.stderr)
     ch_w.setLevel(logging.WARNING)
     ch_w.setFormatter(formatter)
+    ch_f = logging.FileHandler("log.txt", encoding="utf-8")
+    ch_f.setFormatter(formatter)
+    ch_f.setLevel(logging.DEBUG)
     logger.addHandler(ch)
     logger.addHandler(ch_w)
+    logger.addHandler(ch_f)
+
+    ch_fw = logging.FileHandler("log.txt", encoding="utf-8")
+    ch_fw.setFormatter(formatter)
+    ch_fw.setLevel(logging.WARNING)
+    logging.getLogger().addHandler(ch_fw)
     return logger
 
 
