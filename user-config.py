@@ -9,6 +9,7 @@ usernames['shironeko']['zh'] = "DDElephant"
 usernames['bolanqiu']['zh'] = "DDElephantBot"
 usernames['boni']['zh'] = "DDElephantBot"
 usernames['ucp']['zh'] = "DDElephantBot"
+usernames['companyball']['zh'] = "DDElephantBot"
 usernames['zhblq']['zh'] = "DDElephantBot"
 password_file = "user-password.py"
 put_throttle = 0
