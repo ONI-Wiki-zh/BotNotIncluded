@@ -105,12 +105,8 @@ class SubTags:
                 return self.link_page_or_cate(candidates.iloc[0][col], lang, g2, "cate")
 
         for _, c in candidates.iterrows():
-            if lang == "en":
-                linked = self.link_page_or_cate(self.strip_link(self.simple_sub(c[col])), lang)
-                if linked:
-                    return linked
-            elif lang == "zh":
-                linked = self.link_page_or_cate(self.strip_link(self.simple_sub(c[col])), lang)
+            if lang in ['en', 'zh']:
+                linked = self.link_page_or_cate(self.strip_link(self.simple_sub(c[col])), lang, g2)
                 if linked:
                     return linked
 
