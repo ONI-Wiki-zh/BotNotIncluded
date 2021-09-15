@@ -142,3 +142,7 @@ throttle.ctrl
 pywikibot.lwp
 user-password.py
 tmp
+
+# some private side project
+aces*
+log.txt
