@@ -3,6 +3,7 @@ import os.path as path
 import pathlib
 import logging
 import sys
+import urllib.request
 
 import babel.messages.pofile as pofile
 import luadata
@@ -13,16 +14,30 @@ DIR_DATA = "data"
 DIR_OUT = "out"
 DIR_CODE = path.join(DIR_DATA, "code")
 ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
+PO_HANT = "https://raw.githubusercontent.com/miZyind/ONI-Mods/master/TraditionalChinese/Assets/strings.po"
 
 
 def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
                          "\\OxygenNotIncluded_Data\\StreamingAssets\\strings\\strings_preinstalled_zh_klei.po"):
     with open(path.join(DIR_DATA, po_name), 'rb') as f:
-        while (l := f.readline()) != b'\n':
+        while (l := f.readline()) != b'\n':  # skip first
             pass
         catalog = pofile.read_po(f)
     df = pd.DataFrame([(m.context, m.id, m.string) for m in iter(catalog)])
     df = df.rename(columns={0: "context", 1: "id", 2: "string"})
+    df.dropna(inplace=True)
+    df = df.astype({"context": "string"}, copy=False)
+
+    with urllib.request.urlopen(PO_HANT) as ft:
+        while (l := ft.readline()) != b'\n':  # skip first
+            pass
+        catalog_t = pofile.read_po(ft)
+    df_t = pd.DataFrame([(m.context, m.string) for m in iter(catalog_t)])
+    df_t = df_t.rename(columns={0: "context", 1: "hant"})
+    df_t.dropna(inplace=True)
+    df_t = df_t.astype({"context": "string"}, copy=False)
+
+    df = df.merge(df_t, how="left", on=["context"])
     return df
 
 
