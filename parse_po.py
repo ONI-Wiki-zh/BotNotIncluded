@@ -1,10 +1,12 @@
+import collections
+import logging
 import os.path as path
 import re
-import logging
-import utils
-import bot
-import collections
+
 import pandas as pd
+
+import bot
+import utils
 
 df: pd.DataFrame = utils.get_str_data()
 
@@ -17,6 +19,7 @@ class SubTags:
     lang2col = {
         "en": "id",
         "zh": "string",
+        "zh-hant": 'hant'
     }
 
     def __init__(self, df, site='oni'):
@@ -24,10 +27,12 @@ class SubTags:
         self.pages = {
             "en": bot.all_page_titles("en", site),
             "zh": bot.all_page_titles("zh", site),
+            "zh-hant": bot.all_page_titles("zh", site),
         }
         self.cates = {
             "en": bot.all_cate_titles("en", site),
             "zh": bot.all_cate_titles("zh", site),
+            "zh-hant": bot.all_cate_titles("zh", site),
         }
         self.df = df
         self.curr = None
@@ -63,7 +68,7 @@ class SubTags:
                 if linked:
                     return linked
 
-            elif lang == "zh":
+            elif lang.startswith("zh"):
                 if en_is_link:
                     islink = en_is_link.pop(0)
                     linked = self.link_page_or_cate(match.group(2), lang, force_type=islink)
@@ -105,7 +110,7 @@ class SubTags:
                 return self.link_page_or_cate(candidates.iloc[0][col], lang, g2, "cate")
 
         for _, c in candidates.iterrows():
-            if lang in ['en', 'zh']:
+            if lang in ['en', 'zh', 'zh-hant']:
                 linked = self.link_page_or_cate(self.strip_link(self.simple_sub(c[col])), lang, g2)
                 if linked:
                     return linked
@@ -116,6 +121,8 @@ class SubTags:
 
     @staticmethod
     def simple_sub(s):
+        if pd.isna(s):
+            return s
         ori = s
         s = re.sub(r'\n+', '<br/>', s)
         s = re.sub(r'<color=#(.+?)>(.*?)</color>', r'<span style="color:#\g<1>;">\g<2></span>', s)
@@ -167,8 +174,13 @@ class SubTags:
         self.curr = x
         x.id = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh', en_is_link), x.string)
+        if not pd.isna(x.hant):
+            x.hant = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh-hant', en_is_link), x.hant)
+
         x.id = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'zh', en_is_link), x.string)
+        if not pd.isna(x.hant):
+            x.hant = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'zh-hant', en_is_link), x.hant)
 
         return x
 
@@ -178,13 +190,15 @@ df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: util
 df.loc[df.prefix == "Ui", "prefix"] = "UI"
 df.id = df.id.apply(SubTags.simple_sub)
 df.string = df.string.apply(SubTags.simple_sub)
+df.hant = df.hant.apply(SubTags.simple_sub)
 df = df.apply(SubTags(df, "oni"), axis="columns")
 for prefix in df.prefix.unique():
     df_prefix = df[df.prefix == prefix]
     df_prefix = df_prefix.set_index("context")
     data = collections.OrderedDict()
-    data["zh"] = df_prefix["string"].to_dict(collections.OrderedDict)
-    data["en"] = df_prefix["id"].to_dict(collections.OrderedDict)
+    data["zh"] = df_prefix["string"].dropna().to_dict(collections.OrderedDict)
+    data["zh-hant"] = df_prefix["hant"].dropna().to_dict(collections.OrderedDict)
+    data["en"] = df_prefix["id"].dropna().to_dict(collections.OrderedDict)
     utils.save_lua(path.join(utils.DIR_OUT, f"i18n_strings_{prefix.lower()}"), data)
 
 # Generate OmegaT glossary_po.txt
