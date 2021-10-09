@@ -9,11 +9,6 @@ import utils
 from typing import Dict
 
 
-def test():
-    site = pywikibot.Site("zh", "oni")
-    print(list(site.allpages())[1].text)
-
-
 def all_page_titles(lang="zh", site="oni"):
     site = pywikibot.Site(lang, site)
     return [p.title() for p in site.allpages()]
