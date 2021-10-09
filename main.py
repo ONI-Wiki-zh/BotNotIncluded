@@ -10,8 +10,8 @@ import utils
 if 'GITHUB_ACTIONS' in os.environ:
     with open('user-config.py', 'w') as f:
         f.writelines([
-            "user_families_paths = ['site_families']",
-            "put_throttle = 0",
+            "user_families_paths = ['site_families']\n",
+            "put_throttle = 0\n",
         ])
     import pywikibot
     import pywikibot.data.api
