@@ -142,6 +142,8 @@ throttle.ctrl
 pywikibot.lwp
 user-password.py
 tmp
+ImgHost
+ms_cache.bin
 
 # some private side project
 aces*

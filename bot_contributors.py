@@ -11,7 +11,10 @@ def bot_contributors(site: pywikibot.Site):
         print(f"ns = {site.namespace(ns)}")
         if i % 100 == 0:
             print(f"{i} pages scanned")
-        for p in site.allpages(namespace=ns):
+        ps = list(site.allpages(namespace=ns, content=True))
+        for i, p in enumerate(ps):
+            if i % 10 == 0:
+                print(f"{i}/{len(ps)}")
             try:
                 counter += p.contributors()
             except:
@@ -27,4 +30,5 @@ def bot_contributors(site: pywikibot.Site):
 
 if __name__ == '__main__':
     oni_zh = pywikibot.Site("zh", "oni")
-    c = bot_contributors(oni_zh)
+    boni = pywikibot.Site("zh", "boni")
+    # c = bot_contributors(boni)
