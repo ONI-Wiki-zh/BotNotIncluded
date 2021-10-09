@@ -33,8 +33,8 @@ def bot_update(site: pywikibot.Site, source: pywikibot.Site):
                 break
 
     log_page = pywikibot.Page(site, "project:Log/Sync EN")
-    log_page.text = f"本页面更新于 UTC {pywikibot.datetime.datetime.utcnow()}，" \
-                    f"代码详见 [https://github.com/DDEle/BotNotIncluded GitHub 仓库]。\n\n"
+    log_page.text = "本页面更新于 {{REVISIONTIMESTAMP}}，" \
+                    "代码详见 [https://github.com/DDEle/BotNotIncluded GitHub 仓库]。\n\n"
     for cat in to_update:
         log_page.text += cat + "\n"
         log_page.text += "".join(f"* [[{p.title()}]]\n" for p in to_update[cat])
