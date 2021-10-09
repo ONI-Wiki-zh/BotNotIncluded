@@ -1,17 +1,21 @@
+import datetime
 import os
+import pathlib
+import typing
+
+import dateutil.parser
+
+import utils
+
+pathlib.Path("user-password.py").touch(exist_ok=True)
 import pywikibot
 import pywikibot.data.api
-import dateutil.parser
-import datetime
-import typing
-import utils
-import bot_format
 
 logger = utils.getLogger("ONI_ZH_Main")
 
 
 def get_recent_pages(
-        site:pywikibot.Site,
+        site: pywikibot.Site,
         recent_seconds: typing.Optional[int]) -> [pywikibot.Page]:
     if not recent_seconds:
         if "RC_IN_SECONDS" in os.environ:
