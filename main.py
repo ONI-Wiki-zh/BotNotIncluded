@@ -11,6 +11,7 @@ if 'GITHUB_ACTIONS' in os.environ:
     with open('user-config.py', 'w') as f:
         f.writelines([
             "user_families_paths = ['site_families']\n",
+            f"usernames['oni']['zh'] = '{os.environ.get('BOT_NAME')}'\n",
             "put_throttle = 0\n",
         ])
     import pywikibot
@@ -58,6 +59,7 @@ def main(recent_seconds: typing.Optional[int] = None):
             password=os.environ.get("BOT_PASS")
         )
         login_manager.login(retry=True)
+        site.login()
 
     if not site.logged_in():
         logger.fatal("Not logged in")
