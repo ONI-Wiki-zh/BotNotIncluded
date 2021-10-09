@@ -1,6 +1,9 @@
 import pywikibot
 
+import utils
+
 zh_contributors = ["DDElephant", "DDElephantBot", "Xheepey87"]
+logger = utils.getLogger("bot_update")
 
 
 def bot_update(site: pywikibot.Site, source: pywikibot.Site):
@@ -12,7 +15,7 @@ def bot_update(site: pywikibot.Site, source: pywikibot.Site):
     for i, p in enumerate(all_pages):
         p: pywikibot.Page
         if i % 10 == 0:
-            print(f"{i}/{len(all_pages)}")
+            logger.info(f"Page inter-lang checked: {i}/{len(all_pages)}")
         source_links = [link for link in p.langlinks() if link.site == source]
         if len(source_links) == 0:
             continue
