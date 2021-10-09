@@ -55,7 +55,7 @@ def main(recent_seconds: typing.Optional[int] = None):
     if not site.logged_in():
         login_manager = pywikibot.data.api.LoginManager(
             site=site,
-            user=os.environ.get("BOT_NAME"),
+            user=f'{os.environ.get("BOT_NAME")}@GithubActions',
             password=os.environ.get("BOT_PASS")
         )
         login_manager.login(retry=True)
