@@ -3,7 +3,7 @@ import os
 import typing
 
 import dateutil.parser
-import pywikibot.data.api
+import pywikibot
 
 import bot_format
 import bot_update
@@ -16,9 +16,8 @@ if 'GITHUB_ACTIONS' in os.environ:
             f"usernames['oni']['zh'] = '{os.environ.get('BOT_NAME')}'\n",
             "put_throttle = 0\n",
         ])
-        del pywikibot.data.api, pywikibot
+        del pywikibot
         import pywikibot
-        import pywikibot.data.api
 
 logger = utils.getLogger("ONI_ZH_Main")
 
@@ -53,6 +52,7 @@ def main(recent_seconds: typing.Optional[int] = None):
     site = pywikibot.Site("zh", "oni")
 
     if not site.logged_in():
+        import pywikibot.data.api
         login_manager = pywikibot.data.api.LoginManager(
             site=site,
             user=f'{os.environ.get("BOT_NAME")}@GithubActions',
