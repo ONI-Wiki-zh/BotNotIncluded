@@ -68,6 +68,8 @@ def main(recent_seconds: typing.Optional[int] = None):
     for p in pages:
         logger.info(f"Processing {p.title()}")
         bot_format.format_page(p)
+    if len(pages) == 0:
+        logger.info("No recent changes to reformat!")
 
     # Update inter-lang status
     oni_en = pywikibot.Site("en", "oni")
