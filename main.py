@@ -8,7 +8,7 @@ import dateutil.parser
 import utils
 
 if 'GITHUB_ACTIONS' in os.environ:
-    with open('', 'w') as f:
+    with open('user-config.py', 'w') as f:
         f.writelines([
             "user_families_paths = ['site_families']",
             "put_throttle = 0",
