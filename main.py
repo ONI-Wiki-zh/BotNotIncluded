@@ -59,7 +59,6 @@ def main(recent_seconds: typing.Optional[int] = None):
         )
         login_manager.login(retry=True)
 
-    site.login()
     if not site.logged_in():
         logger.fatal("Not logged in")
         return
