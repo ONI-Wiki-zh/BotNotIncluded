@@ -1,8 +1,11 @@
 import datetime
+import importlib
 import os
 import typing
 
 import dateutil.parser
+import pywikibot
+import pywikibot.data.api
 
 import bot_format
 import bot_update
@@ -15,11 +18,8 @@ if 'GITHUB_ACTIONS' in os.environ:
             f"usernames['oni']['zh'] = '{os.environ.get('BOT_NAME')}'\n",
             "put_throttle = 0\n",
         ])
-    import pywikibot
-    import pywikibot.data.api
-else:
-    import pywikibot
-    import pywikibot.data.api
+        importlib.reload(pywikibot)
+        importlib.reload(pywikibot.data.api)
 
 logger = utils.getLogger("ONI_ZH_Main")
 
