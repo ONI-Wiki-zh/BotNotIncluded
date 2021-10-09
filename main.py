@@ -7,9 +7,17 @@ import dateutil.parser
 
 import utils
 
-pathlib.Path("user-password.py").touch(exist_ok=True)
-import pywikibot
-import pywikibot.data.api
+if 'GITHUB_ACTIONS' in os.environ:
+    with open('', 'w') as f:
+        f.writelines([
+            "user_families_paths = ['site_families']",
+            "put_throttle = 0",
+        ])
+    import pywikibot
+    import pywikibot.data.api
+else:
+    import pywikibot
+    import pywikibot.data.api
 
 logger = utils.getLogger("ONI_ZH_Main")
 
