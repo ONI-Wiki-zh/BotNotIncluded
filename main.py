@@ -52,7 +52,7 @@ def get_recent_pages(
 def main(recent_seconds: typing.Optional[int] = None):
     site = pywikibot.Site("zh", "oni")
 
-    if not site.logged_in:
+    if not site.logged_in():
         login_manager = pywikibot.data.api.LoginManager(
             site=site,
             user=os.environ.get("BOT_NAME"),
