@@ -18,7 +18,8 @@ if 'GITHUB_ACTIONS' in os.environ:
             f"usernames['oni']['zh'] = '{os.environ.get('BOT_NAME')}'\n",
             "put_throttle = 0\n",
         ])
-        importlib.reload(pywikibot)
+        del pywikibot
+        import pywikibot
         importlib.reload(pywikibot.data.api)
 
 logger = utils.getLogger("ONI_ZH_Main")
