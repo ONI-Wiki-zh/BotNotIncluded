@@ -65,7 +65,9 @@ def main(recent_seconds: typing.Optional[int] = None):
         logger.fatal("Not logged in")
         return
     pages = get_recent_pages(site, recent_seconds)
-
+    test_page = pywikibot.Page(site, "User:DDElephant/testGitHub")
+    test_page.text += '1'
+    test_page.save("From GitHub Actions")
     # for p in pages:
     #     logger.info(f"Processing {p.title()}")
     #     bot_format.format_page(p)
