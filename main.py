@@ -16,8 +16,8 @@ if 'GITHUB_ACTIONS' in os.environ:
             f"usernames['oni']['zh'] = '{os.environ.get('BOT_NAME')}'\n",
             "put_throttle = 0\n",
         ])
-        del pywikibot
-        import pywikibot
+    del pywikibot
+    import pywikibot
 
 logger = utils.getLogger("ONI_ZH_Main")
 
@@ -49,6 +49,7 @@ def get_recent_pages(
 
 
 def main(recent_seconds: typing.Optional[int] = None):
+    import pywikibot
     site = pywikibot.Site("zh", "oni")
 
     if not site.logged_in():
