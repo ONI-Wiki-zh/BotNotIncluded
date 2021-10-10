@@ -148,7 +148,7 @@ class SharePoint:
             sys.stdout.flush()
             logger.warning(flow["message"])
             result = self.app.acquire_token_by_device_flow(flow)
-            open("ms_cache.bin", "w").write(cache.serialize())
+            open(MS_CACHE_DIR, "w").write(cache.serialize())
         if "access_token" in result:
             self.header = {'Authorization': f'Bearer {result["access_token"]}'}
 
