@@ -17,6 +17,8 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+    env: 
+      OD_USERNAME: 'oni-zh-cn@outlook.com'
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -26,14 +28,39 @@ jobs:
         with:
           python-version: '3.8'
           architecture: 'x64'
-          
+
+      - uses: actions/cache@v2
+        if: startsWith(runner.os, 'Linux')
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install Python requirements
         run: |
           python -m pip install --upgrade pip
           test -f requirements.txt && pip install -r requirements.txt
 
+      - name: MS credential Cache
+        id: restore-ms-cache
+        uses: actions/cache@v2
+        with:
+          path: ImgHost/ms_cache.bin.gpg
+          key: ms-cache-${{ secrets.MS_CACHE_VERSION }}
+
+      - name: Decrypt MS credential Cache
+        if: steps.restore-ms-cache.outputs.cache-hit == 'true'
+        run: gpg -d --batch -o ImgHost/ms_cache.bin  --passphrase ${{ MS_SECRET }} ImgHost/ms_cache.bin.gpg
+          
       - env:
           BOT_NAME: ${{ secrets.BOT_NAME }}
           BOT_PASS: ${{ secrets.BOT_PASS }}
+          MS_CLIENT_ID: ${{MS_CLIENT_ID}}
+          MS_SECRET: ${{MS_SECRET}}
           RC_IN_SECONDS: 86400
         run: python -u ./main.py
+        
+      - name: Encrypt MS credential Cache
+        if: steps.restore-ms-cache.outputs.cache-hit != 'true' 
+        run: test -f ImgHost/ms_cache.bin && gpg -c --batch --passphrase ${{ MS_SECRET }} ImgHost/ms_cache.bin
