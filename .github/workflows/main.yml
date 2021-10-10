@@ -64,4 +64,6 @@ jobs:
         
       - name: Encrypt MS credential Cache
         if: steps.restore-ms-cache.outputs.cache-hit != 'true' 
-        run: test -f ImgHost/ms_cache.bin && gpg -c --batch --passphrase ${{ secrets.MS_SECRET }} ImgHost/ms_cache.bin
+        run: |
+          ls -lah ImgHost
+          test -f ImgHost/ms_cache.bin && gpg -c --batch --passphrase ${{ secrets.MS_SECRET }} ImgHost/ms_cache.bin
