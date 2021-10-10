@@ -29,7 +29,8 @@ jobs:
           python-version: '3.8'
           architecture: 'x64'
 
-      - uses: actions/cache@v2
+      - name: Python dependences cache
+        uses: actions/cache@v2
         if: startsWith(runner.os, 'Linux')
         with:
           path: ~/.cache/pip
@@ -42,7 +43,7 @@ jobs:
           python -m pip install --upgrade pip
           test -f requirements.txt && pip install -r requirements.txt
 
-      - name: MS credential Cache
+      - name: MS credential cache
         id: restore-ms-cache
         uses: actions/cache@v2
         with:
