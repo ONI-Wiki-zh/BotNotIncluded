@@ -49,6 +49,7 @@ def get_recent_pages(
 def main(recent_seconds: typing.Optional[int] = None):
     import bot_format
     import bot_update
+    import ImgHost.img_host as img_host
     site = pywikibot.Site("zh", "oni")
 
     if not site.logged_in():
@@ -64,6 +65,11 @@ def main(recent_seconds: typing.Optional[int] = None):
         logger.fatal("Not logged in")
         return
     pages = get_recent_pages(site, recent_seconds)
+
+    img_host.download(site)
+    img_host.upload('ms')
+    img_host.create_css()
+    img_host.upload_css(site)
 
     for p in pages:
         logger.info(f"Processing {p.title()}")

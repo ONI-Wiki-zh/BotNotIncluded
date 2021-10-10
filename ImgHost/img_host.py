@@ -42,7 +42,7 @@ ONEDRIVE_FOLDER = "webimg"
 FOLDER_AUTHKEY = "AEjDC4tmctPSNRE"
 MS_CONFIG = {
     "authority": "https://login.microsoftonline.com/Common",
-    'username': 'oni-zh-cn@outlook.com',
+    'username': os.environ.get("OD_USERNAME") or 'oni-zh-cn@outlook.com',
     "client_id": get_secrets('MS_CLIENT_ID'),
     "scope": ["Files.Read", "Files.Read.All", "Files.ReadWrite", "Files.ReadWrite.All"],
     "secret": get_secrets('MS_SECRET'),
