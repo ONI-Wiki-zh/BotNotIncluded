@@ -41,6 +41,17 @@ def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Ox
     return df
 
 
+def get_tags(site):
+    import pywikibot.data.api
+    assert isinstance(site, pywikibot.APISite)
+    r = pywikibot.data.api.Request(site, parameters={"action": "query", "list": "tags"})
+    res = r.submit()
+    if 'query' in res and 'tags' in res['query']:
+        tags = res['query']['tags']
+        return [t['name'] for t in tags]
+    return []
+
+
 def to_camel(s):
     init, *temp = s.split('_')
     return ''.join([init.lower(), *map(str.title, temp)])

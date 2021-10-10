@@ -63,8 +63,11 @@ def get_data_file_list() -> Dict[str, str]:
 
 def update_data():
     site = pywikibot.Site("zh", "oni")
-    a = pywikibot.Page(site, "版本/FA-471883")
-    a.interwiki(expand=True)
+    site_tags = utils.get_tags(site)
+    edit_tags = []
+    if 'bot-data-update' in site_tags:
+        edit_tags.append('bot-data-update')
+
     comment = None
     data_files = get_data_file_list()
     for local_file in data_files:
@@ -79,7 +82,7 @@ def update_data():
                 page.text = new_text
                 if comment is None:
                     comment = input("Edit comment")
-                page.save(f"Pywikibot: {comment}")
+                page.save(f"Pywikibot: {comment}", tags=edit_tags)
 
         # doc page
         doc_page = pywikibot.Page(site, f"module:{data_files[local_file]}/doc")
