@@ -1,12 +1,15 @@
+import itertools
+import os
 import os.path as path
 import pathlib
-import os
 import re
-import itertools
+from typing import Dict
+
 import pywikibot
 
 import utils
-from typing import Dict
+
+logger = utils.getLogger('meta bot')
 
 
 def all_page_titles(lang="zh", site="oni"):
@@ -30,7 +33,7 @@ def download_en_images():
     for f in files:
         if isinstance(f, pywikibot.FilePage):
             t = f.title(with_ns=False)
-            print(t)
+            logger.info(t)
             f.download(path.join(dest, t))
 
 
@@ -61,19 +64,21 @@ def get_data_file_list() -> Dict[str, str]:
     return name_map
 
 
-def update_data():
+def update_data(try_tag='bot-data-update'):
     site = pywikibot.Site("zh", "oni")
     site_tags = utils.get_tags(site)
     edit_tags = []
-    if 'bot-data-update' in site_tags:
-        edit_tags.append('bot-data-update')
+    if try_tag in site_tags:
+        edit_tags.append(try_tag)
+    else:
+        logger.warning(f'Tag "{try_tag}" does not exist on "{site}")')
 
     comment = None
     data_files = get_data_file_list()
     for local_file in data_files:
         f_path = path.join(utils.DIR_OUT, local_file) + ".lua"
         if not path.exists(f_path):
-            print(f"{f_path} don't exists.")
+            logger.warning(f'"{f_path}" do not exists.')
             continue
         page = pywikibot.Page(site, f"module:{data_files[local_file]}")
         with open(f_path, "rb") as f:
@@ -90,7 +95,7 @@ def update_data():
         if not (doc_page.exists() and doc_page.text == new_doc):
             doc_page.text = new_doc
             doc_page.save(f"Pywikibot: {comment}")
-    print("Done")
+    logger.info("Done")
 
 
 if __name__ == '__main__':
