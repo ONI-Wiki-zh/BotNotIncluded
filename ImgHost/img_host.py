@@ -246,7 +246,9 @@ def create_css():
         img_records = json.load(f)
 
     with open(CSS_DIR, 'w', encoding="utf-8") as f:
-        for f_name in img_records:
+        f_names = [f_name for f_name in img_records if 'cdn' in img_records[f_name]]
+        f_names = sorted(f_names, key=lambda k: img_records[k]['cdn'])
+        for f_name in f_names:
             if 'cdn' in img_records[f_name]:
                 f.write(f'''img[data-image-name="{f_name}"]{{
     content:url("{img_records[f_name]['cdn']}");
