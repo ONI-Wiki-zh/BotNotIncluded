@@ -39,6 +39,7 @@ def format_str(text: str):
     text = re.sub(rf'[实试]验体 ?52 ?B', r"试验体52B", text)
     text = re.sub(rf'低温箱 ?3000', r"低温箱3000", text)
     text = re.sub(rf'炊 ?CC', r"炊CC", text)
+    text = re.sub(rf'- ?啪叽 ?-', r"-啪叽-", text)
     return text
 
 
