@@ -16,6 +16,7 @@ def format_str(text: str):
     text = text.replace(" (", "（")
     text = text.replace(") ", "）")
     text = re.sub(rf' °C', r"°C", text)
+    text = re.sub(rf' °F', r"°F", text)
 
     text = re.sub(rf'([{CJK} 0-9*#/])kg/s(?![A-Za-z])', r"\1 千克/秒", text)
     text = re.sub(rf'([{CJK} 0-9*#/])g/s(?![A-Za-z])', r"\1 克/秒", text)
