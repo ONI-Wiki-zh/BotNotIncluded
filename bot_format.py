@@ -1,5 +1,6 @@
 import pywikibot
 import re
+import regex
 
 CJK = r'\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30fa\u30fc-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf' \
       r'\u4e00-\u9fff\uf900-\ufaff'
@@ -13,10 +14,15 @@ def format_str(text: str):
     text = text.replace("&deg;", "°")
     text = text.replace("℃", "°C")
     text = text.replace("℉", "°F")
-    text = text.replace(" (", "（")
-    text = text.replace(") ", "）")
     text = re.sub(rf' °C', r"°C", text)
     text = re.sub(rf' °F', r"°F", text)
+    while True:
+        new_text = regex.sub(rf'(?V1)(?<=[{CJK}]) ?(\((?:[^)(]|(?1))*\))', r"（\1）", text)
+        new_text = regex.sub(rf'(?V1)(\((?:[^)(]|(?1))*\)) ?(?=[{CJK}])', r"（\1）", new_text)
+        if new_text != text:
+            text = new_text
+        else:
+            break
 
     text = re.sub(rf'([{CJK} 0-9*#/])kg/s(?![A-Za-z])', r"\1 千克/秒", text)
     text = re.sub(rf'([{CJK} 0-9*#/])g/s(?![A-Za-z])', r"\1 克/秒", text)
