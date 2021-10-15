@@ -17,7 +17,7 @@ HUALIQS_CONFIG = {
     'apiType': 'bilibili',
 }
 
-CSS_PAGE = "MediaWiki:Gadget-odImg.css"
+CSS_PAGE = "User:ONIzhBot/odImg.css"
 IMG_DIR = os.path.join("ImgHost", "images")
 CSS_DIR = os.path.join("ImgHost", "out", "images.css")
 JSON_DIR = os.path.join("ImgHost", "out", "images.json")
