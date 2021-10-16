@@ -77,7 +77,10 @@ def main(recent_seconds: typing.Optional[int] = None):
     logger.info("Start reformatting")
     for p in pages:
         logger.info(f"Processing {p.title()}")
-        bot_format.format_page(p)
+        try:
+            bot_format.format_page(p)
+        except Exception as e:
+            logger.warning(e)
     if len(pages) == 0:
         logger.info("No recent changes to reformat!")
 
