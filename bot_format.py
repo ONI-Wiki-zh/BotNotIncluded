@@ -17,8 +17,8 @@ def format_str(text: str):
     text = re.sub(rf' °C', r"°C", text)
     text = re.sub(rf' °F', r"°F", text)
     while True:
-        new_text = regex.sub(rf'(?V1)(?<=[{CJK}]) ?(\((?:[^)(]|(?1))*\))', r"（\1）", text)
-        new_text = regex.sub(rf'(?V1)(\((?:[^)(]|(?1))*\)) ?(?=[{CJK}])', r"（\1）", new_text)
+        new_text = regex.sub(rf'(?V1)(?<=[{CJK}]) ?(\(((?:[^)(]|(?1))*)\))', r"（\2）", text)
+        new_text = regex.sub(rf'(?V1)(\(((?:[^)(]|(?1))*)\)) ?(?=[{CJK}])', r"（\2）", new_text)
         if new_text != text:
             text = new_text
         else:
