@@ -4,8 +4,6 @@ import typing
 
 import dateutil.parser
 
-import utils
-
 if 'GITHUB_ACTIONS' in os.environ:
     with open('user-config.py', 'w') as f:
         f.writelines([
@@ -16,6 +14,8 @@ if 'GITHUB_ACTIONS' in os.environ:
 
 import pywikibot
 import pywikibot.data.api
+
+import utils
 
 logger = utils.getLogger("ONI_ZH_Main")
 

@@ -67,10 +67,7 @@ def get_data_file_list() -> Dict[str, str]:
 def update_data(try_tag='bot-data-update'):
     site = pywikibot.Site("zh", "oni")
     site_tags = utils.get_tags(site)
-    edit_tags = []
-    if try_tag in site_tags:
-        edit_tags.append(try_tag)
-    else:
+    if try_tag not in site_tags:
         logger.warning(f'Tag "{try_tag}" does not exist on "{site}")')
 
     comment = None
@@ -87,7 +84,7 @@ def update_data(try_tag='bot-data-update'):
                 page.text = new_text
                 if comment is None:
                     comment = input("Edit comment")
-                page.save(f"Pywikibot: {comment}", tags=edit_tags)
+                utils.try_tags_save(page, [try_tag], f"Pywikibot: {comment}")
 
         # doc page
         doc_page = pywikibot.Page(site, f"module:{data_files[local_file]}/doc")

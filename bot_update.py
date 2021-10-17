@@ -38,7 +38,7 @@ def bot_update(site: pywikibot.Site, source: pywikibot.Site):
     for cat in to_update:
         log_page.text += cat + "\n"
         log_page.text += "".join(f"* [[{p.title()}]]\n" for p in to_update[cat])
-    log_page.save("bot_update: Outdated pages compared with EN site")
+    utils.try_tags_save(log_page, ['bot-log'], "Interlang analysis")
     return to_update
 
 

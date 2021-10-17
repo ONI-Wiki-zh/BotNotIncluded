@@ -2,6 +2,8 @@ import pywikibot
 import re
 import regex
 
+import utils
+
 CJK = r'\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30fa\u30fc-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf' \
       r'\u4e00-\u9fff\uf900-\ufaff'
 
@@ -63,7 +65,7 @@ def format_page(p: pywikibot.Page):
     new_text = format_str(old_text)
     if old_text != new_text:
         p.text = new_text
-        p.save(summary="[[Project:格式指导|统一格式]]", watch=False)
+        utils.try_tags_save(p, ['auto-format'], summary="[[Project:格式指导|统一格式]]", watch=False)
 
 
 if __name__ == '__main__':

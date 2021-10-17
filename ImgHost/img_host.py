@@ -259,7 +259,7 @@ def upload_css(site):
     p = pywikibot.Page(site, CSS_PAGE)
     with open(CSS_DIR, 'r', encoding='utf-8') as f:
         p.text = f.read()
-    p.save("Update Image links")
+    utils.try_tags_save(p, ['bot-data-update'], "Update Image links")
 
 
 if __name__ == "__main__":

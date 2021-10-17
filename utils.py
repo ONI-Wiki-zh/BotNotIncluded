@@ -1,14 +1,16 @@
 import collections
+import logging
 import os.path as path
 import pathlib
-import logging
 import sys
 import urllib.request
+from typing import Union, List
 
 import babel.messages.pofile as pofile
 import luadata
 import pandas as pd
-from typing import Union
+import pywikibot
+import pywikibot.data.api
 
 DIR_DATA = "data"
 DIR_OUT = "out"
@@ -42,7 +44,6 @@ def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Ox
 
 
 def get_tags(site):
-    import pywikibot.data.api
     assert isinstance(site, pywikibot.APISite)
     r = pywikibot.data.api.Request(site, parameters={"action": "query", "list": "tags"})
     res = r.submit()
@@ -50,6 +51,21 @@ def get_tags(site):
         tags = res['query']['tags']
         return [t['name'] for t in tags]
     return []
+
+
+def _get_try_tags_save_func():
+    sites_tags = {}
+
+    def inner(p: pywikibot.Page, tags: List[str], *args, **kwargs):
+        if p.site not in sites_tags:
+            sites_tags[p.site] = get_tags(p.site)
+        available_tags = [t for t in tags if t in sites_tags[p.site]]
+        return p.save(*args, tags=available_tags, **kwargs)
+
+    return inner
+
+
+try_tags_save = _get_try_tags_save_func()
 
 
 def to_camel(s):
