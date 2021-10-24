@@ -208,29 +208,30 @@ class SubTags:
         return x
 
 
-sub_tags = SubTags(df, "oni")
-df.dropna(inplace=True, subset=['context'])
-df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
-df.loc[df.prefix == "Ui", "prefix"] = "UI"
+if __name__ == '__main__':
+    sub_tags = SubTags(df, "oni")
+    df.dropna(inplace=True, subset=['context'])
+    df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
+    df.loc[df.prefix == "Ui", "prefix"] = "UI"
 
-df.id = df.id.apply(SubTags.simple_sub)
-df.string = df.string.apply(SubTags.simple_sub)
-df.hant = df.hant.apply(SubTags.simple_sub)
+    df.id = df.id.apply(SubTags.simple_sub)
+    df.string = df.string.apply(SubTags.simple_sub)
+    df.hant = df.hant.apply(SubTags.simple_sub)
 
-df = df.apply(sub_tags, axis="columns")
-for prefix in df.prefix.unique():
-    df_prefix = df[df.prefix == prefix]
-    df_prefix = df_prefix.set_index("context")
-    data = collections.OrderedDict()
-    data["zh"] = df_prefix["string"].dropna().to_dict(collections.OrderedDict)
-    data["zh-hant"] = df_prefix["hant"].dropna().to_dict(collections.OrderedDict)
-    data["en"] = df_prefix["id"].dropna().to_dict(collections.OrderedDict)
-    utils.save_lua(path.join(utils.DIR_OUT, f"i18n_strings_{prefix.lower()}"), data)
+    df = df.apply(sub_tags, axis="columns")
+    for prefix in df.prefix.unique():
+        df_prefix = df[df.prefix == prefix]
+        df_prefix = df_prefix.set_index("context")
+        data = collections.OrderedDict()
+        data["zh"] = df_prefix["string"].dropna().to_dict(collections.OrderedDict)
+        data["zh-hant"] = df_prefix["hant"].dropna().to_dict(collections.OrderedDict)
+        data["en"] = df_prefix["id"].dropna().to_dict(collections.OrderedDict)
+        utils.save_lua(path.join(utils.DIR_OUT, f"i18n_strings_{prefix.lower()}"), data)
 
-# Generate OmegaT glossary_po.txt
-glossary_text = ""
-for i, row in df.iterrows():
-    if "\n" not in row.id and "\n" not in row.string:
-        glossary_text += f"{row.id}\t{row.string}\n"
-with open(path.join(utils.DIR_OUT, "glossary_po.txt"), "wb") as text_file:
-    text_file.write(glossary_text.encode("utf-8"))
+    # Generate OmegaT glossary_po.txt
+    glossary_text = ""
+    for i, row in df.iterrows():
+        if "\n" not in row.id and "\n" not in row.string:
+            glossary_text += f"{row.id}\t{row.string}\n"
+    with open(path.join(utils.DIR_OUT, "glossary_po.txt"), "wb") as text_file:
+        text_file.write(glossary_text.encode("utf-8"))
