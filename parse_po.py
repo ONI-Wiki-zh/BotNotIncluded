@@ -1,5 +1,4 @@
 import collections
-import logging
 import os.path as path
 import re
 
@@ -9,6 +8,7 @@ import bot
 import utils
 
 df: pd.DataFrame = utils.get_str_data()
+logger = utils.getLogger('parse_po')
 
 
 class SubTags:
@@ -37,11 +37,30 @@ class SubTags:
         self.df = df
         self.curr = None
 
+        # set links
+        self.links = {}
+        for _, r_data in df.iterrows():
+            r_zh = r_data.string
+            r_match = re.match(r'^<link="(.+?)">(.*?)</link>$', r_zh)
+            if r_match is None:
+                continue
+
+            if r_match.group(1) not in self.links:
+                self.links[r_match.group(1)] = r_match.group(2)
+            else:
+                logger.info(f"Duplicated link key detected: {r_match.group(1)}")
+                self.links[r_match.group(1)] = False  # make sure to be unique
+
     def link_page_or_cate(self, name, lang, text=None, force_type=None):
+        auto_type = force_type == 'auto'
+        if force_type == 'auto':
+            force_type = None
         if name in self.pages[lang]:
             force_type = force_type or "page"
         elif name in self.cates[lang]:
             force_type = force_type or "cate"
+        if auto_type:
+            force_type = force_type or 'page'
 
         if force_type == "page":
             if text and text != name:
@@ -84,8 +103,11 @@ class SubTags:
 
     def repl_link(self, match: re.Match, lang, en_is_link):
         col = self.lang2col[lang]
-        g1 = match.group(1)
-        g2 = match.group(2)
+        g1 = match.group(1)  # link
+        g2 = match.group(2)  # text
+
+        if g1 in self.links and self.links[g1]:
+            return self.link_page_or_cate(self.links[g1], lang, g2, 'auto')
 
         g1_trans = {
             "ATMOSUIT": "ATMO_SUIT",
@@ -156,7 +178,7 @@ class SubTags:
             r'</indent>', "", s)
 
         def unbalanced(m):
-            logging.warning(f"remove unbalanced tag \"{m.group(0)}\" from:\n{ori}")
+            logger.warning(f"remove unbalanced tag \"{m.group(0)}\" from:\n{ori}")
             return ""
 
         s = re.sub(
@@ -175,7 +197,8 @@ class SubTags:
         x.id = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh', en_is_link), x.string)
         if not pd.isna(x.hant):
-            x.hant = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh-hant', en_is_link), x.hant)
+            x.hant = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh-hant', en_is_link),
+                            x.hant)
 
         x.id = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'zh', en_is_link), x.string)
@@ -185,13 +208,16 @@ class SubTags:
         return x
 
 
+sub_tags = SubTags(df, "oni")
 df.dropna(inplace=True, subset=['context'])
 df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
 df.loc[df.prefix == "Ui", "prefix"] = "UI"
+
 df.id = df.id.apply(SubTags.simple_sub)
 df.string = df.string.apply(SubTags.simple_sub)
 df.hant = df.hant.apply(SubTags.simple_sub)
-df = df.apply(SubTags(df, "oni"), axis="columns")
+
+df = df.apply(sub_tags, axis="columns")
 for prefix in df.prefix.unique():
     df_prefix = df[df.prefix == prefix]
     df_prefix = df_prefix.set_index("context")
