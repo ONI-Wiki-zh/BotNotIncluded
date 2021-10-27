@@ -2,7 +2,15 @@ import pywikibot
 
 import utils
 
-zh_contributors = ["DDElephant", "DDElephantBot", "Xheepey87"]
+zh_contributors = [
+    "ONIzhBot",
+    "DDElephant",
+    "DDElephantBot",
+    "Xheepey87",
+    "Tuode",
+    "Chenym",
+    "NoMoneyXD",
+]
 logger = utils.getLogger("bot_update")
 
 
