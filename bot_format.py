@@ -1,14 +1,31 @@
-import pywikibot
 import re
+
+import pywikibot
 import regex
+import wikitextparser
 
 import utils
 
 CJK = r'\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30fa\u30fc-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf' \
       r'\u4e00-\u9fff\uf900-\ufaff'
 
+NO_FORMAT = ['保持格式']
+
 
 def format_str(text: str):
+    parsed = wikitextparser.parse(text)
+    replacement = []
+    no_formats = [t for t in parsed.templates
+                  if t.name in NO_FORMAT and not any([isinstance(a, wikitextparser.Template) and a.name in NO_FORMAT
+                                                      for a in t.ancestors(type_='Template')])]
+    for t in no_formats:
+        replacement.append(t.string)
+        t_start = t.span[0]
+        t_end = t.span[1]
+        args_len = len(t) - 4 - len(t.name)
+        replaced = '{{' + t.name + ('$' * args_len) + '}}'
+        text = text[:t_start] + replaced + text[t_end:]
+
     # 行首格式
     text = re.sub(r'^([*#:]+) *', r"\1 ", text, flags=re.MULTILINE)
     text = re.sub(r'^(={2,}) *(.+?) *(\1)', r"\1 \2 \1", text, flags=re.MULTILINE)
@@ -49,6 +66,11 @@ def format_str(text: str):
     text = re.sub(rf'低温箱 ?3000', r"低温箱3000", text)
     text = re.sub(rf'炊 ?CC', r"炊CC", text)
     text = re.sub(rf'- ?啪叽 ?-', r"-啪叽-", text)
+
+    # recover no-format
+    if len(replacement):
+        text = re.sub(rf'({{{{({"|".join(NO_FORMAT)})\$*}}}})',
+                      lambda m: replacement.pop(0), text)
     return text
 
 
@@ -60,7 +82,7 @@ def format_page(p: pywikibot.Page):
     if p.isRedirectPage():
         print("页面为重定向页面")
         return
-    
+
     old_text = p.text
     new_text = format_str(old_text)
     if old_text != new_text:
