@@ -7,7 +7,6 @@ import pandas as pd
 import bot
 import utils
 
-df: pd.DataFrame = utils.get_str_data()
 logger = utils.getLogger('parse_po')
 
 
@@ -50,6 +49,16 @@ class SubTags:
             else:
                 logger.info(f"Duplicated link key detected: {r_match.group(1)}")
                 self.links[r_match.group(1)] = False  # make sure to be unique
+        # Use codex title if there is some duplications
+        for _, r_data in df[df.context.str.match(r'^STRINGS\.CODEX\.\w+\.TITLE$')].iterrows():
+            r_zh = r_data.string
+            r_match = re.match(r'^<link="(.+?)">(.*?)</link>$', r_zh)
+            if r_match is None:
+                continue
+            match_id = r_match.group(1)
+            if match_id in self.links and self.links[match_id] is False:
+                logger.info(f"Use codex title: {match_id}")
+                self.links[match_id] = r_match.group(2)
 
     def link_page_or_cate(self, name, lang, text=None, force_type=None):
         auto_type = force_type == 'auto'
@@ -209,6 +218,7 @@ class SubTags:
 
 
 if __name__ == '__main__':
+    df: pd.DataFrame = utils.get_str_data()
     sub_tags = SubTags(df, "oni")
     df.dropna(inplace=True, subset=['context'])
     df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
