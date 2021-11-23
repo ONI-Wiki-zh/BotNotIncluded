@@ -37,7 +37,7 @@ def bot_update(site: pywikibot.Site, target: pywikibot.Site):
             if len(back) == 0:
                 to_update["oneway"].append(p)
                 continue
-            elif back[0].title != p.title:
+            elif back[0].title != p.title():
                 to_update['non-unique'].append(p)
             else:
                 for r in target_page.revisions():
