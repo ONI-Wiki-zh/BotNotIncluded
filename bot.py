@@ -61,6 +61,22 @@ def get_data_file_list() -> Dict[str, str]:
         if len(gs) != 1:
             continue
         name_map[i18_file[:-4]] = f"i18n/{gs[0].capitalize()}"
+
+    # all starts with "worldgen"
+    for worldgen_file in os.listdir(utils.DIR_OUT):
+        if not path.isfile(path.join(utils.DIR_OUT, worldgen_file)):
+            continue
+        m = re.match(rf"(worldgen_\w+).lua", worldgen_file)
+        if m is None:
+            continue
+
+        gs = m.groups()
+        if len(gs) != 1:
+            continue
+        name = gs[0]
+        name = '/'.join(map(lambda s: s.capitalize(), name.split('_')))
+        name_map[worldgen_file[:-4]] = f"data/{name}"
+
     return name_map
 
 
