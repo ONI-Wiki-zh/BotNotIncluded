@@ -55,8 +55,10 @@ def format_str(text: str):
     text = re.sub(rf'([{CJK} 0-9*#/])([wW])(?![A-Za-z])', r"\1瓦", text)
     text = re.sub(rf'([{CJK} 0-9*#/])[kK][wW](?![A-Za-z])', r"\1千瓦", text)
 
-    text = re.sub(rf'([{CJK}])([A-Za-z0-9\-%])', r"\1 \2", text)
-    text = re.sub(rf'([A-Za-z0-9\-%])([{CJK}])', r"\1 \2", text)
+    text = re.sub(rf'([{CJK}])([A-Za-z0-9%])', r"\1 \2", text)
+    text = re.sub(rf'([{CJK}])(-(?!{{))', r"\1 \2", text)
+    text = re.sub(rf'([A-Za-z0-9%])([{CJK}])', r"\1 \2", text)
+    text = re.sub(rf'((?<!}})-)([{CJK}])', r"\1 \2", text)
 
     text = text.replace("KDTU", "千DTU")
     text = text.replace("千 DTU", "千DTU")
