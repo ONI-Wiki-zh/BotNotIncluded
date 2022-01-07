@@ -16,7 +16,8 @@ DIR_DATA = "data"
 DIR_OUT = "out"
 DIR_CODE = path.join(DIR_DATA, "code")
 ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
-PO_HANT = "https://raw.githubusercontent.com/miZyind/ONI-Mods/master/TraditionalChinese/Assets/strings.po"
+PO_HANT = path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
+                    'mods', 'Steam', '929305589', 'strings.po')
 
 
 def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
@@ -30,7 +31,7 @@ def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Ox
     df.dropna(inplace=True)
     df = df.astype({"context": "string"}, copy=False)
 
-    with urllib.request.urlopen(PO_HANT) as ft:
+    with open(PO_HANT, 'rb') as ft:
         while (l := ft.readline()) != b'\n':  # skip first
             pass
         catalog_t = pofile.read_po(ft)
@@ -77,12 +78,12 @@ def to_cap(s):
     return ''.join([w.title() for w in s.split('_')])
 
 
-def save_lua(f_name: str, data: Union[pd.DataFrame, dict, list]):
+def save_lua(f_name: str, data: Union[pd.DataFrame, dict, list], indent=" " * 4):
     if isinstance(data, pd.DataFrame):
         for c in data.columns:
             data[c] = data[c].where(data[c].notna(), None)
         data = data.to_dict(orient="index", into=collections.OrderedDict)
-    l_str = luadata.serialize(data, encoding="utf-8", indent=" " * 4)
+    l_str = luadata.serialize(data, encoding="utf-8", indent=indent)
     if not f_name.endswith(".lua"):
         f_name += ".lua"
     pathlib.Path(f_name).parent.mkdir(parents=True, exist_ok=True)
