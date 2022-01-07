@@ -66,13 +66,6 @@ def main(recent_seconds: typing.Optional[int] = None):
         return
     pages = get_recent_pages(site, recent_seconds)
 
-    # Image host
-    logger.info("Start checking Image host")
-    img_host.download(site)
-    img_host.upload('ms')
-    img_host.create_css()
-    img_host.upload_css(site)
-
     # Reformatting
     logger.info("Start reformatting")
     for p in pages:
@@ -88,6 +81,13 @@ def main(recent_seconds: typing.Optional[int] = None):
     logger.info("Start update inter-lang status")
     oni_en = pywikibot.Site("en", "oni")
     bot_update.bot_update(site, oni_en)
+
+    # Image host
+    logger.info("Start checking Image host")
+    img_host.download(site)
+    img_host.upload('ms')
+    img_host.create_css()
+    img_host.upload_css(site)
 
     return pages
 
