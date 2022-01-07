@@ -36,10 +36,28 @@ def read_worldgen():
             child_path = path.join(worldgen_base, child)
             if not path.isdir(child_path):
                 continue
-            suffix = '' if version_path == '' else '_' + path.split(version_path)[-1]
-            utils.save_lua(path.join(utils.DIR_OUT, f"worldgen_{child}{suffix}.lua"),
+            suffix = '' if version_path == '' else '-' + path.split(version_path)[-1]
+            utils.save_lua(path.join(utils.DIR_OUT, f"worldgen-{child}{suffix}.lua"),
                            read_yaml(child_path))
+
+
+def read_templates():
+    for version_path in version_paths:
+        templates_base = path.join(ONI_BASE, ASSETS_BASE, version_path, "templates")
+        suffix = '' if version_path == '' else '-' + path.split(version_path)[-1]
+
+        for child in os.listdir(templates_base):
+            child_path = path.join(templates_base, child)
+            if not path.isdir(child_path):
+                continue
+
+            utils.save_lua(
+                path.join(utils.DIR_OUT, f"templates-{child}{suffix}.lua"),
+                read_yaml(child_path),
+                indent='\t'
+            )
 
 
 if __name__ == '__main__':
     read_worldgen()
+    read_templates()
