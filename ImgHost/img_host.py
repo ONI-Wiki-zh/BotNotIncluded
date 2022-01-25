@@ -106,7 +106,7 @@ def upload_hualiqs(f_name, img_records: dict, success: list, error: list):
             else:
                 error.append({"code": response["code"], "msg": response["msg"]})
         except json.decoder.JSONDecodeError as e:
-            logger.warning(e)
+            logger.exception(e)
     else:
         error.append({"source": f_name, "code": r.status_code, "msg": "HTTP Code"})
 
@@ -205,7 +205,7 @@ class SharePoint:
                     error.append({"source": f_name, "code": r.status_code, "msg": "HTTP Code"})
 
             except (json.decoder.JSONDecodeError, requests.exceptions.ConnectionError) as e:
-                logger.warning(e)
+                logger.exception(e)
                 error.append({"source": f_name, "e": str(e)})
 
     def un_used(self):
