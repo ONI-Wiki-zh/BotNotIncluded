@@ -52,7 +52,9 @@ def main(recent_seconds: typing.Optional[int] = None):
     import ImgHost.img_host as img_host
     site = pywikibot.Site("zh", "oni")
 
-    if not site.logged_in():
+    retry = 0
+    while not site.logged_in() and retry < 5:
+        retry += 1
         login_manager = pywikibot.data.api.LoginManager(
             site=site,
             user=f'{os.environ.get("BOT_NAME")}@GithubActions',
@@ -62,8 +64,8 @@ def main(recent_seconds: typing.Optional[int] = None):
         site.login()
 
     if not site.logged_in():
-        logger.fatal("Not logged in")
-        return
+        raise Exception("Not logged in")
+
     pages = get_recent_pages(site, recent_seconds)
 
     # Reformatting
