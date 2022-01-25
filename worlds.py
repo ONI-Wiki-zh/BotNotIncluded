@@ -58,6 +58,12 @@ def read_templates():
             )
 
 
+def read_temperatures():
+    with open(path.join(ONI_BASE, ASSETS_BASE, "worldgen", "temperatures.yaml"), 'r') as f:
+        data = yaml.safe_load(f)
+        utils.save_lua(path.join(utils.DIR_OUT, f"temperatures.lua"), data)
+
 if __name__ == '__main__':
     read_worldgen()
     read_templates()
+    read_temperatures()

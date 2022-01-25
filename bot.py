@@ -42,11 +42,12 @@ def get_data_file_list() -> Dict[str, str]:
 
     # fixed pairs
     name_map = {  # local data file name -> wiki page suffix
-        # "building": "data/Buildings",
-        # "critter": "data/Critters",
-        "Elements": "data/Elements",
-        "TextAsset/Personalities": "data/TextAsset/Personalities",
-        "codex": "data/Codex",
+        # "building": "Data/Buildings",
+        # "critter": "Data/Critters",
+        "Elements": "Data/Elements",
+        "TextAsset/Personalities": "Data/TextAsset/Personalities",
+        "codex": "Data/Codex",
+        "temperatures": "Data/Worldgen/Temperatures",
     }
 
     # all starts with "i18n_strings_"
