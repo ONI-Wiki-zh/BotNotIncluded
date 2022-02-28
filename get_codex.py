@@ -23,7 +23,8 @@ def getDataInDir(root: pathlib.Path):
     out = {"dirs": [], "files": []}
     for sub in root.iterdir():
         if sub.is_dir():
-            out["dirs"].append({"name": sub.name, "content": getDataInDir(sub)})
+            out["dirs"].append(
+                {"name": sub.name, "content": getDataInDir(sub)})
         if sub.is_file():
             with open(sub, "r") as f:
                 out["files"].append({
@@ -37,5 +38,9 @@ def getCodexData():
     return getDataInDir(pathlib.Path(DIR_CODEX))
 
 
-if __name__ == '__main__':
+def main():
     utils.save_lua(path.join(utils.DIR_OUT, "codex"), getCodexData())
+
+
+if __name__ == '__main__':
+    main()

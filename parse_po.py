@@ -47,7 +47,8 @@ class SubTags:
             if r_match.group(1) not in self.links:
                 self.links[r_match.group(1)] = r_match.group(2)
             else:
-                logger.info(f"Duplicated link key detected: {r_match.group(1)}")
+                logger.info(
+                    f"Duplicated link key detected: {r_match.group(1)}")
                 self.links[r_match.group(1)] = False  # make sure to be unique
         # Use codex title if there is some duplications
         for _, r_data in df[df.context.str.match(r'^STRINGS\.CODEX\.\w+\.TITLE$')].iterrows():
@@ -99,7 +100,8 @@ class SubTags:
             elif lang.startswith("zh"):
                 if en_is_link:
                     islink = en_is_link.pop(0)
-                    linked = self.link_page_or_cate(match.group(2), lang, force_type=islink)
+                    linked = self.link_page_or_cate(
+                        match.group(2), lang, force_type=islink)
                 else:
                     linked = self.link_page_or_cate(match.group(2), lang)
                 if linked:
@@ -128,6 +130,7 @@ class SubTags:
         if g1 in g1_trans:
             g1 = g1_trans[g1]
 
+        df = self.df
         candidates = df[df.context.str.endswith(f".{g1}.NAME")]
         if len(candidates) in [1, 2]:
             return self.link_page_or_cate(candidates.iloc[0][col], lang, g2, "page")
@@ -142,7 +145,8 @@ class SubTags:
 
         for _, c in candidates.iterrows():
             if lang in ['en', 'zh', 'zh-hant']:
-                linked = self.link_page_or_cate(self.strip_link(self.simple_sub(c[col])), lang, g2)
+                linked = self.link_page_or_cate(
+                    self.strip_link(self.simple_sub(c[col])), lang, g2)
                 if linked:
                     return linked
 
@@ -156,9 +160,11 @@ class SubTags:
             return s
         ori = s
         s = re.sub(r'\n+', '<br/>', s)
-        s = re.sub(r'<color=#(.+?)>(.*?)</color>', r'<span style="color:#\g<1>;">\g<2></span>', s)
+        s = re.sub(r'<color=#(.+?)>(.*?)</color>',
+                   r'<span style="color:#\g<1>;">\g<2></span>', s)
         s = re.sub(r'<size=.+?>(.*?)</size>', r'\g<1>', s)
-        s = re.sub(r'<smallcaps>(.*?)</smallcaps>', r'<span class="ingame-smallcaps">\g<1></span>', s)
+        s = re.sub(r'<smallcaps>(.*?)</smallcaps>',
+                   r'<span class="ingame-smallcaps">\g<1></span>', s)
         s = re.sub(r'^<link=".+?">(.*?)</link>$', r'\g<1>', s)
         s = re.sub(r'<alpha=#(.+?)>((.|\n)*?)</color>',
                    lambda m: f"<span style='opacity:{int(m.group(1), 16) / int('ff', 16):.2f}'>"
@@ -172,9 +178,11 @@ class SubTags:
                              f"style='padding-left:{m.group(1)}'>{m.group(2)}</span>", s)
 
         # rollback unbalanced tags
-        s = re.sub(r'<color=#(.+?)>(.*?)$', r'<span style="color:#\g<1>;">\g<2></span>', s)
+        s = re.sub(r'<color=#(.+?)>(.*?)$',
+                   r'<span style="color:#\g<1>;">\g<2></span>', s)
         s = re.sub(r'<size=.+?>(.*?)$', r'\g<1>', s)
-        s = re.sub(r'<smallcaps>(.*?)$', r'<span class="ingame-smallcaps">\g<1></span>', s)
+        s = re.sub(r'<smallcaps>(.*?)$',
+                   r'<span class="ingame-smallcaps">\g<1></span>', s)
         s = re.sub(r'<alpha=#(.+?)>((.|\n)*?)$',
                    lambda m: f"<span style='opacity:{int(m.group(1), 16) / int('ff', 16):.2f}'>"
                              f"{m.group(2)}</span>", s)
@@ -187,7 +195,8 @@ class SubTags:
             r'</indent>', "", s)
 
         def unbalanced(m):
-            logger.warning(f"remove unbalanced tag \"{m.group(0)}\" from:\n{ori}")
+            logger.warning(
+                f"remove unbalanced tag \"{m.group(0)}\" from:\n{ori}")
             return ""
 
         s = re.sub(
@@ -203,25 +212,31 @@ class SubTags:
     def __call__(self, x):
         en_is_link = []
         self.curr = x
-        x.id = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'en', en_is_link), x.id)
-        x.string = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh', en_is_link), x.string)
+        x.id = re.sub(r'<style="(.+?)">(.*?)</style>',
+                      lambda m: self.repl_style(m, 'en', en_is_link), x.id)
+        x.string = re.sub(r'<style="(.+?)">(.*?)</style>',
+                          lambda m: self.repl_style(m, 'zh', en_is_link), x.string)
         if not pd.isna(x.hant):
             x.hant = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh-hant', en_is_link),
                             x.hant)
 
-        x.id = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'en', en_is_link), x.id)
-        x.string = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'zh', en_is_link), x.string)
+        x.id = re.sub(r'<link="(.+?)">(.*?)</link>',
+                      lambda m: self.repl_link(m, 'en', en_is_link), x.id)
+        x.string = re.sub(r'<link="(.+?)">(.*?)</link>',
+                          lambda m: self.repl_link(m, 'zh', en_is_link), x.string)
         if not pd.isna(x.hant):
-            x.hant = re.sub(r'<link="(.+?)">(.*?)</link>', lambda m: self.repl_link(m, 'zh-hant', en_is_link), x.hant)
+            x.hant = re.sub(r'<link="(.+?)">(.*?)</link>',
+                            lambda m: self.repl_link(m, 'zh-hant', en_is_link), x.hant)
 
         return x
 
 
-if __name__ == '__main__':
+def main():
     df: pd.DataFrame = utils.get_str_data()
     sub_tags = SubTags(df, "oni")
     df.dropna(inplace=True, subset=['context'])
-    df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
+    df["prefix"] = df.context.str.findall(
+        r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
     df.loc[df.prefix == "Ui", "prefix"] = "UI"
 
     df.id = df.id.apply(SubTags.simple_sub)
@@ -233,10 +248,12 @@ if __name__ == '__main__':
         df_prefix = df[df.prefix == prefix]
         df_prefix = df_prefix.set_index("context")
         data = collections.OrderedDict()
-        data["zh"] = df_prefix["string"].dropna().to_dict(collections.OrderedDict)
+        data["zh"] = df_prefix["string"].dropna().to_dict(
+            collections.OrderedDict)
         data["zh-hant"] = df_prefix["hant"].dropna().to_dict(collections.OrderedDict)
         data["en"] = df_prefix["id"].dropna().to_dict(collections.OrderedDict)
-        utils.save_lua(path.join(utils.DIR_OUT, f"i18n_strings_{prefix.lower()}"), data)
+        utils.save_lua(
+            path.join(utils.DIR_OUT, f"i18n_strings_{prefix.lower()}"), data)
 
     # Generate OmegaT glossary_po.txt
     glossary_text = ""
@@ -245,3 +262,7 @@ if __name__ == '__main__':
             glossary_text += f"{row.id}\t{row.string}\n"
     with open(path.join(utils.DIR_OUT, "glossary_po.txt"), "wb") as text_file:
         text_file.write(glossary_text.encode("utf-8"))
+
+
+if __name__ == '__main__':
+    main()

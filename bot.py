@@ -83,13 +83,12 @@ def get_data_file_list() -> Dict[str, str]:
     return name_map
 
 
-def update_data(try_tag='bot-data-update'):
+def update_data(try_tag='bot-data-update', comment = None):
     site = pywikibot.Site("zh", "oni")
     site_tags = utils.get_tags(site)
     if try_tag not in site_tags:
         logger.warning(f'Tag "{try_tag}" does not exist on "{site}")')
 
-    comment = None
     data_files = get_data_file_list()
     for local_file in data_files:
         f_path = path.join(utils.DIR_OUT, local_file) + ".lua"

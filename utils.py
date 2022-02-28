@@ -98,7 +98,7 @@ def split_file_name(filename: str):
 def getLogger(name: str):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s[%(name)s][%(levelname)s] %(message)s', datefmt='%H:%M:%S')
+    formatter = logging.Formatter('%(asctime)s [%(name)s] [%(levelname)s] %(message)s', datefmt='%H:%M:%S')
     ch = logging.StreamHandler(sys.stdout)
     ch.setFormatter(formatter)
     ch.addFilter(lambda r: r.levelno < logging.WARNING)

@@ -22,7 +22,7 @@ logger = utils.getLogger("ONI_ZH_Main")
 
 def get_recent_pages(
         site: pywikibot.Site,
-        recent_seconds: typing.Optional[int]) -> [pywikibot.Page]:
+        recent_seconds: typing.Optional[int]) -> typing.List[pywikibot.Page]:
     if not recent_seconds:
         if "RC_IN_SECONDS" in os.environ:
             recent_seconds = os.environ["RC_IN_SECONDS"]

@@ -63,7 +63,11 @@ def read_temperatures():
         data = yaml.safe_load(f)
         utils.save_lua(path.join(utils.DIR_OUT, f"temperatures.lua"), data)
 
-if __name__ == '__main__':
+def main():
     read_worldgen()
     read_templates()
     read_temperatures()
+
+
+if __name__ == '__main__':
+    main()
