@@ -244,6 +244,25 @@ def main():
     df.hant = df.hant.apply(SubTags.simple_sub)
 
     df = df.apply(sub_tags, axis="columns")
+
+    prefix = 'STRINGS.UI.CONTROLS.'
+    controls = {}
+    for _, row in df[df['context'].str.startswith(prefix)].iterrows():
+        controls[row.context[len(prefix):]] = row
+
+    def sub_double_slash(row):
+        def sub_field(field):
+            if not row[field] or type(row[field]) != str:
+                return
+            row[field] = re.sub(r'\\(\w+)\\', lambda m: controls[m.group(1).upper()][field] if m.group(1).upper() in controls else m.group(1), row[field])
+
+        sub_field('id')
+        sub_field('string')
+        sub_field('hant')
+        return row
+
+    df = df.apply(sub_double_slash, axis="columns")
+
     for prefix in df.prefix.unique():
         df_prefix = df[df.prefix == prefix]
         df_prefix = df_prefix.set_index("context")
