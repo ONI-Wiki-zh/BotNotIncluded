@@ -3,8 +3,8 @@ import logging
 import os.path as path
 import pathlib
 import sys
-import urllib.request
-from typing import Union, List
+import re
+from typing import Tuple, Union, List
 
 import babel.messages.pofile as pofile
 import luadata
@@ -44,9 +44,30 @@ def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\Ox
     return df
 
 
+def sub_controls_str(df: pd.DataFrame, fields: Tuple[str] = ('id', 'string', 'hant')):
+    prefix = 'STRINGS.UI.CONTROLS.'
+    controls = {}
+    for _, row in df[df['context'].str.startswith(prefix)].iterrows():
+        controls[row.context[len(prefix):]] = row
+
+    def sub_double_slash(row):
+        def sub_field(field):
+            if not row[field] or type(row[field]) != str:
+                return
+            row[field] = re.sub(r'\\(\w+)\\', lambda m: controls[m.group(1).upper()]
+                                [field] if m.group(1).upper() in controls else m.group(1), row[field])
+
+        for f in fields:
+            sub_field(f)
+        return row
+
+    return df.apply(sub_double_slash, axis="columns")
+
+
 def get_tags(site):
     assert isinstance(site, pywikibot.APISite)
-    r = pywikibot.data.api.Request(site, parameters={"action": "query", "list": "tags"})
+    r = pywikibot.data.api.Request(
+        site, parameters={"action": "query", "list": "tags"})
     res = r.submit()
     if 'query' in res and 'tags' in res['query']:
         tags = res['query']['tags']
@@ -98,7 +119,8 @@ def split_file_name(filename: str):
 def getLogger(name: str):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s [%(name)s] [%(levelname)s] %(message)s', datefmt='%H:%M:%S')
+    formatter = logging.Formatter(
+        '%(asctime)s [%(name)s] [%(levelname)s] %(message)s', datefmt='%H:%M:%S')
     ch = logging.StreamHandler(sys.stdout)
     ch.setFormatter(formatter)
     ch.addFilter(lambda r: r.levelno < logging.WARNING)
@@ -135,15 +157,12 @@ if __name__ == '__main__':
     tree = parser.compilation_unit()
     oni_listener = CSharpParserListener()
 
-
     def enter_using_namespace_directive(ctx):
         print(1)
-
 
     oni_listener.enterUsingNamespaceDirective = enter_using_namespace_directive
     walker = antlr4.ParseTreeWalker()
     walker.walk(oni_listener, tree)
-
 
     class ONIVisitor(CSharpParserVisitor):
         def visitCompilation_unit(self, ctx: CSharpParser.Compilation_unitContext):
@@ -153,6 +172,5 @@ if __name__ == '__main__':
         def visitUsingNamespaceDirective(self, ctx: CSharpParser.UsingNamespaceDirectiveContext):
             print(ctx.getText())
             return super().visitUsingNamespaceDirective(ctx)
-
 
     ONIVisitor().visit(tree)

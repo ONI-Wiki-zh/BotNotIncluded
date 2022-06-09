@@ -53,6 +53,8 @@ def removeTags(s):
 
 df: pd.DataFrame = utils.get_str_data()
 df.dropna(inplace=True, subset=['context'])
+df = utils.sub_controls_str(df)
+
 df["prefix"] = df.context.str.findall(r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
 df.loc[df.prefix == "Ui", "prefix"] = "UI"
 
@@ -120,3 +122,7 @@ def update_variant(variant, rule, source_field):
 def update():
     update_variant('hant', lambda row: f'{row.string}=>{row.hant}', 'string')
     update_variant('hans', lambda row: f'{row.hant}=>{row.string}', 'hant')
+
+
+if __name__ == '__main__':
+    update()

@@ -233,8 +233,11 @@ class SubTags:
 
 def main():
     df: pd.DataFrame = utils.get_str_data()
-    sub_tags = SubTags(df, "oni")
     df.dropna(inplace=True, subset=['context'])
+    df = utils.sub_controls_str(df)
+
+    sub_tags = SubTags(df, "oni")
+
     df["prefix"] = df.context.str.findall(
         r"(?<=STRINGS\.)\w+").apply(lambda x: utils.to_cap(x[0]))
     df.loc[df.prefix == "Ui", "prefix"] = "UI"
@@ -244,24 +247,6 @@ def main():
     df.hant = df.hant.apply(SubTags.simple_sub)
 
     df = df.apply(sub_tags, axis="columns")
-
-    prefix = 'STRINGS.UI.CONTROLS.'
-    controls = {}
-    for _, row in df[df['context'].str.startswith(prefix)].iterrows():
-        controls[row.context[len(prefix):]] = row
-
-    def sub_double_slash(row):
-        def sub_field(field):
-            if not row[field] or type(row[field]) != str:
-                return
-            row[field] = re.sub(r'\\(\w+)\\', lambda m: controls[m.group(1).upper()][field] if m.group(1).upper() in controls else m.group(1), row[field])
-
-        sub_field('id')
-        sub_field('string')
-        sub_field('hant')
-        return row
-
-    df = df.apply(sub_double_slash, axis="columns")
 
     for prefix in df.prefix.unique():
         df_prefix = df[df.prefix == prefix]
