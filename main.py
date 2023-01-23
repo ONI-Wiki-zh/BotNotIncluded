@@ -46,12 +46,7 @@ def get_recent_pages(
     return recent_pages
 
 
-def main(recent_seconds: typing.Optional[int] = None):
-    import bot_format
-    import bot_update
-    import ImgHost.img_host as img_host
-    site = pywikibot.Site("zh", "oni")
-
+def login(site: pywikibot.APISite):
     retry = 0
     while not site.logged_in() and retry < 5:
         retry += 1
@@ -64,8 +59,16 @@ def main(recent_seconds: typing.Optional[int] = None):
         site.login()
 
     if not site.logged_in():
-        raise Exception("Not logged in")
+        raise Exception("Can not login!")
 
+
+def main(recent_seconds: typing.Optional[int] = None):
+    import bot_format
+    import bot_update
+    import ImgHost.img_host as img_host
+    site = pywikibot.Site("zh", "oni")
+
+    login(site)
     pages = get_recent_pages(site, recent_seconds)
 
     # Reformatting
@@ -85,6 +88,7 @@ def main(recent_seconds: typing.Optional[int] = None):
     bot_update.bot_update(site, oni_en)
 
     # Image host
+    login(site)
     logger.info("Start checking Image host")
     img_host.download(site)
     img_host.upload('ms')
