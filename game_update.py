@@ -30,7 +30,7 @@ def main():
     import bot
     bot.update_data(comment=comment)
 
-    logger.info('Updating language convertion tables')
+    logger.info('Updating language conversion tables')
     import t_conversion
     t_conversion.update()
 

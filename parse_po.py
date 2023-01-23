@@ -143,8 +143,10 @@ class SubTags:
             if len(candidates) == 1:
                 return self.link_page_or_cate(candidates.iloc[0][col], lang, g2, "cate")
 
-        for _, c in candidates.iterrows():
-            if lang in ['en', 'zh', 'zh-hant']:
+        if lang in ['en', 'zh', 'zh-hant']:
+            for _, c in candidates.iterrows():
+                if (pd.isna(c[col])):
+                    continue
                 linked = self.link_page_or_cate(
                     self.strip_link(self.simple_sub(c[col])), lang, g2)
                 if linked:
@@ -220,6 +222,7 @@ class SubTags:
             x.hant = re.sub(r'<style="(.+?)">(.*?)</style>', lambda m: self.repl_style(m, 'zh-hant', en_is_link),
                             x.hant)
 
+        # replace link to wikitext format in en / zh / zh-hant text
         x.id = re.sub(r'<link="(.+?)">(.*?)</link>',
                       lambda m: self.repl_link(m, 'en', en_is_link), x.id)
         x.string = re.sub(r'<link="(.+?)">(.*?)</link>',

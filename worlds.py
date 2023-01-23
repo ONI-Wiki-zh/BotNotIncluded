@@ -6,8 +6,7 @@ import yaml
 
 import utils
 
-ONI_BASE = r"C:\Program Files (x86)\Steam\steamapps\common\OxygenNotIncluded"
-ASSETS_BASE = path.join(ONI_BASE, "OxygenNotIncluded_Data", "StreamingAssets")
+ASSETS_BASE = path.join(utils.ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets")
 
 clusters_base = path.join(ASSETS_BASE, "dlc", "expansion1", "worldgen", "worlds")
 
@@ -31,7 +30,7 @@ def read_yaml(folder):
 
 def read_worldgen():
     for version_path in version_paths:
-        worldgen_base = path.join(ONI_BASE, ASSETS_BASE, version_path, "worldgen")
+        worldgen_base = path.join(utils.ONI_ROOT, ASSETS_BASE, version_path, "worldgen")
         for child in os.listdir(worldgen_base):
             child_path = path.join(worldgen_base, child)
             if not path.isdir(child_path):
@@ -43,7 +42,7 @@ def read_worldgen():
 
 def read_templates():
     for version_path in version_paths:
-        templates_base = path.join(ONI_BASE, ASSETS_BASE, version_path, "templates")
+        templates_base = path.join(utils.ONI_ROOT, ASSETS_BASE, version_path, "templates")
         suffix = '' if version_path == '' else '-' + path.split(version_path)[-1]
 
         for child in os.listdir(templates_base):
@@ -59,7 +58,7 @@ def read_templates():
 
 
 def read_temperatures():
-    with open(path.join(ONI_BASE, ASSETS_BASE, "worldgen", "temperatures.yaml"), 'r') as f:
+    with open(path.join(utils.ONI_ROOT, ASSETS_BASE, "worldgen", "temperatures.yaml"), 'r') as f:
         data = yaml.safe_load(f)
         utils.save_lua(path.join(utils.DIR_OUT, f"temperatures.lua"), data)
 

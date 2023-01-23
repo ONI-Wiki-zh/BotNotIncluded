@@ -18,10 +18,10 @@ DIR_CODE = path.join(DIR_DATA, "code")
 ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
 PO_HANT = path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
                     'mods', 'Steam', '929305589', 'strings.po')
+ONI_ROOT = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
 
 
-def get_str_data(po_name=f"C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
-                         "\\OxygenNotIncluded_Data\\StreamingAssets\\strings\\strings_preinstalled_zh_klei.po"):
+def get_str_data(po_name=f"{ONI_ROOT}\\OxygenNotIncluded_Data\\StreamingAssets\\strings\\strings_preinstalled_zh_klei.po"):
     with open(path.join(DIR_DATA, po_name), 'rb') as f:
         while (l := f.readline()) != b'\n':  # skip first
             pass

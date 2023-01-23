@@ -5,9 +5,8 @@ import yaml
 
 import utils
 
-ONI_BASE = r"C:\Program Files (x86)\Steam\steamapps\common\OxygenNotIncluded"
 elements_base = path.join(
-    ONI_BASE, "OxygenNotIncluded_Data", "StreamingAssets", "elements")
+    utils.ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets", "elements")
 element_states = [
     "solid",
     "liquid",
