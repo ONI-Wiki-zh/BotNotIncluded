@@ -10,3 +10,4 @@ PyYAML==5.4.1
 regex==2021.10.8
 requests==2.25.1
 wikitextparser==0.47.5
+zhconv~=1.4.3

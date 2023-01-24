@@ -45,6 +45,7 @@ def get_str_data(po_name=f"{ONI_ROOT}\\OxygenNotIncluded_Data\\StreamingAssets\\
 
 
 def sub_controls_str(df: pd.DataFrame, fields: Tuple[str] = ('id', 'string', 'hant')):
+    """Substitute control str like "(ClickType/clicking)", "(ClickType/Click)" """
     prefix = 'STRINGS.UI.CONTROLS.'
     controls = {}
     for _, row in df[df['context'].str.startswith(prefix)].iterrows():
@@ -54,7 +55,7 @@ def sub_controls_str(df: pd.DataFrame, fields: Tuple[str] = ('id', 'string', 'ha
         def sub_field(field):
             if not row[field] or type(row[field]) != str:
                 return
-            row[field] = re.sub(r'\\(\w+)\\', lambda m: controls[m.group(1).upper()]
+            row[field] = re.sub(r'\(ClickType/(\w+)\)', lambda m: controls[m.group(1).upper()]
                                 [field] if m.group(1).upper() in controls else m.group(1), row[field])
 
         for f in fields:
