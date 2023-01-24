@@ -16,9 +16,11 @@ DIR_DATA = "data"
 DIR_OUT = "out"
 DIR_CODE = path.join(DIR_DATA, "code")
 ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
-PO_HANT = path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
-                    'mods', 'Steam', '929305589', 'strings.po')
 ONI_ROOT = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
+
+# https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
+PO_HANT = path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
+                    'mods', 'Steam', '2906930548', 'strings.po')
 
 
 def get_str_data(po_name=f"{ONI_ROOT}\\OxygenNotIncluded_Data\\StreamingAssets\\strings\\strings_preinstalled_zh_klei.po"):
