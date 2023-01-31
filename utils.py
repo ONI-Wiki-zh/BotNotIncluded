@@ -1,6 +1,7 @@
 import collections
 import logging
 import os.path as path
+import os
 import pathlib
 import sys
 import re
@@ -16,14 +17,16 @@ DIR_DATA = "data"
 DIR_OUT = "out"
 DIR_CODE = path.join(DIR_DATA, "code")
 ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
-ONI_ROOT = "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded"
+ONI_ROOT = os.environ.get(
+    "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
 
 # https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
-PO_HANT = path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
-                    'mods', 'Steam', '2906930548', 'strings.po')
+PO_HANT = os.environ.get(
+    "BNI_PO_HANT", path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
+                             'mods', 'Steam', '2906930548', 'strings.po'))
 
 
-def get_str_data(po_name=f"{ONI_ROOT}\\OxygenNotIncluded_Data\\StreamingAssets\\strings\\strings_preinstalled_zh_klei.po"):
+def get_str_data(po_name=path.join(ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets", "strings", "strings_preinstalled_zh_klei.po")):
     with open(path.join(DIR_DATA, po_name), 'rb') as f:
         while (l := f.readline()) != b'\n':  # skip first
             pass

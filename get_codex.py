@@ -4,7 +4,8 @@ import yaml
 import re
 import os.path as path
 
-DIR_CODEX = f"{utils.ONI_ROOT}\\OxygenNotIncluded_Data\\StreamingAssets\\codex"
+DIR_CODEX = path.join(
+    utils.ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets", "codex")
 
 
 def default_ctor(loader, tag_suffix, node):
