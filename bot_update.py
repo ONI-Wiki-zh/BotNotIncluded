@@ -27,39 +27,44 @@ def bot_update(site: pywikibot.Site, target: pywikibot.Site):
         if i % 10 == 0:
             logger.info(f"Page inter-lang checked: {i}/{len(all_pages)}")
         try:
-            source_links = [link for link in p.langlinks() if link.site == target]
-            if len(source_links) == 0:
+            src_links = [link for link in p.langlinks() if link.site == target]
+            if len(src_links) == 0:  # ignore pages with no interwiki links
                 continue
-            target_page = pywikibot.Page(source_links[0])
-            if not target_page.exists():
+
+            tgt_page = pywikibot.Page(src_links[0])
+            if not tgt_page.exists():
                 to_update["non-existence"].append(p)
-            else:
-                back = [link for link in target_page.langlinks() if link.site == site]
-                if len(back) == 0:
-                    to_update["oneway"].append(p)
+                continue
+
+            back = [link for link in tgt_page.langlinks() if link.site == site]
+            if len(back) == 0:
+                to_update["oneway"].append(p)
+                continue
+
+            if back[0].title != p.title():
+                to_update['non-unique'].append(p)
+                continue
+
+            for r in tgt_page.revisions():
+                if r.user in zh_contributors:
                     continue
-                elif back[0].title != p.title():
-                    to_update['non-unique'].append(p)
-                else:
-                    for r in target_page.revisions():
-                        if r.user in zh_contributors:
-                            continue
-                        if "zh link".upper() in r.comment.upper():
-                            continue
-                        if r.timestamp > p.latest_revision.timestamp:
-                            to_update["outdated"].append(p)
-                        break
+                if "zh link".upper() in r.comment.upper():
+                    continue
+                if r.timestamp > p.latest_revision.timestamp:
+                    to_update["outdated"].append(p)
+                break
         except pywikibot.exceptions.UnknownSiteError as e:
-            logger.warn(f"UnknownSiteError when checking {p.title()}: {str(e)}")
+            msg = f"UnknownSiteError when checking {p.title()}: {str(e)}"
+            logger.warn(msg)
             continue
 
-    log_page = pywikibot.Page(site, "project:Log/Sync EN")
-    log_page.text = "本页面更新于 {{REVISIONTIMESTAMP}}，" \
-                    "代码详见 [https://github.com/DDEle/BotNotIncluded GitHub 仓库]。\n\n"
+    p_log = pywikibot.Page(site, "project:Log/Sync EN")
+    p_log.text = "本页面更新于 {{REVISIONTIMESTAMP}}，" \
+        "代码详见 [https://github.com/DDEle/BotNotIncluded GitHub 仓库]。\n\n"
     for cat in to_update:
-        log_page.text += cat + "\n"
-        log_page.text += "".join(f"* [[{p.title()}]]\n" for p in to_update[cat])
-    utils.try_tags_save(log_page, ['bot-log'], "Interlang analysis")
+        p_log.text += cat + "\n"
+        p_log.text += "".join(f"* [[{p.title()}]]\n" for p in to_update[cat])
+    utils.try_tags_save(p_log, ['bot-log'], "Interlang analysis")
     return to_update
 
 
