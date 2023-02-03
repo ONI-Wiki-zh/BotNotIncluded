@@ -62,7 +62,7 @@ def bot_update(site: pywikibot.Site, target: pywikibot.Site):
     p_log.text = "本页面更新于 {{REVISIONTIMESTAMP}}，" \
         "代码详见 [https://github.com/DDEle/BotNotIncluded GitHub 仓库]。\n\n"
     for cat in to_update:
-        p_log.text += cat + "\n"
+        p_log.text += f"== {cat} ==\n"
         p_log.text += "".join(f"* [[{p.title()}]]\n" for p in to_update[cat])
     utils.try_tags_save(p_log, ['bot-log'], "Interlang analysis")
     return to_update
