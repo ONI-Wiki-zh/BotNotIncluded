@@ -12,10 +12,15 @@ You can configure the script with these environment variables:
 
 ## Run
 ```sh
-python -m venv venv --clear
-pip install -r requirements.txt
+python3 -m venv venv --clear # create virtual environment (recommended)
+source venv/bin/activate # activate virtual environment
+pip3 install -r requirements.txt # install dependencies
 
 # Preparing necessary data
 
-python game_update.py
+python3 game_update.py
+
+# processing data
+
+deactivate # deactivate virtural environment
 ```
