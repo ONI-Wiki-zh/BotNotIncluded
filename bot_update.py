@@ -50,7 +50,7 @@ def bot_update(site: pywikibot.Site, target: pywikibot.Site):
                     continue
                 if "zh link".upper() in r.comment.upper():
                     continue
-                if r.timestamp > p.latest_revision.timestamp and p.title().fide('版本/')=-1:
+                if r.timestamp > p.latest_revision.timestamp and p.title().find("版本/")=-1:
                     to_update["outdated"].append(p)
                 break
         except pywikibot.exceptions.UnknownSiteError as e:
