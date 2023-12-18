@@ -34,7 +34,7 @@ jobs:
         if: startsWith(runner.os, 'Linux')
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_temp.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 
