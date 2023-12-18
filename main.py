@@ -50,7 +50,7 @@ def login(site: pywikibot.APISite):
     retry = 0
     while not site.logged_in() and retry < 5:
         retry += 1
-        login_manager = pywikibot.data.api.LoginManager(
+        login_manager = pywikibot.login.LoginManager(
             site=site,
             user=f'{os.environ.get("BOT_NAME")}@GithubActions',
             password=os.environ.get("BOT_PASS")
