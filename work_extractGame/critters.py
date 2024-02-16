@@ -42,7 +42,7 @@ df.sort_index(inplace=True)
 
 # modify data
 df["incubationCycles"] = pd.Series.round(100 / df.baseIncubationRatePerCycle)
-with open("critters_data.json") as f:
+with open("../data/critters_data.json") as f:
     cd = json.load(f)
 for attr in cd:
     attr_id = attr["attrID"]

@@ -63,8 +63,8 @@ def login(site: pywikibot.APISite):
 
 
 def main(recent_seconds: typing.Optional[int] = None):
-    import bot_format
-    import bot_update
+    from work_githubAction import bot_format
+    from work_githubAction import bot_update
     import ImgHost.img_host as img_host
     site = pywikibot.Site("zh", "oni")
 

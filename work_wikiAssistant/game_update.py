@@ -6,28 +6,28 @@ def main():
     comment = input("Current game vertion: ")
 
     logger.info('Parse translation files')
-    import parse_po
+    from work_extractGame import parse_po
     parse_po.main()
 
     logger.info('Generating worldgen data')
-    import worlds
+    from work_extractGame import worlds
     worlds.main()
 
     logger.info('Generating elements data')
-    import elements
+    from work_extractGame import elements
     elements.main()
 
     # TODO: use game dir
     logger.info('Generating personalities data')
-    import textAsset.personalities
-    textAsset.personalities.main()
+    import work_extractGame.personalities
+    work_extractGame.personalities.main()
 
     logger.info('Generating codex data')
-    import get_codex
+    from work_extractGame import get_codex
     get_codex.main()
 
     logger.info('Uploading generated data')
-    import bot
+    from work_wikiAssistant import bot
     bot.update_data(comment=comment)
 
     logger.info('Updating language conversion tables')
