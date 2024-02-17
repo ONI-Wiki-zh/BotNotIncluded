@@ -135,7 +135,7 @@ dmypy.json
 .vscode
 
 # others
-data
+data/code
 out
 apicache-py3
 throttle.ctrl
@@ -149,3 +149,4 @@ ImgHost/images
 # some private side project
 aces*
 log.txt
+.DS_Store

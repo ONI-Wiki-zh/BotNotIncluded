@@ -4,7 +4,7 @@ import re
 
 import pandas as pd
 
-import bot
+from work_wikiAssistant import bot
 import utils
 
 logger = utils.getLogger('parse_po')
