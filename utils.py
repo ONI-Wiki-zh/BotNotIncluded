@@ -147,6 +147,37 @@ def getLogger(name: str):
     return logger
 
 
+def remove_nulls(value):
+    """
+    递归删除字典中所有值为None的键
+    """
+    if isinstance(value, dict):
+        return {k: remove_nulls(v) for k, v in value.items() if v is not None}
+    elif isinstance(value, list):
+        return [remove_nulls(v) for v in value if v is not None]
+    else:
+        return value
+
+
+def filter_data_by_schema(data, schema):
+    """根据schema规范，筛选json数据"""
+    if isinstance(data, dict):
+        filtered_data = {}
+        if schema.get('properties') is None:
+            return filtered_data
+        for k, v in data.items():
+            if k in schema['properties']:
+                filtered_data[k] = filter_data_by_schema(v, schema['properties'][k])
+        return filtered_data
+    elif isinstance(data, list):
+        if schema.get('items') is None:
+            return data
+        item_schema = schema['items']
+        return [filter_data_by_schema(item, item_schema) for item in data]
+    else:
+        return data
+
+
 pathlib.Path("out").mkdir(parents=True, exist_ok=True)
 
 if __name__ == '__main__':
