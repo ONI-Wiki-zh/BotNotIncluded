@@ -23,20 +23,20 @@ def load_lua2schema(lua_table):
 
 def lua_2_schema(lua_file_path, json_file_path):
     # 读取Lua文件
-    with open(lua_file_path, 'r') as file:
+    with open(lua_file_path, 'r', encoding='utf-8') as file:
         lua_table = file.read()
 
     schema = load_lua2schema(lua_table)
 
     # 将Lua表转换为JSON
-    with open(json_file_path, 'w') as f:
+    with open(json_file_path, 'w', encoding='utf-8') as f:
         json.dump(schema, f, indent=2, ensure_ascii=False)
         pass
 
 
 def lua_to_json(lua_file_path, json_file_path):
     # 读取Lua文件
-    with open(lua_file_path, 'r') as file:
+    with open(lua_file_path, 'r', encoding='utf-8') as file:
         lua_table = file.read()
         lua_table = lua_table.removeprefix("return ")
 
@@ -44,7 +44,7 @@ def lua_to_json(lua_file_path, json_file_path):
     lua_table = slpp.decode(lua_table)
 
     # 将Lua表转换为JSON
-    with open(json_file_path, 'w') as file:
+    with open(json_file_path, 'w', encoding='utf-8') as file:
         json.dump(lua_table, file)
 
 
