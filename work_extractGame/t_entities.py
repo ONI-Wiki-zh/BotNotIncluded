@@ -1,13 +1,8 @@
 import json
-import os
-import luadata
 
-import utils
 import work_extractGame.constant_extract as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-
-PATH_SCHEMA = "../data/schema/"
-PATH_OUTPUT_LUA = "./output_lua/"
+from work_extractGame.util.DataUtils import save_lua_by_schema
 
 
 def get_name_list(codex: str):
@@ -41,24 +36,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         for name in list_name:
             if name.upper() == id.upper():
                 dict_output[id] = item
-    # 格式规范化处理
-    filename_schema = PATH_SCHEMA+entityInfo.name+'.json'
-    schema = None
-    if os.path.exists(filename_schema):
-        with open(filename_schema, 'r', encoding='utf-8') as f:
-            schema = json.load(f)
-    if schema:
-        for key, item in dict_output.items():
-            dict_output[key] = utils.filter_data_by_schema(item, schema)  # 使用schema规范
-    else:
-        dict_output = utils.remove_nulls(dict_output)   # 删除空参数
-    # 序列化为lua表格
-    output = luadata.serialize(dict_output, encoding="utf-8", indent=" " * 4)
-    if not os.path.exists(PATH_OUTPUT_LUA):
-        os.makedirs(PATH_OUTPUT_LUA)
-    filename_lua = PATH_OUTPUT_LUA + entityInfo.filename_lua + '.lua'
-    with open(filename_lua, 'wb') as f:
-        f.write(("return " + output).encode("utf-8"))
+    save_lua_by_schema(entityInfo, dict_output)
+    return True
 
 
 if __name__ == '__main__':

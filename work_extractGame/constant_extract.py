@@ -2,11 +2,15 @@ from enum import Enum
 
 from work_extractGame.model.EntityInfo import EntityInfo
 
+PATH_SCHEMA = "../data/schema/"
+PATH_OUTPUT_LUA = "./output_lua/"
+
 PATH_EXTRACT_DIR = "C:/Users/admin/Documents/Klei/OxygenNotIncluded/export/database/"    # 修改为OniExtract数据导出的路径
 dict_PATH_EXTRACT_FILE = {
     "building": PATH_EXTRACT_DIR + "building.json",
     "element": PATH_EXTRACT_DIR + "elements.json",
     "entities": PATH_EXTRACT_DIR + "entities.json",
+    "multiEntities": PATH_EXTRACT_DIR + "multiEntities.json",
     # "plant": PATH_EXTRACT_DIR + "entities.json",
     # "critter": PATH_EXTRACT_DIR + "entities.json",
     # "comet": PATH_EXTRACT_DIR + "entities.json",

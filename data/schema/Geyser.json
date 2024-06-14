@@ -1,0 +1,182 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "geyserType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "element": {
+          "type": "string"
+        },
+        "shape": {
+          "type": "integer"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "minRatePerCycle": {
+          "type": "number"
+        },
+        "maxRatePerCycle": {
+          "type": "number"
+        },
+        "maxPressure": {
+          "type": "number"
+        },
+        "minIterationLength": {
+          "type": "number"
+        },
+        "maxIterationLength": {
+          "type": "number"
+        },
+        "minIterationPercent": {
+          "type": "number"
+        },
+        "maxIterationPercent": {
+          "type": "number"
+        },
+        "minYearLength": {
+          "type": "number"
+        },
+        "maxYearLength": {
+          "type": "number"
+        },
+        "minYearPercent": {
+          "type": "number"
+        },
+        "maxYearPercent": {
+          "type": "number"
+        },
+        "geyserTemperature": {
+          "type": "number"
+        },
+        "DlcID": {
+          "type": "string"
+        },
+        "diseaseId": {
+          "type": "string"
+        },
+        "diseaseCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "DlcID",
+        "element",
+        "geyserTemperature",
+        "id",
+        "maxIterationLength",
+        "maxIterationPercent",
+        "maxPressure",
+        "maxRatePerCycle",
+        "maxYearLength",
+        "maxYearPercent",
+        "minIterationLength",
+        "minIterationPercent",
+        "minRatePerCycle",
+        "minYearLength",
+        "minYearPercent",
+        "shape",
+        "temperature"
+      ]
+    },
+    "isGenericGeyser": {
+      "type": "boolean"
+    },
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    },
+    "decorProvider": {
+      "type": "object",
+      "properties": {
+        "baseRadius": {
+          "type": "number"
+        },
+        "baseDecor": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseDecor",
+        "baseRadius"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "IsValid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "IsValid",
+          "Name"
+        ]
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    }
+  },
+  "required": [
+    "decorProvider",
+    "dlcIds",
+    "geyserType",
+    "height",
+    "id",
+    "isGenericGeyser",
+    "primaryElement",
+    "tags",
+    "width"
+  ]
+}
