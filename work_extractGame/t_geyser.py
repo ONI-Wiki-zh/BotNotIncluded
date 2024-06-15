@@ -75,8 +75,9 @@ def do_opt_by_tuple(tuples, opt: int = 0):
     res_min = 1
     res_max = 1
     if opt == 1 and tuples:
-        tuples.reverse()
-        for tup in tuples:
+        r_tuples = tuples.copy()
+        r_tuples.reverse()
+        for tup in r_tuples:
             l, h = tup
             res_min = l / res_min
             res_max = h / res_max
@@ -90,7 +91,8 @@ def do_opt_by_tuple(tuples, opt: int = 0):
 
 def getPercentileRange(input_tuples, cache_pp, opt: int = 0, p1=0.01, p2=0.99):
     """获取间歇泉数据在百分位上的上下限"""
-    baseVal, _ = do_opt_by_tuple(input_tuples)
+    baseMultiVal, _ = do_opt_by_tuple(input_tuples)
+    baseDivVal, _ = do_opt_by_tuple(input_tuples, opt=1)
     equal_results, unequal_results = pick_tuples(input_tuples)
     l_eq, h_eq = do_opt_by_tuple(equal_results)
     if len(unequal_results) == 0:
@@ -112,9 +114,9 @@ def getPercentileRange(input_tuples, cache_pp, opt: int = 0, p1=0.01, p2=0.99):
         m2 = h2 / l2
         dict_multi, dict_div = get_percentile_cache(m1, m2, cache_pp=cache_pp)
         if opt == 1:
-            return baseVal * dict_div[p1], baseVal * dict_div[p2]
+            return baseDivVal * dict_div[p1], baseDivVal * dict_div[p2]
         else:
-            return baseVal * dict_multi[p1], baseVal * dict_multi[p2]
+            return baseMultiVal * dict_multi[p1], baseMultiVal * dict_multi[p2]
     elif len(unequal_results) == 3:
         # 获取范围-三重积分
         l1, h1 = unequal_results[0]
@@ -125,9 +127,9 @@ def getPercentileRange(input_tuples, cache_pp, opt: int = 0, p1=0.01, p2=0.99):
         m3 = h3 / l3
         dict_multi, dict_div = get_percentile_cache(m1, m2, m3, cache_pp=cache_pp)
         if opt == 1:
-            return baseVal * dict_div[p1], baseVal * dict_div[p2]
+            return baseMultiVal * dict_div[p1], baseMultiVal * dict_div[p2]
         else:
-            return baseVal * dict_multi[p1], baseVal * dict_multi[p2]
+            return baseMultiVal * dict_multi[p1], baseMultiVal * dict_multi[p2]
     return l_eq, h_eq
 
 
@@ -171,23 +173,15 @@ def getOutputMassDict(gType, cache_pp=None):
     return {
         "massIterationOn": formatRangeDict(getPercentileRange(
             [(minR, maxR),
-             (gType['minYearLength'], gType['maxYearLength']),
-             (gType['minYearPercent'], gType['maxYearPercent'])],
+             (gType['minIterationLength'], gType['maxIterationLength'])],
             cache_pp)),
         "massYearOn": formatRangeDict(getPercentileRange(
             [(minR, maxR),
-             (gType['minYearLength'], gType['maxYearLength'])],
+             (gType['minYearLength'], gType['maxYearLength']),
+             (gType['minYearPercent'], gType['maxYearPercent'])],
             cache_pp)),
     }
     pass
-
-
-def getGeyserDLcs(item):
-    res = [""]
-    dlcID = item.get('dlcID')
-    if dlcID != "":
-        res.append(dlcID)
-    return res
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
@@ -202,7 +196,6 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     dict_output = {}
     # geyser
     for item in data:
-        item['dlcIds'] = getGeyserDLcs(item)
         geyserType = item.get('geyserType', None)
         if geyserType:
             elementHashId = geyserType.get('element', None)

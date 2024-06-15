@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from joblib import Parallel, delayed
 from scipy.integrate import quad, dblquad, tplquad
@@ -11,6 +13,14 @@ def f(x):
     return 0
 
 
+def resample(t, min_val, max_val):
+    num = 6.0
+    num2 = 0.002472623
+    num3 = t * (1.0 - num2 * 2.0) + num2
+    result = (-math.log(1.0 / num3 - 1.0) + num) / (num * 2.0) * (max_val - min_val) + min_val
+    return result
+
+
 def create_dict(alpha, arr_multi, arr_div):
     if alpha.shape == arr_multi.shape == arr_div.shape:
         dict1 = {a: b for a, b in zip(alpha, arr_multi)}
@@ -21,9 +31,7 @@ def create_dict(alpha, arr_multi, arr_div):
 
 
 def get_percentile(minVal: float, maxVal: float, alpha=np.array([0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99])):
-    def F_resample(x):
-        return minVal+(f(x) + 6) / 12 * (maxVal - minVal)
-    F_alpha_resample = np.array([F_resample(a) for a in alpha])
+    F_alpha_resample = np.array([resample(a, minVal, maxVal) for a in alpha])
     if alpha.shape == F_alpha_resample.shape:
         return {a: b for a, b in zip(alpha, F_alpha_resample)}
     return None

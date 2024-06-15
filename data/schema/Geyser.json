@@ -94,15 +94,6 @@
     "isGenericGeyser": {
       "type": "boolean"
     },
-    "dlcIds": {
-      "type": "array",
-      "items": {
-        "type": [
-          "null",
-          "string"
-        ]
-      }
-    },
     "outputRate": {
       "type": "object",
       "properties": {
@@ -162,10 +153,34 @@
       "type": "object",
       "properties": {
         "massIterationOn": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
         },
         "massYearOn": {
-          "type": "string"
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
         }
       },
       "required": [
@@ -240,7 +255,6 @@
   },
   "required": [
     "decorProvider",
-    "dlcIds",
     "geyserType",
     "height",
     "id",
