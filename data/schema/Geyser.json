@@ -103,6 +103,76 @@
         ]
       }
     },
+    "outputRate": {
+      "type": "object",
+      "properties": {
+        "rateIterationOn": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        },
+        "rateYearOn": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        },
+        "rateYear": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        }
+      },
+      "required": [
+        "rateIterationOn",
+        "rateYear",
+        "rateYearOn"
+      ]
+    },
+    "outputMass": {
+      "type": "object",
+      "properties": {
+        "massIterationOn": {
+          "type": "string"
+        },
+        "massYearOn": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "massIterationOn",
+        "massYearOn"
+      ]
+    },
     "decorProvider": {
       "type": "object",
       "properties": {
@@ -175,6 +245,8 @@
     "height",
     "id",
     "isGenericGeyser",
+    "outputMass",
+    "outputRate",
     "primaryElement",
     "tags",
     "width"

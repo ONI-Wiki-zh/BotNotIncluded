@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.integrate import quad, dblquad
-from scipy.optimize import fsolve
+from scipy.optimize import brentq
 
 
 def f(x):
@@ -19,13 +19,22 @@ def create_dict(alpha, arr_multi, arr_div):
         raise ValueError("Input arrays must have the same shape.")
 
 
-def get_product_percentile(m1: float, m2: float, alpha=np.array([0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99])):
+def get_percentile(minVal: float, maxVal: float, alpha=np.array([0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99])):
+    def F_resample(x):
+        return minVal+(f(x) + 6) / 12 * (maxVal - minVal)
+    F_alpha_resample = np.array([F_resample(a) for a in alpha])
+    if alpha.shape == F_alpha_resample.shape:
+        return {a: b for a, b in zip(alpha, F_alpha_resample)}
+    return None
+
+
+def get_percentile_dbl(m1: float, m2: float, alpha=np.array([0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99])):
     # f1 is the probability density function of X
-    f10, _ = quad(lambda a: f(12 / (m1 - 1) * (a - 1) - 6), 1, m1)
+    f10, _ = quad(lambda a: f(12 / (m1 - 1) * (a - 1) - 6), 1, m1, limit=100)
     f1 = lambda a: f(12 / (m1 - 1) * (a - 1) - 6) / f10
 
     # f2 is the probability density function of Y
-    f20, _ = quad(lambda a: f(12 / (m2 - 1) * (a - 1) - 6), 1, m2)
+    f20, _ = quad(lambda a: f(12 / (m2 - 1) * (a - 1) - 6), 1, m2, limit=100)
     f2 = lambda a: f(12 / (m2 - 1) * (a - 1) - 6) / f20
 
     # X*Y cumulative distribution function: integrate the product of densities
@@ -36,13 +45,15 @@ def get_product_percentile(m1: float, m2: float, alpha=np.array([0.01, 0.05, 0.1
     F_div = lambda a: dblquad(lambda s, t: f1(t) * f2(s), 1, m1, lambda s: s / a, lambda s: m2)[0]
 
     # Compute quantiles
-    F_alpha_mult = np.array([fsolve(lambda u: F_mult(u) - a, m1 * m2 / 2)[0] for a in alpha])
-    F_alpha_div = np.array([fsolve(lambda u: F_div(u) - a, np.sqrt(m1 / m2))[0] for a in alpha])
+    F_alpha_mult = np.array([brentq(lambda u: F_mult(u) - a, 1, m1 * m2) for a in alpha])
+    F_alpha_div = np.array([brentq(lambda u: F_div(u) - a, 1/m2, m1) for a in alpha])
 
     return create_dict(alpha, F_alpha_mult, F_alpha_div)
 
 
 if __name__ == '__main__':
-    dict_multi, dict_div = get_product_percentile(2, 9)
+    dict_resample = get_percentile(6000, 12000)
+    print(dict_resample)
+    dict_multi, dict_div = get_percentile_dbl(2, 9)
     print(dict_multi)
     print(dict_div)
