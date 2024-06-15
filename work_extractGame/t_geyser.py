@@ -33,44 +33,102 @@ def save_percentile_cache(m_cache_pp):
         json.dump(m_cache_pp, file)
 
 
-def get_percentile_cache(m1, m2):
-    """获取百分位表"""
-    id_pp = str(m1) + "@" + str(m2)
+def get_percentile_cache(m1, m2, m3=None, cache_pp=None):
+    """获取百分位表-使用缓存"""
+    if cache_pp is None:
+        cache_pp = {}
+    if m3 is not None:
+        id_pp = str(m1) + "@" + str(m2) + "@" + str(m3)
+    else:
+        id_pp = str(m1) + "@" + str(m2)
     if id_pp not in cache_pp.keys():
         print("新建百分位表格缓存：" + id_pp)
-        cache_pp[id_pp] = X_alpha.get_percentile_dbl(m1, m2)
+        if m3 is not None:
+            cache_pp[id_pp] = X_alpha.get_percentile_tpl(m1, m2, m3)
+        else:
+            cache_pp[id_pp] = X_alpha.get_percentile_dbl(m1, m2)
         print(cache_pp[id_pp])
         save_percentile_cache(cache_pp)
     else:
-        print("找到百分位表格缓存："+id_pp)
+        print("找到百分位表格缓存：" + id_pp)
     return cache_pp[id_pp]
 
 
-def getDataResampleRange(low, height):
-    """获取范围-采样公式"""
-    dict_resample = X_alpha.get_percentile(low, height)
-    p1 = 0.01
-    p2 = 0.99
-    return dict_resample[p1], dict_resample[p2]
+def pick_tuples(input_list):
+    """挑选输入的元组"""
+    equal_tuples = []
+    unequal_tuples = []
 
+    for tup in input_list:
+        min_val, max_val = tup
 
-def getDataRange(l1, h1, l2, h2, type: int = 0):
-    """获取范围-双重积分"""
-    m1 = h1 / l1
-    m2 = h2 / l2
-    if m1 == 1 or m2 == 1:
-        if type == 1:
-            return getDataResampleRange(l1 / l2, h1 / h2)
+        if min_val == max_val:
+            equal_tuples.append(tup)
         else:
-            return getDataResampleRange(l1 * l2, h1 * h2)
-    dict_multi, dict_div = get_percentile_cache(m1, m2)
-    p1 = 0.01
-    p2 = 0.99
-    if type == 1:
-        return l1 / l2 * dict_div[p1], h1 / h2 * dict_div[p2]
+            unequal_tuples.append(tup)
+
+    return equal_tuples, unequal_tuples
+
+
+def do_opt_by_tuple(tuples, opt: int = 0):
+    """批量对元组进行算术操作"""
+    res_min = 1
+    res_max = 1
+    if opt == 1 and tuples:
+        tuples.reverse()
+        for tup in tuples:
+            l, h = tup
+            res_min = l / res_min
+            res_max = h / res_max
     else:
-        return l1 * l2 * dict_multi[p1], h1 * h2 * dict_multi[p2]
-    pass
+        for tup in tuples:
+            l, h = tup
+            res_min *= l
+            res_max *= h
+    return res_min, res_max
+
+
+def getPercentileRange(input_tuples, cache_pp, opt: int = 0, p1=0.01, p2=0.99):
+    """获取间歇泉数据在百分位上的上下限"""
+    baseVal, _ = do_opt_by_tuple(input_tuples)
+    equal_results, unequal_results = pick_tuples(input_tuples)
+    l_eq, h_eq = do_opt_by_tuple(equal_results)
+    if len(unequal_results) == 0:
+        # 全部相同
+        return l_eq, h_eq
+    if len(unequal_results) == 1:
+        l1, h1 = unequal_results[0]
+        # 获取范围-单参数
+        if opt == 1:
+            dict_resample = X_alpha.get_percentile(l_eq / l1, h_eq / h1)
+        else:
+            dict_resample = X_alpha.get_percentile(l_eq * l1, h_eq * h1)
+        return dict_resample[p1], dict_resample[p2]
+    elif len(unequal_results) == 2:
+        # 获取范围-双重积分
+        l1, h1 = unequal_results[0]
+        l2, h2 = unequal_results[1]
+        m1 = h1 / l1
+        m2 = h2 / l2
+        dict_multi, dict_div = get_percentile_cache(m1, m2, cache_pp=cache_pp)
+        if opt == 1:
+            return baseVal * dict_div[p1], baseVal * dict_div[p2]
+        else:
+            return baseVal * dict_multi[p1], baseVal * dict_multi[p2]
+    elif len(unequal_results) == 3:
+        # 获取范围-三重积分
+        l1, h1 = unequal_results[0]
+        l2, h2 = unequal_results[1]
+        l3, h3 = unequal_results[2]
+        m1 = h1 / l1
+        m2 = h2 / l2
+        m3 = h3 / l3
+        dict_multi, dict_div = get_percentile_cache(m1, m2, m3, cache_pp=cache_pp)
+        if opt == 1:
+            return baseVal * dict_div[p1], baseVal * dict_div[p2]
+        else:
+            return baseVal * dict_multi[p1], baseVal * dict_multi[p2]
+    return l_eq, h_eq
 
 
 def formatRangeDict(dataRange):
@@ -80,31 +138,46 @@ def formatRangeDict(dataRange):
     }
 
 
-def getOutputRateDict(gType):
+def getOutputRateDict(gType, cache_pp=None):
     """获得间歇泉产率计算"""
+    if cache_pp is None:
+        cache_pp = {}
     minR = gType['minRatePerCycle'] / 600
     maxR = gType['maxRatePerCycle'] / 600
 
     """喷发期产率, 喷发周期产率==活跃期产率, 活跃周期产率"""
     return {
-        "rateIterationOn": formatRangeDict(
-            getDataRange(minR, maxR, gType['minIterationPercent'], gType['maxIterationPercent'], type=1)),
-        "rateYearOn": formatRangeDict(getDataResampleRange(minR, maxR)),
-        "rateYear": formatRangeDict(
-            getDataRange(minR, maxR, gType['minYearPercent'], gType['maxYearPercent'])),
+        "rateIterationOn": formatRangeDict(getPercentileRange(
+            [(minR, maxR),
+             (gType['minIterationPercent'], gType['maxIterationPercent'])],
+            cache_pp, opt=1)),
+        "rateYearOn": formatRangeDict(getPercentileRange(
+            [(minR, maxR)],
+            cache_pp)),
+        "rateYear": formatRangeDict(getPercentileRange(
+            [(minR, maxR),
+             (gType['minYearPercent'], gType['maxYearPercent'])],
+            cache_pp)),
     }
 
 
-def getOutputMassDict(gType):
+def getOutputMassDict(gType, cache_pp=None):
+    if cache_pp is None:
+        cache_pp = {}
     minR = gType['minRatePerCycle'] / 600
     maxR = gType['maxRatePerCycle'] / 600
 
-    minYear, maxYear = getDataRange(gType['minYearLength'], gType['maxYearLength'],
-                                                    gType['minYearPercent'], gType['maxYearPercent'])
     """获得间歇泉产量计算"""
     return {
-        "massIterationOn": getDataRange(minR, maxR, minYear, maxYear),
-        "massYearOn": getDataRange(minR, maxR, gType['minYearLength'], gType['maxYearLength']),
+        "massIterationOn": formatRangeDict(getPercentileRange(
+            [(minR, maxR),
+             (gType['minYearLength'], gType['maxYearLength']),
+             (gType['minYearPercent'], gType['maxYearPercent'])],
+            cache_pp)),
+        "massYearOn": formatRangeDict(getPercentileRange(
+            [(minR, maxR),
+             (gType['minYearLength'], gType['maxYearLength'])],
+            cache_pp)),
     }
     pass
 
@@ -118,8 +191,6 @@ def getGeyserDLcs(item):
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
-    global cache_pp
-    cache_pp = {}  # 百分位表缓存
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['geyser'], 'r', encoding='utf-8') as file:
         data = json.load(file).get("geysers", None)
@@ -127,8 +198,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         return False
     dict_SimHashes = DataUtils.loadSimHashed()
     dict_Dieases = DataUtils.loadSimHashed_disease()
+    cache_pp = init_percentile_cache()  # 百分位表缓存
     dict_output = {}
-    cache_pp = init_percentile_cache()
     # geyser
     for item in data:
         item['dlcIds'] = getGeyserDLcs(item)
@@ -145,8 +216,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     geyserType['diseaseCount'] = diseaseInfo.get('count', 0)
         id = item.get('id', None)
         print(id)
-        item['outputRate'] = getOutputRateDict(geyserType)
-        item['outputMass'] = getOutputMassDict(geyserType)
+        item['outputRate'] = getOutputRateDict(geyserType, cache_pp)
+        item['outputMass'] = getOutputMassDict(geyserType, cache_pp)
         dict_output[id] = item
     # multiEntities属性
     with open(constant.dict_PATH_EXTRACT_FILE['multiEntities'], 'r', encoding='utf-8') as file:
@@ -170,4 +241,10 @@ def convert_data_2_lua(entityInfo: EntityInfo):
 
 
 if __name__ == '__main__':
+    # # test getPercentileRange
+    # tuples = [(1000, 2000), (600, 600), (60, 1140)]
+    # tuples = [(1000, 2000), (60, 1140)]
+    # min, max = getPercentileRange(tuples, {})
+    # print(min, max)
+
     convert_data_2_lua(constant.EntityType.Geyser.value)
