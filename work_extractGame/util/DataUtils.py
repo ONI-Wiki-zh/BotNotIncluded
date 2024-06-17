@@ -52,3 +52,13 @@ class DataUtils:
             dict_SimHashes[255] = None
             pass
         return dict_SimHashes
+
+    @staticmethod
+    def loadDbTraits():
+        dict_traits = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            traits = data['traits']
+            for trait in traits:
+                dict_traits[trait['Id']] = trait
+        return dict_traits

@@ -1,0 +1,261 @@
+{
+  "type": "object",
+  "properties": {
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "IsValid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "IsValid",
+          "Name"
+        ]
+      }
+    },
+    "kBoxCollider2D": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "decorProvider": {
+      "type": "object",
+      "properties": {
+        "baseRadius": {
+          "type": "number"
+        },
+        "baseDecor": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseDecor",
+        "baseRadius"
+      ]
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "isRanchable": {
+      "type": "boolean"
+    },
+    "entombVulnerable": {
+      "type": "boolean"
+    },
+    "id": {
+      "type": "string"
+    },
+    "hitPoints": {
+      "type": "number"
+    },
+    "caloriesPerCycle": {
+      "type": "number"
+    },
+    "caloriesStomachSize": {
+      "type": "number"
+    },
+    "ageMax": {
+      "type": "number"
+    },
+    "drownVulnerable": {
+      "type": "boolean"
+    },
+    "livesUnderWater": {
+      "type": "boolean"
+    },
+    "family": {
+      "type": "string"
+    },
+    "temperatureVulnerable": {
+      "type": "object",
+      "properties": {
+        "temperatureLethalLow": {
+          "type": "number"
+        },
+        "temperatureLethalHigh": {
+          "type": "number"
+        },
+        "temperatureWarningLow": {
+          "type": "number"
+        },
+        "temperatureWarningHigh": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "temperatureLethalHigh",
+        "temperatureLethalLow",
+        "temperatureWarningHigh",
+        "temperatureWarningLow"
+      ]
+    },
+    "fertilityMonitorDef": {
+      "type": "object",
+      "properties": {
+        "initialBreedingWeights": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "weight": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "weight"
+            ]
+          }
+        },
+        "baseFertileCycles": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseFertileCycles",
+        "initialBreedingWeights"
+      ]
+    },
+    "factionAlignment": {
+      "type": "object",
+      "properties": {
+        "Alignment": {
+          "type": "integer"
+        },
+        "canBePlayerTargeted": {
+          "type": "boolean"
+        },
+        "updatePrioritizable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "Alignment",
+        "canBePlayerTargeted",
+        "updatePrioritizable"
+      ]
+    },
+    "spaceRequired": {
+      "type": "integer"
+    },
+    "deathTimer": {
+      "type": "number"
+    },
+    "diet": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "caloriesPerKg": {
+            "type": "number"
+          },
+          "conversionRatio": {
+            "type": "number"
+          },
+          "element": {
+            "type": "string"
+          },
+          "producedElement": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        },
+        "required": [
+          "caloriesPerKg",
+          "conversionRatio",
+          "element",
+          "producedElement"
+        ]
+      }
+    },
+    "deathDrop": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "deathDropItem": {
+            "type": "string"
+          },
+          "deathDropItemAmount": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deathDropItem",
+          "deathDropItemAmount"
+        ]
+      }
+    }
+  },
+  "required": [
+    "ageMax",
+    "caloriesPerCycle",
+    "caloriesStomachSize",
+    "dlcIds",
+    "drownVulnerable",
+    "entombVulnerable",
+    "family",
+    "hitPoints",
+    "id",
+    "isRanchable",
+    "kBoxCollider2D",
+    "livesUnderWater",
+    "primaryElement",
+    "tags"
+  ]
+}

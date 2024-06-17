@@ -12,6 +12,10 @@ def load_lua2schema(lua_table):
     # 读取表中每一个对象
     list_item = []
     for key, item in lua_table.items():
+        item2 = item.copy()
+        for k, v in item2.items():
+            if v is None:
+                del item[k]
         list_item.append(item)
 
     # 使用genson库生成JSON Schema
