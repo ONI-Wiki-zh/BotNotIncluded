@@ -66,9 +66,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         for egg in data:
             babyId = egg['incubatorMonitorDef']['spawnedCreature']['Name']
             for adultName, item in dict_babayMonitorDef.items():
-                babyMonitorDef = item.get('babyMonitorDef', None)
-                if babyMonitorDef and babyMonitorDef.get('babyId' == babyId):
-                    babyMonitorDef['incubationCycles'] = egg['incubatorMonitorDef']['baseIncubationRate']
+                if item and item.get('babyId') == babyId:
+                    item['incubationCycles'] = 100 / (600 * egg['incubatorMonitorDef']['baseIncubationRate'])
     # 组装数据
     for entityId, item in dict_output.items():
         item['id'] = entityId

@@ -201,6 +201,9 @@
         },
         "babyId": {
           "type": "string"
+        },
+        "incubationCycles": {
+          "type": "number"
         }
       },
       "required": [
