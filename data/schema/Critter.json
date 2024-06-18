@@ -169,6 +169,48 @@
         "initialBreedingWeights"
       ]
     },
+    "babyMonitorDef": {
+      "type": "object",
+      "properties": {
+        "adultPrefab": {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string"
+            },
+            "IsValid": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "IsValid",
+            "Name"
+          ]
+        },
+        "onGrowDropID": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "forceAdultNavType": {
+          "type": "boolean"
+        },
+        "adultThreshold": {
+          "type": "number"
+        },
+        "babyId": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "adultPrefab",
+        "adultThreshold",
+        "babyId",
+        "forceAdultNavType",
+        "onGrowDropID"
+      ]
+    },
     "factionAlignment": {
       "type": "object",
       "properties": {

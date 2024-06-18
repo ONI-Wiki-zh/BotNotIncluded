@@ -56,9 +56,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 babyMonitorDef = item.get('babyMonitorDef', None)
                 if babyMonitorDef:
                     adultName = babyMonitorDef['adultPrefab']['Name']
-                    if adultName.upper() == entityId.upper():
-                        babyMonitorDef['babyId'] = entityId
-                        dict_babayMonitorDef[adultName] = babyMonitorDef
+                    babyMonitorDef['babyId'] = entityId
+                    dict_babayMonitorDef[adultName] = babyMonitorDef
                 else:
                     dict_output[entityId] = item
     # 成年体、幼体、蛋
@@ -77,8 +76,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         if overcrowdingMonitorDef:
             item['spaceRequired'] = overcrowdingMonitorDef.get('spaceRequiredPerCreature', 0)
         item['hitPoints'] = getTraitAttribute(entityId, "HitPointsMax", dict_traits)
-        item['caloriesPerCycle'] = getTraitAttribute(entityId, "CaloriesMax", dict_traits)
-        item['caloriesStomachSize'] = -600 * getTraitAttribute(entityId, "CaloriesDelta", dict_traits)
+        item['caloriesPerCycle'] = 600 * getTraitAttribute(entityId, "CaloriesDelta", dict_traits)
+        item['caloriesStomachSize'] = getTraitAttribute(entityId, "CaloriesMax", dict_traits)
         item['ageMax'] = getTraitAttribute(entityId, "AgeMax", dict_traits)
         babyMonitorDef = dict_babayMonitorDef.get(entityId)
         if babyMonitorDef:
