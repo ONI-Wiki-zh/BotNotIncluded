@@ -4,6 +4,8 @@ import work_extractGame.constant_extract as constant
 from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPOEntry_by_nameString
 
+dict_po_strings = None
+
 
 def count_elements(d):
     count = 0
@@ -15,17 +17,33 @@ def count_elements(d):
     return count
 
 
-def setOutputDic(mId: str, name_str:str, dict_output, msg_need=None):
-    poEntity, category = getPOEntry_by_nameString(name_str, msg_need=msg_need)
+def check_category(msgctxt: str):
+    global dict_po_strings
+    if dict_po_strings is None:
+        with open(constant.dict_PATH_EXTRACT_FILE['po_string'], 'r', encoding='utf-8') as f:
+            dict_po_strings = json.load(f)
+            pass
+    for cate, po in dict_po_strings.items():
+        for msg in po.keys():
+            if msg == msgctxt.replace("STRINGS.", ""):
+                return cate
+    return None
+
+
+def setOutputDic(mId: str, name_str: str, dict_output, msg_need=None, msg_not_need=[]):
+    poEntity, category = getPOEntry_by_nameString(name_str, msg_need=msg_need, msg_not_need=msg_not_need)
     if poEntity is None:
-        print("缺少译名,Id: "+mId)
+        print("缺少译名,Id: " + mId)
         return
+    # or mId == "Asteroid"
+    if category is None:
+        category = check_category(poEntity.msgctxt)
+        if category is None:
+            print("缺少分类,Id: " + mId)
+            return
     if dict_output.get(category, None) is None:
         dict_output[category] = {}
-    if poEntity is None:
-        dict_output[category][mId] = mId
-    else:
-        dict_output[category][mId] = poEntity.msgctxt
+    dict_output[category][mId] = poEntity.msgctxt
 
 
 def convert_data_2_lua():
@@ -34,7 +52,7 @@ def convert_data_2_lua():
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as f:
         data = json.load(f)
         for item in data['buildingDefs']:
-            setOutputDic(item['name'], item['Name'], dict_output)
+            setOutputDic(item['name'], item['Name'], dict_output, msg_not_need=['CREATURES.'])
         pass
 
     # 元素
@@ -53,9 +71,9 @@ def convert_data_2_lua():
         data = json.load(f)
         for item in data['entities']:
             if item.get('creatureBrain', None):
-                setOutputDic(item['name'], item['nameString'], dict_output, msg_need="CREATURES.")
-            else:
-                setOutputDic(item['name'], item['nameString'], dict_output)
+                setOutputDic(item['name'], item['nameString'], dict_output, msg_not_need=["BUILDING."])
+                continue
+            setOutputDic(item['name'], item['nameString'], dict_output)
             pass
         pass
 
@@ -63,7 +81,6 @@ def convert_data_2_lua():
     with open(constant.dict_PATH_EXTRACT_FILE['geyser'], 'r', encoding='utf-8') as f:
         data = json.load(f)
         for item in data['geysers']:
-            # key-value
             id = item['id']
             msgctext = str(item['nameStringKey']['String'])
             if dict_output.get('CREATURES', None) is None:

@@ -32,7 +32,7 @@ def save_lua_by_schema(entityInfo: EntityInfo, dict_output):
         f.write(("return " + output).encode("utf-8"))
 
 
-def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None):
+def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None, msg_not_need=[]):
     """通过<link>文本，获得POEntity"""
     global data_po
     if data_po is None:
@@ -47,7 +47,10 @@ def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None):
     for key, dict_msgctxt_string in dict_po_strings.items():
         if key not in constant.KEY_EXTRACT_INFO_LIST:
             for msgctxt_po, name_po in dict_msgctxt_string.items():
+                check_substring = lambda lst, name_str: any(item in name_str for item in lst)
                 if msg_need and msg_need not in msgctxt_po:
+                    continue
+                elif len(msg_not_need) > 0 and check_substring(msg_not_need, msgctxt_po):
                     continue
                 elif name_str == name_po:
                     poEntry = getPOEntry_by_msgctxt(msgctxt_po)
