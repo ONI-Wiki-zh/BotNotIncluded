@@ -62,3 +62,12 @@ class DataUtils:
             for trait in traits:
                 dict_traits[trait['Id']] = trait
         return dict_traits
+
+    @staticmethod
+    def loadKPrefabIDDict():
+        dict_prefabID_tags = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['tags'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for entityId, tags in data['prefabIDs'].items():
+                dict_prefabID_tags[entityId] = tags
+        return dict_prefabID_tags

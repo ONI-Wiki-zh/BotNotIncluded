@@ -4,6 +4,17 @@ from slpp import slpp
 from genson import SchemaBuilder
 
 
+def deal_item_property(item):
+    item2 = item.copy()
+    for k, v in item2.items():
+        if v is None:
+            del item2[k]
+        else:
+            value = deal_item_property(v)
+            item2[k] = value
+    return item2
+
+
 def load_lua2schema(lua_table):
     # 解析Lua表
     lua_table = lua_table.removeprefix("return ")
