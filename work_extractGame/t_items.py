@@ -149,7 +149,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             recipes, _ = getRecipes(eggId, list_recipes)
             if recipes and len(recipes) > 0:
                 misc['recipes'] = recipes
-            misc['msgctxt'] = getPOEntry_by_nameString(egg.get('nameString', "")).msgctxt
+            misc['msgctxt'] = getPOEntry_by_nameString(egg.get('nameString', ""))[0].msgctxt
             dict_output[eggId] = misc
         # 种子
         seedData = itemDatas.get("seeds", [])
@@ -169,7 +169,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             plantableSeed = seed.get('plantableSeed', None)
             if plantableSeed:
                 misc['sources'] = [plantableSeed['PlantID']['Name']]
-            misc['msgctxt'] = getPOEntry_by_nameString(seed.get('nameString', "")).msgctxt
+            misc['msgctxt'] = getPOEntry_by_nameString(seed.get('nameString', ""))[0].msgctxt
             dict_output[seedId] = misc
     # 处理实体数据
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
@@ -249,7 +249,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     misc['recipes'] = recipes
                 if sources and len(sources) > 0:
                     misc['sources'] = list(set(sources))
-                poEntry = getPOEntry_by_nameString(item.get('nameString', ""))
+                poEntry, _ = getPOEntry_by_nameString(item.get('nameString', ""))
                 if poEntry:
                     misc['msgctxt'] = poEntry.msgctxt
                 else:

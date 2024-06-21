@@ -32,7 +32,7 @@ def save_lua_by_schema(entityInfo: EntityInfo, dict_output):
         f.write(("return " + output).encode("utf-8"))
 
 
-def getPOEntry_by_nameString(name_str: str, prefix: str = "", default=None, msg_need=None):
+def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None):
     """通过<link>文本，获得POEntity"""
     global data_po
     if data_po is None:
@@ -50,26 +50,26 @@ def getPOEntry_by_nameString(name_str: str, prefix: str = "", default=None, msg_
                 if msg_need and msg_need not in msgctxt_po:
                     continue
                 elif name_str == name_po:
-                    poEntry = getPOEntry_by_msgctxt(msgctxt_po, prefix=prefix)
+                    poEntry = getPOEntry_by_msgctxt(msgctxt_po)
                     if poEntry is not None:
-                        return poEntry
+                        return poEntry, key
         pass
     for item_po in data_po:
         if item_po.msgid == name_str or item_po.msgstr == name_str:
-            return item_po
+            return item_po, None
     if default:
-        return default
-    return None
+        return default, None
+    return None, None
 
 
-def getPOEntry_by_msgctxt(msgctxt: str, prefix: str = "", default=None, msg_need=None):
+def getPOEntry_by_msgctxt(msgctxt: str, default=None, msg_need=None):
     """通过msgctxt，获得POEntity"""
     global data_po
     if data_po is None:
         po_file_name = constant.dict_PATH_PO_FILE.get(constant.LANGUAGE, constant.dict_PATH_PO_FILE["zh"])
         data_po = polib.pofile(po_file_name)
     for item_po in data_po:
-        if item_po.msgctxt == msgctxt or item_po.msgctxt == "STRINGS." + prefix + msgctxt:
+        if item_po.msgctxt == msgctxt or item_po.msgctxt == "STRINGS." + msgctxt:
             if msg_need and msg_need not in msgctxt:
                 continue
             else:
