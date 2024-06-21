@@ -42,7 +42,7 @@ def convert_data_2_lua():
     with open(constant.dict_PATH_EXTRACT_FILE['element'], 'r', encoding='utf-8') as f:
         data = json.load(f)
         for key, item in data['elementTable'].items():
-            id = dict_SimHashes.get(key, None)
+            id = dict_SimHashes.get(item['id'], None)
             if id is None:
                 continue
             setOutputDic(id, item['name'], dict_output)
