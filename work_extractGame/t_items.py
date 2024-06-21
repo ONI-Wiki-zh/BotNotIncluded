@@ -2,7 +2,7 @@ import json
 
 import work_extractGame.constant_extract as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
+from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPOEntry_by_nameString
 
 list_NOT_MISC_CATEGORY = ["FOOD", "EQUIPMENT"]
 list_NOT_MISC_TAG = ['Compostable', 'Gravitas', 'BuildableAny', "Comet"]
@@ -149,6 +149,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             recipes, _ = getRecipes(eggId, list_recipes)
             if recipes and len(recipes) > 0:
                 misc['recipes'] = recipes
+            misc['msgctxt'] = getPOEntry_by_nameString(egg.get('nameString', "")).msgctxt
             dict_output[eggId] = misc
         # 种子
         seedData = itemDatas.get("seeds", [])
@@ -168,6 +169,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             plantableSeed = seed.get('plantableSeed', None)
             if plantableSeed:
                 misc['sources'] = [plantableSeed['PlantID']['Name']]
+            misc['msgctxt'] = getPOEntry_by_nameString(seed.get('nameString', "")).msgctxt
             dict_output[seedId] = misc
     # 处理实体数据
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
@@ -247,6 +249,11 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     misc['recipes'] = recipes
                 if sources and len(sources) > 0:
                     misc['sources'] = list(set(sources))
+                poEntry = getPOEntry_by_nameString(item.get('nameString', ""))
+                if poEntry:
+                    misc['msgctxt'] = poEntry.msgctxt
+                else:
+                    misc['msgctxt'] = entityId
                 dict_output[entityId] = misc
     save_lua_by_schema(entityInfo, dict_output)
     return True

@@ -103,6 +103,9 @@
         ]
       }
     },
+    "msgctxt": {
+      "type": "string"
+    },
     "sources": {
       "type": "array",
       "items": {
@@ -136,6 +139,7 @@
   },
   "required": [
     "id",
+    "msgctxt",
     "primaryElement",
     "tagFilter",
     "tags"
