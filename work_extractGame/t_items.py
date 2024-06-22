@@ -16,6 +16,9 @@ def getMedicineInfo(entityItem):
         curedSicknesses = medicinalInfo.get('curedSicknesses', None)
         if curedSicknesses is not None and len(curedSicknesses) <= 0:
             del medicinalInfo['curedSicknesses']
+        effect = medicinalInfo.get('effect', None)
+        if effect is None:
+            del medicinalInfo['effect']
         return medicinalInfo
     return None
 
@@ -157,7 +160,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             recipes, _ = getRecipes(eggId, list_recipes)
             if recipes and len(recipes) > 0:
                 misc['recipes'] = recipes
-            misc['msgctxt'] = getPOEntry_by_nameString(egg.get('nameString', ""))[0].msgctxt
+            misc['msgctxt'] = getPOEntry_by_nameString(egg.get('nameString', ""), msg_not_need=['BUILDING.'])[0].msgctxt
             dict_output[eggId] = misc
         # 种子
         seedData = itemDatas.get("seeds", [])
@@ -230,11 +233,6 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     misc = dict_output.get(cropVal['cropId'])
                     if misc:
                         addMiscSources(misc, entityId)
-            # 补充医疗信息
-            if tagFilter == "Medicine":
-                medicineInfo = getMedicineInfo(item)
-                if medicineInfo:
-                    misc['medicineInfo'] = medicineInfo
             # 创建物品信息
             if tagFilter:
                 misc = createMiscInfo(
@@ -249,7 +247,12 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     misc['recipes'] = recipes
                 if sources and len(sources) > 0:
                     misc['sources'] = list(set(sources))
-                poEntry, _ = getPOEntry_by_nameString(item.get('nameString', ""))
+                # 补充医疗信息
+                if tagFilter == "Medicine":
+                    medicineInfo = getMedicineInfo(item)
+                    if medicineInfo:
+                        misc['medicineInfo'] = medicineInfo
+                poEntry, _ = getPOEntry_by_nameString(item.get('nameString', ""), msg_not_need=['DUPLICANTS.'])
                 if poEntry:
                     misc['msgctxt'] = poEntry.msgctxt
                 else:
