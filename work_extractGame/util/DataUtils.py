@@ -11,6 +11,20 @@ from work_extractGame.constant_extract import PATH_SCHEMA, PATH_OUTPUT_LUA
 data_po = None
 dict_po_strings = None
 
+
+def check_substring(name_str: str, list_check):
+    """字符串子串查询"""
+    if name_str is None or list_check is None:
+        return []
+    check_in = []
+    for check in list_check:
+        if check is None:
+            continue
+        if check in name_str:
+            check_in.append(check)
+    return check_in
+
+
 def save_lua_by_schema(entityInfo: EntityInfo, dict_output):
     # 格式规范化处理
     filename_schema = PATH_SCHEMA + entityInfo.name + '.json'
@@ -32,7 +46,7 @@ def save_lua_by_schema(entityInfo: EntityInfo, dict_output):
         f.write(("return " + output).encode("utf-8"))
 
 
-def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None, msg_not_need=[]):
+def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None, msg_not_need=None):
     """通过<link>文本，获得POEntity"""
     global data_po
     if data_po is None:
@@ -47,12 +61,11 @@ def getPOEntry_by_nameString(name_str: str, default=None, msg_need=None, msg_not
     for key, dict_msgctxt_string in dict_po_strings.items():
         if key not in constant.KEY_EXTRACT_INFO_LIST:
             for msgctxt_po, name_po in dict_msgctxt_string.items():
-                check_substring = lambda lst, name_str: any(item in name_str for item in lst)
-                if msg_need and msg_need not in msgctxt_po:
-                    continue
-                elif len(msg_not_need) > 0 and check_substring(msg_not_need, msgctxt_po):
-                    continue
-                elif name_str == name_po:
+                if name_str == name_po:
+                    if msg_need is not None and len(check_substring(msgctxt_po, msg_need)) <= 0:
+                        continue
+                    elif msg_not_need is not None and len(check_substring(msgctxt_po, msg_not_need)) > 0:
+                        continue
                     poEntry = getPOEntry_by_msgctxt(msgctxt_po)
                     if poEntry is not None:
                         return poEntry, key

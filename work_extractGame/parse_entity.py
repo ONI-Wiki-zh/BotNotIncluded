@@ -30,7 +30,9 @@ def check_category(msgctxt: str):
     return None
 
 
-def setOutputDic(mId: str, name_str: str, dict_output, msg_need=None, msg_not_need=[]):
+def setOutputDic(mId: str, name_str: str, dict_output, msg_need=None, msg_not_need=None):
+    if mId == "BasicRadPill":
+        print(mId, msg_need, msg_not_need)
     poEntity, category = getPOEntry_by_nameString(name_str, msg_need=msg_need, msg_not_need=msg_not_need)
     if poEntity is None:
         print("缺少译名,Id: " + mId)
@@ -52,7 +54,7 @@ def convert_data_2_lua():
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as f:
         data = json.load(f)
         for item in data['buildingDefs']:
-            setOutputDic(item['name'], item['Name'], dict_output, msg_need="BUILDING.", msg_not_need=['CREATURES.'])
+            setOutputDic(item['name'], item['Name'], dict_output, msg_need=["BUILDING."], msg_not_need=['CREATURES.'])
         pass
 
     # 元素
@@ -73,7 +75,7 @@ def convert_data_2_lua():
             if item.get('creatureBrain', None):
                 setOutputDic(item['name'], item['nameString'], dict_output, msg_not_need=["BUILDING."])
                 continue
-            setOutputDic(item['name'], item['nameString'], dict_output)
+            setOutputDic(item['name'], item['nameString'], dict_output, msg_not_need=["DUPLICANTS."])
             pass
         pass
 
@@ -108,19 +110,6 @@ def convert_data_2_lua():
         for item in data['seeds']:
             id = item['name']
             setOutputDic(id, item['nameString'], dict_output)
-
-    # 复制人
-    with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        # 复制人
-        for item in data['personalities']:
-            id = str(item['Id'])
-            setOutputDic(id, item['Name'], dict_output)
-        # 特质
-        # for item in data['traits']:
-        #     id = str(item['Id'])
-        #     setOutputDic(id, item['Name'], dict_output)
-        # pass
 
     print("finish! total:" + str(count_elements(dict_output)))
     save_lua_by_schema(EntityInfo("entityIds", "po_string", "EntityIds"), dict_output)
