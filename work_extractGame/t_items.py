@@ -60,6 +60,14 @@ def createMiscInfo(itemId: str, tagFilter: str, size, tags, primaryElement):
     return dict_m
 
 
+def addMiscSources(misc, itemId):
+    """给获取来源添加id"""
+    if misc.get('sources', None) is None:
+        misc['sources'] = [itemId]
+    elif itemId not in misc['sources']:
+        misc['sources'].append(itemId)
+
+
 def getStorageFilters():
     """获取存储箱分类列表"""
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as file:
@@ -188,37 +196,32 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                         for breeding in initialBreedingWeights:
                             misc = dict_output.get(breeding['egg']['Name'])
                             if misc:
-                                if misc.get('sources', None) is None:
-                                    misc['sources'] = [entityId]
-                                elif entityId not in misc['sources']:
-                                    misc['sources'].append(entityId)
+                                addMiscSources(misc, entityId)
+                # 设置来源-死亡掉落
+                butcherable = item.get('butcherable', None)
+                if butcherable:
+                    for dropItem in butcherable.get('drops', []):
+                        misc = dict_output.get(dropItem, None)
+                        if misc:
+                            addMiscSources(misc, entityId)
                 # 设置来源-小动物毛
                 scaleGrowthMonitorDef = item.get('scaleGrowthMonitorDef', None)
                 if scaleGrowthMonitorDef:
                     misc = dict_output.get(scaleGrowthMonitorDef['itemDroppedOnShear']['Name'])
                     if misc:
-                        if misc.get('sources', None) is None:
-                            misc['sources'] = [entityId]
-                        elif entityId not in misc['sources']:
-                            misc['sources'].append(entityId)
+                        addMiscSources(misc, entityId)
                 # 设置来源-脱壳
                 moltDropperMonitorDef = item.get('moltDropperMonitorDef', None)
                 if moltDropperMonitorDef:
                     misc = dict_output.get(moltDropperMonitorDef['onGrowDropID'])
                     if misc:
-                        if misc.get('sources', None) is None:
-                            misc['sources'] = [entityId]
-                        elif entityId not in misc['sources']:
-                            misc['sources'].append(entityId)
+                        addMiscSources(misc, entityId)
                 # 设置来源-脱壳
                 babyMonitorDef = item.get('babyMonitorDef', None)
                 if babyMonitorDef:
                     misc = dict_output.get(babyMonitorDef['onGrowDropID'])
                     if misc:
-                        if misc.get('sources', None) is None:
-                            misc['sources'] = [entityId]
-                        elif entityId not in misc['sources']:
-                            misc['sources'].append(entityId)
+                        addMiscSources(misc, entityId)
                 continue
             # 植物
             if "Plant" in [elem['Name'] for elem in  item.get('tags', [])] and item.get('seedInfo', None):
@@ -226,10 +229,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 if cropVal:
                     misc = dict_output.get(cropVal['cropId'])
                     if misc:
-                        if misc.get('sources', None) is None:
-                            misc['sources'] = [entityId]
-                        elif entityId not in misc['sources']:
-                            misc['sources'].append(entityId)
+                        addMiscSources(misc, entityId)
             # 补充医疗信息
             if tagFilter == "Medicine":
                 medicineInfo = getMedicineInfo(item)

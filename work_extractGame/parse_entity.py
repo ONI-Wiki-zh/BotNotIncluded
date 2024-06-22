@@ -52,7 +52,7 @@ def convert_data_2_lua():
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as f:
         data = json.load(f)
         for item in data['buildingDefs']:
-            setOutputDic(item['name'], item['Name'], dict_output, msg_not_need=['CREATURES.'])
+            setOutputDic(item['name'], item['Name'], dict_output, msg_need="BUILDING.", msg_not_need=['CREATURES.'])
         pass
 
     # 元素
@@ -97,6 +97,9 @@ def convert_data_2_lua():
         for item in data['EquipmentDefs']:
             id = item['Id']
             setOutputDic(id, item['Name'], dict_output)
+            worn_id = item.get('wornID', None)
+            if worn_id:
+                setOutputDic(worn_id, item['WornName'], dict_output)
         # 蛋
         for item in data['eggs']:
             id = item['name']
@@ -114,10 +117,10 @@ def convert_data_2_lua():
             id = str(item['Id'])
             setOutputDic(id, item['Name'], dict_output)
         # 特质
-        for item in data['traits']:
-            id = str(item['Id'])
-            setOutputDic(id, item['Name'], dict_output)
-        pass
+        # for item in data['traits']:
+        #     id = str(item['Id'])
+        #     setOutputDic(id, item['Name'], dict_output)
+        # pass
 
     print("finish! total:" + str(count_elements(dict_output)))
     save_lua_by_schema(EntityInfo("entityIds", "po_string", "EntityIds"), dict_output)
