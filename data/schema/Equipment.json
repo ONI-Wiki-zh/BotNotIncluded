@@ -1,17 +1,57 @@
 {
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string"
-    },
-    "nameString": {
-      "type": "string"
-    },
     "dlcIds": {
       "type": "array",
       "items": {
         "type": "string"
       }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "slot": {
+      "type": "string"
+    },
+    "isWorn": {
+      "type": "boolean"
     },
     "suitTank": {
       "type": "object",
@@ -60,45 +100,8 @@
         "underwaterSupport"
       ]
     },
-    "primaryElement": {
-      "type": "object",
-      "properties": {
-        "DiseaseCount": {
-          "type": "integer"
-        },
-        "Name": {
-          "type": "string"
-        },
-        "InternalTemperature": {
-          "type": "number"
-        },
-        "Mass": {
-          "type": "number"
-        },
-        "Temperature": {
-          "type": "number"
-        },
-        "Units": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "DiseaseCount",
-        "InternalTemperature",
-        "Mass",
-        "Name",
-        "Temperature",
-        "Units"
-      ]
-    },
-    "slot": {
+    "wornId": {
       "type": "string"
-    },
-    "tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
     },
     "attribute": {
       "type": "array",
@@ -171,6 +174,25 @@
         "y"
       ]
     },
+    "onEquipEffect": {
+      "type": "object",
+      "properties": {
+        "decorMod": {
+          "type": "integer"
+        },
+        "conductivityMod": {
+          "type": "number"
+        },
+        "homeostasisEfficiencyMultiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "conductivityMod",
+        "decorMod",
+        "homeostasisEfficiencyMultiplier"
+      ]
+    },
     "leadSuitTank": {
       "type": "object",
       "properties": {
@@ -193,9 +215,9 @@
   },
   "required": [
     "dlcIds",
-    "name",
-    "nameString",
+    "id",
     "primaryElement",
-    "slot"
+    "slot",
+    "tags"
   ]
 }
