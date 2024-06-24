@@ -2,9 +2,7 @@ import json
 
 import work_extractGame.constant_extract as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
-
-dict_SimHashes = None
+from work_extractGame.util.DataUtils import save_lua_by_schema
 
 
 def createWornItem(wornId, item, equipDef):
