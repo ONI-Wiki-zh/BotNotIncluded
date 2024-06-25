@@ -1,0 +1,373 @@
+{
+  "type": "object",
+  "properties": {
+    "RequiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "EnergyConsumptionWhenActive": {
+      "type": "number"
+    },
+    "GeneratorWattageRating": {
+      "type": "number"
+    },
+    "GeneratorBaseCapacity": {
+      "type": "number"
+    },
+    "MassForTemperatureModification": {
+      "type": "number"
+    },
+    "ExhaustKilowattsWhenActive": {
+      "type": "number"
+    },
+    "SelfHeatKilowattsWhenActive": {
+      "type": "number"
+    },
+    "ConstructionTime": {
+      "type": "number"
+    },
+    "ThermalConductivity": {
+      "type": "number"
+    },
+    "WidthInCells": {
+      "type": "integer"
+    },
+    "HeightInCells": {
+      "type": "integer"
+    },
+    "HitPoints": {
+      "type": "integer"
+    },
+    "RequiresPowerInput": {
+      "type": "boolean"
+    },
+    "AddLogicPowerPort": {
+      "type": "boolean"
+    },
+    "RequiresPowerOutput": {
+      "type": "boolean"
+    },
+    "UseWhitePowerOutputConnectorColour": {
+      "type": "boolean"
+    },
+    "Floodable": {
+      "type": "boolean"
+    },
+    "Entombable": {
+      "type": "boolean"
+    },
+    "Replaceable": {
+      "type": "boolean"
+    },
+    "Invincible": {
+      "type": "boolean"
+    },
+    "Overheatable": {
+      "type": "boolean"
+    },
+    "Repairable": {
+      "type": "boolean"
+    },
+    "OverheatTemperature": {
+      "type": "number"
+    },
+    "Breakable": {
+      "type": "boolean"
+    },
+    "ContinuouslyCheckFoundation": {
+      "type": "boolean"
+    },
+    "isSolidTile": {
+      "type": "boolean"
+    },
+    "UseStructureTemperature": {
+      "type": "boolean"
+    },
+    "BuildLocationRule": {
+      "type": "integer"
+    },
+    "AlwaysOperational": {
+      "type": "boolean"
+    },
+    "DebugOnly": {
+      "type": "boolean"
+    },
+    "PermittedRotations": {
+      "type": "integer"
+    },
+    "Deprecated": {
+      "type": "boolean"
+    },
+    "UseHighEnergyParticleInputPort": {
+      "type": "boolean"
+    },
+    "UseHighEnergyParticleOutputPort": {
+      "type": "boolean"
+    },
+    "isKAnimTile": {
+      "type": "boolean"
+    },
+    "isUtility": {
+      "type": "boolean"
+    },
+    "BlockTileIsTransparent": {
+      "type": "boolean"
+    },
+    "BaseDecor": {
+      "type": "number"
+    },
+    "BaseDecorRadius": {
+      "type": "number"
+    },
+    "id": {
+      "type": "string"
+    },
+    "roomRequireTags": {
+      "type": "object"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "name"
+        ]
+      }
+    },
+    "tech": {
+      "type": "string"
+    },
+    "LogicInputPorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "activeDescription": {
+            "type": "string"
+          },
+          "inactiveDescription": {
+            "type": "string"
+          },
+          "requiresConnection": {
+            "type": "boolean"
+          },
+          "displayCustomName": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activeDescription",
+          "description",
+          "displayCustomName",
+          "inactiveDescription",
+          "requiresConnection"
+        ]
+      }
+    },
+    "storage": {
+      "type": "object",
+      "properties": {
+        "allowItemRemoval": {
+          "type": "boolean"
+        },
+        "capacityKg": {
+          "type": "number"
+        },
+        "storageFilters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "useGunForDelivery": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowItemRemoval",
+        "capacityKg",
+        "storageFilters",
+        "useGunForDelivery"
+      ]
+    },
+    "AttachmentSlotTag": {
+      "type": "string"
+    },
+    "rocketModule": {
+      "type": "object",
+      "properties": {
+        "burden": {
+          "type": "number"
+        },
+        "fuelKilogramPerDistance": {
+          "type": "number"
+        },
+        "enginePower": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "burden",
+        "enginePower",
+        "fuelKilogramPerDistance"
+      ]
+    },
+    "LogicOutputPorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "activeDescription": {
+            "type": "string"
+          },
+          "inactiveDescription": {
+            "type": "string"
+          },
+          "requiresConnection": {
+            "type": "boolean"
+          },
+          "spriteType": {
+            "type": "integer"
+          },
+          "displayCustomName": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activeDescription",
+          "description",
+          "displayCustomName",
+          "inactiveDescription",
+          "requiresConnection",
+          "spriteType"
+        ]
+      }
+    },
+    "ReplacementTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rocketEngineCluster": {
+      "type": "object",
+      "properties": {
+        "exhaustEmitRate": {
+          "type": "number"
+        },
+        "exhaustTemperature": {
+          "type": "number"
+        },
+        "explosionEffectHash": {
+          "type": "integer"
+        },
+        "exhaustElement": {
+          "type": "integer"
+        },
+        "fuelTag": {
+          "type": "string"
+        },
+        "efficiency": {
+          "type": "number"
+        },
+        "requireOxidizer": {
+          "type": "boolean"
+        },
+        "maxModules": {
+          "type": "integer"
+        },
+        "maxHeight": {
+          "type": "integer"
+        },
+        "mainEngine": {
+          "type": "boolean"
+        },
+        "exhaustDiseaseIdx": {
+          "type": "integer"
+        },
+        "exhaustDiseaseCount": {
+          "type": "integer"
+        },
+        "emitRadiation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "efficiency",
+        "emitRadiation",
+        "exhaustDiseaseCount",
+        "exhaustDiseaseIdx",
+        "exhaustElement",
+        "exhaustEmitRate",
+        "exhaustTemperature",
+        "explosionEffectHash",
+        "fuelTag",
+        "mainEngine",
+        "maxHeight",
+        "maxModules",
+        "requireOxidizer"
+      ]
+    }
+  },
+  "required": [
+    "AddLogicPowerPort",
+    "AlwaysOperational",
+    "BaseDecor",
+    "BaseDecorRadius",
+    "BlockTileIsTransparent",
+    "Breakable",
+    "BuildLocationRule",
+    "ConstructionTime",
+    "ContinuouslyCheckFoundation",
+    "DebugOnly",
+    "Deprecated",
+    "EnergyConsumptionWhenActive",
+    "Entombable",
+    "ExhaustKilowattsWhenActive",
+    "Floodable",
+    "GeneratorBaseCapacity",
+    "GeneratorWattageRating",
+    "HeightInCells",
+    "HitPoints",
+    "Invincible",
+    "MassForTemperatureModification",
+    "OverheatTemperature",
+    "Overheatable",
+    "PermittedRotations",
+    "Repairable",
+    "Replaceable",
+    "RequiredDlcIds",
+    "RequiresPowerInput",
+    "RequiresPowerOutput",
+    "SelfHeatKilowattsWhenActive",
+    "ThermalConductivity",
+    "UseHighEnergyParticleInputPort",
+    "UseHighEnergyParticleOutputPort",
+    "UseStructureTemperature",
+    "UseWhitePowerOutputConnectorColour",
+    "WidthInCells",
+    "id",
+    "ingredients",
+    "isKAnimTile",
+    "isSolidTile",
+    "isUtility",
+    "roomRequireTags"
+  ]
+}
