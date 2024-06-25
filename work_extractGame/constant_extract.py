@@ -10,6 +10,7 @@ PATH_CACHE_percentile = PATH_CACHE+"percentile.json"
 
 KEY_EXTRACT_INFO_LIST = ["buildVersion", "ExportFileName", "DatabaseDirName", "dlcs"]
 PATH_EXTRACT_DIR = "C:/Users/admin/Documents/Klei/OxygenNotIncluded/export/database/"    # 修改为OniExtract数据导出的路径
+PATH_EXTRACT_DIR_BASE_ONLY = "C:/Users/admin/Documents/Klei/OxygenNotIncluded/export/database_base/"    # 修改为OniExtract数据导出的路径
 dict_PATH_EXTRACT_FILE = {
     "building": PATH_EXTRACT_DIR + "building.json",
     "element": PATH_EXTRACT_DIR + "elements.json",
@@ -26,6 +27,9 @@ dict_PATH_EXTRACT_FILE = {
     "tags": PATH_EXTRACT_DIR + "tags.json",
     "po_string": PATH_EXTRACT_DIR + "po_string.json",
     "codex": PATH_EXTRACT_DIR + "codex.json",
+}
+dict_PATH_EXTRACT_FILE_BASE_ONLY = {
+    "building": PATH_EXTRACT_DIR_BASE_ONLY + "building.json",
 }
 LANGUAGE = "zh"
 PATH_PO_STRINGS_DIR = "C:/Program Files (x86)/Steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded_Data/StreamingAssets/strings/"

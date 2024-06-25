@@ -65,11 +65,21 @@ def getRocketEngineCluster(entity):
         if fuelTag:
             rocketEngineCluster['fuelTag'] = fuelTag['Name']
         return rocketEngineCluster
-    pass
+    return None
+
+
+def getEntityTags(entity):
+    if entity is None:
+        return None
+    tags = entity.get('tags', None)
+    if tags:
+        return [name['Name'] for name in tags]
+    return None
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_entity = {}
+    data_buildDef = []
     roomConstraintTags = []
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as file:
@@ -79,7 +89,18 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 roomConstraintTags.append(item['Name'])
         for item in data.get('bBuildingDefList', None):
             dict_entity[item['name']] = item
-        data_buildDef = data.get("buildingDefs", None)
+        data_buildDef.extend(data.get("buildingDefs", None))
+    with open(constant.dict_PATH_EXTRACT_FILE_BASE_ONLY['building'], 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        for item in data.get('bBuildingDefList', None):
+            id = item['name']
+            if id not in dict_entity.keys():
+                print("base only: " + id)
+                dict_entity[id] = item
+        for item in data.get('bBuildingDefList', None):
+            id = item['name']
+            if id not in dict_entity.keys():
+                data_buildDef.append(item)
     if data_buildDef is None:
         return False
     dict_building_tech = {}
@@ -99,18 +120,21 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         if id is None:
             continue
         item['id'] = id
-        item['roomRequireTags'] = getRoomRequireTags(dict_entity.get(id, None), roomConstraintTags)
         item['ingredients'] = getIngredients(item)
         item['tech'] = dict_building_tech.get(id, None)
-        item['storage'] = getStorageInfo(dict_entity.get(id, None))
         AttachmentSlotTag = item.get('AttachmentSlotTag', None)
         if AttachmentSlotTag:
             item['AttachmentSlotTag'] = AttachmentSlotTag['Name']
         ReplacementTags = item.get('ReplacementTags', None)
         if ReplacementTags:
             item['ReplacementTags'] = [tag['Name'] for tag in ReplacementTags]
-        item['rocketModule'] = getRocketModule(dict_entity.get(id, None))
-        item['rocketEngineCluster'] = getRocketEngineCluster(dict_entity.get(id, None))
+        entity = dict_entity.get(id, None)
+        if entity:
+            item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)
+            item['rocketModule'] = getRocketModule(entity)
+            item['rocketEngineCluster'] = getRocketEngineCluster(entity)
+            item['storage'] = getStorageInfo(entity)
+            item['tags'] = getEntityTags(entity)
         # Add
         dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)

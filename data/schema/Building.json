@@ -124,9 +124,6 @@
     "id": {
       "type": "string"
     },
-    "roomRequireTags": {
-      "type": "object"
-    },
     "ingredients": {
       "type": "array",
       "items": {
@@ -143,6 +140,15 @@
           "amount",
           "name"
         ]
+      }
+    },
+    "roomRequireTags": {
+      "type": "object"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
       }
     },
     "tech": {
