@@ -52,3 +52,4 @@ class EntityType(Enum):
     Disease = EntityInfo("Disease", "DISEASE", "Diseases")
     Biome = EntityInfo("Biomes", "BIOMES", "Biomes")
     Tech = EntityInfo("Tech", "TECH", "Tech")
+    MaterialModifier = EntityInfo("MaterialModifier", "MaterialModifier", "MaterialModifier")
