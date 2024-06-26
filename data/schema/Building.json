@@ -294,7 +294,7 @@
           "type": "integer"
         },
         "exhaustElement": {
-          "type": "integer"
+          "type": "string"
         },
         "fuelTag": {
           "type": "string"
@@ -315,7 +315,10 @@
           "type": "boolean"
         },
         "exhaustDiseaseIdx": {
-          "type": "integer"
+          "type": [
+            "null",
+            "string"
+          ]
         },
         "exhaustDiseaseCount": {
           "type": "integer"
