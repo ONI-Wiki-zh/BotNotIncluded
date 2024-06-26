@@ -154,6 +154,15 @@
     "tech": {
       "type": "string"
     },
+    "requiredGrantSkill": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "subCategory": {
+      "type": "string"
+    },
     "LogicInputPorts": {
       "type": "array",
       "items": {

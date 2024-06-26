@@ -77,8 +77,24 @@ def getEntityTags(entity):
     return None
 
 
+def getCategory(entity, dict_category):
+    if entity is None:
+        return None, None
+    category, sub_category = dict_category.get(entity['name'], (None, None))
+    if category is None:
+        if entity.get('rocketModule', None):
+            category = "STRINGS.UI.UISIDESCREENS.ROCKETMODULESIDESCREEN.TITLE"
+    else:
+        category = "STRINGS.UI.BUILDCATEGORIES."+str(category).upper()+".NAME"
+    if sub_category is not None:
+        sub_category = "STRINGS.UI.NEWBUILDCATEGORIES."+str(sub_category).upper()+".NAME"
+    return category, sub_category
+
+
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_entity = {}
+    dict_requiredSkillPerk = {}
+    dict_category = {}
     data_buildDef = []
     roomConstraintTags = []
     # 读取数据
@@ -87,6 +103,11 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         for item in data.get('roomConstraintTags', None):
             if item.get('IsValid', None):
                 roomConstraintTags.append(item['Name'])
+        for id, skillPerkId in data.get('requiredSkillPerkMap', None).items():
+            dict_requiredSkillPerk[id] = skillPerkId
+        for category, cateList in data.get('buildingAndSubcategoryDataPairs', None).items():
+            for cateInfo in cateList:
+                dict_category[cateInfo['Key']] = (category, cateInfo['Value'])
         for item in data.get('bBuildingDefList', None):
             dict_entity[item['name']] = item
         data_buildDef.extend(data.get("buildingDefs", None))
@@ -104,6 +125,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     if data_buildDef is None:
         return False
     dict_building_tech = {}
+    dict_perk_skill = {}
     # 读取科技数据
     with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as file:
         data = json.load(file)
@@ -113,6 +135,12 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 continue
             for unlockedItem in unlockedItems:
                 dict_building_tech[unlockedItem['Id']] = unlockedItem.get('parentTechId')
+        for skill in data['skills']:
+            perks = skill.get('perks', None)
+            if perks is None:
+                continue
+            for perk in perks:
+                dict_perk_skill[perk['Id']] = skill['Id']
     # 组装建筑
     dict_output = {}
     for item in data_buildDef:
@@ -128,6 +156,10 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         ReplacementTags = item.get('ReplacementTags', None)
         if ReplacementTags:
             item['ReplacementTags'] = [tag['Name'] for tag in ReplacementTags]
+        item['requiredGrantSkill'] = dict_perk_skill.get(dict_requiredSkillPerk.get(id, None), None)
+        category, sub_category = getCategory(item, dict_category)
+        item['category'] = category
+        item['subCategory'] = sub_category
         entity = dict_entity.get(id, None)
         if entity:
             item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)
