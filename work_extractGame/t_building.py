@@ -173,6 +173,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as file:
         data = json.load(file)
+        # 建筑信息
+        data_buildDef.extend(data.get("buildingDefs", None))
         # 房间建筑类型标签
         for item in data.get('roomConstraintTags', None):
             if item.get('IsValid', None):
@@ -187,21 +189,24 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         # 建筑实体信息
         for item in data.get('bBuildingDefList', None):
             dict_entity[item['name']] = item
-        # 建筑信息
-        data_buildDef.extend(data.get("buildingDefs", None))
     with open(constant.dict_PATH_EXTRACT_FILE_BASE_ONLY['building'], 'r', encoding='utf-8') as file:
         data = json.load(file)
+        # 建筑信息
+        for item in data.get('buildingDefs', None):
+            id = item['name']
+            if id not in dict_entity.keys():
+                data_buildDef.append(item)
+        # 建筑分类
+        for category, cateList in data.get('buildingAndSubcategoryDataPairs', None).items():
+            for cateInfo in cateList:
+                if cateInfo['Key'] not in dict_category.keys():
+                    dict_category[cateInfo['Key']] = (category, cateInfo['Value'])
         # 建筑实体信息
         for item in data.get('bBuildingDefList', None):
             id = item['name']
             if id not in dict_entity.keys():
                 print("base only: " + id)
                 dict_entity[id] = item
-        # 建筑信息
-        for item in data.get('buildingDefs', None):
-            id = item['name']
-            if id not in dict_entity.keys():
-                data_buildDef.append(item)
     if data_buildDef is None:
         return False
     dict_building_tech = {}
