@@ -210,11 +210,15 @@
         },
         "useGunForDelivery": {
           "type": "boolean"
+        },
+        "showInUI": {
+          "type": "boolean"
         }
       },
       "required": [
         "allowItemRemoval",
         "capacityKg",
+        "showInUI",
         "storageFilters",
         "useGunForDelivery"
       ]

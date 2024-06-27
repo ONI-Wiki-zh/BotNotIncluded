@@ -143,6 +143,27 @@ def getRequireGrantSkill(grantSkillId):
     return None
 
 
+def getLogicPorts(logicOutputPorts):
+    """自动化端口"""
+    for logicPort in logicOutputPorts:
+        description = logicPort.get('description', None)
+        if description:
+            poEntry, _ = getPOEntry_by_nameString(description, msg_need=['BUILDINGS.PREFABS.'])
+            if poEntry and poEntry.msgctxt:
+                logicPort['description'] = poEntry.msgctxt
+        activeDescription = logicPort.get('activeDescription', None)
+        if activeDescription:
+            poEntry, _ = getPOEntry_by_nameString(activeDescription, msg_need=['UI.LOGIC_PORTS.'])
+            if poEntry and poEntry.msgctxt:
+                logicPort['activeDescription'] = poEntry.msgctxt
+        inactiveDescription = logicPort.get('inactiveDescription', None)
+        if inactiveDescription:
+            poEntry, _ = getPOEntry_by_nameString(inactiveDescription, msg_need=['UI.LOGIC_PORTS.'])
+            if poEntry and poEntry.msgctxt:
+                logicPort['inactiveDescription'] = poEntry.msgctxt
+    return logicOutputPorts
+
+
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_entity = {}
     dict_requiredSkillPerk = {}
@@ -218,9 +239,13 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         if ReplacementTags:
             item['ReplacementTags'] = [tag['Name'] for tag in ReplacementTags]
         item['requiredGrantSkill'] = getRequireGrantSkill(dict_perk_skill.get(dict_requiredSkillPerk.get(id, None), None))
-        category, sub_category = getCategory(item, dict_category)
-        item['category'] = category
-        item['subCategory'] = sub_category
+        logicOutputPorts = item.get('LogicOutputPorts', None)
+        if logicOutputPorts:
+            item['LogicOutputPorts'] = getLogicPorts(logicOutputPorts)
+        logicInputPorts = item.get('LogicInputPorts', None)
+        if logicInputPorts:
+            item['LogicInputPorts'] = getLogicPorts(logicInputPorts)
+        # 实体信息
         entity = dict_entity.get(id, None)
         if entity:
             item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)
@@ -228,6 +253,10 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             item['rocketEngineCluster'] = getRocketEngineCluster(entity)
             item['storage'] = getStorageInfo(entity)
             item['tags'] = getEntityTags(entity)
+        # 分类
+        category, sub_category = getCategory(item, dict_category)
+        item['category'] = category
+        item['subCategory'] = sub_category
         # Add
         dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)
