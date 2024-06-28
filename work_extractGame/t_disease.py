@@ -61,13 +61,20 @@ def setGrowthRule(item, dict_SimHashes):
 
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_SimHashes = DataUtils.loadSimHashed()
+    dict_ExposureType = {}
+    with open(constant.dict_PATH_EXTRACT_FILE['attribute'], 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        for item in data['ExposureType']:
+            dict_ExposureType[item['germ_id']] = item
     dict_output = {}
     # 读取装备
     with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:
         data = json.load(f)
         for item in data['diseases']:
+            id = item['Id']
+            item['exposureType'] = dict_ExposureType.get(id, None)
             setGrowthRule(item, dict_SimHashes)
-            dict_output[item['Id']] = item
+            dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True
 

@@ -144,6 +144,71 @@
     "Disabled": {
       "type": "boolean"
     },
+    "exposureType": {
+      "type": "object",
+      "properties": {
+        "germ_id": {
+          "type": "string"
+        },
+        "sickness_id": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "infection_effect": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "exposure_threshold": {
+          "type": "integer"
+        },
+        "infect_immediately": {
+          "type": "boolean"
+        },
+        "excluded_traits": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "excluded_effects": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "base_resistance": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "base_resistance",
+        "excluded_effects",
+        "excluded_traits",
+        "exposure_threshold",
+        "germ_id",
+        "infect_immediately",
+        "infection_effect",
+        "sickness_id"
+      ]
+    },
     "ruleGrowsOn": {
       "type": "array",
       "items": {
@@ -438,6 +503,7 @@
   "required": [
     "Disabled",
     "Id",
+    "exposureType",
     "overlayColourName",
     "pressureHalfLives",
     "pressureRange",
