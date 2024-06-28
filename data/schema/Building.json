@@ -346,6 +346,37 @@
         "maxModules",
         "requireOxidizer"
       ]
+    },
+    "rocketEngine": {
+      "type": "object",
+      "properties": {
+        "exhaustEmitRate": {
+          "type": "number"
+        },
+        "exhaustTemperature": {
+          "type": "number"
+        },
+        "exhaustElement": {
+          "type": "string"
+        },
+        "fuelTag": {
+          "type": "string"
+        },
+        "efficiency": {
+          "type": "number"
+        },
+        "requireOxidizer": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "efficiency",
+        "exhaustElement",
+        "exhaustEmitRate",
+        "exhaustTemperature",
+        "fuelTag",
+        "requireOxidizer"
+      ]
     }
   },
   "required": [

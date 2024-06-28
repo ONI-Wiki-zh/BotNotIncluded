@@ -62,6 +62,24 @@ def getStorageInfo(entity):
     return None
 
 
+def getRocketEngine(entity):
+    if entity is None:
+        return None
+    global dict_SimHashes
+    if dict_SimHashes is None:
+        dict_SimHashes = DataUtils.loadSimHashed()
+    rocketEngine = entity.get('rocketEngine', None)
+    if rocketEngine:
+        fuelTag = rocketEngine.get('fuelTag')
+        if fuelTag:
+            rocketEngine['fuelTag'] = fuelTag['Name']
+        exhaustElement = rocketEngine.get('exhaustElement', None)
+        if exhaustElement:
+            rocketEngine['exhaustElement'] = dict_SimHashes.get(exhaustElement, None)
+        return rocketEngine
+    return None
+
+
 def getRocketEngineCluster(entity):
     """获取火箭引擎信息"""
     if entity is None:
@@ -106,6 +124,8 @@ def getCategory(entity, dict_category):
     if category is None:
         if entity.get('rocketModule', None):
             category = "STRINGS.UI.UISIDESCREENS.ROCKETMODULESIDESCREEN.TITLE"
+        elif "Gravitas" in entity.get('tags', None):
+            category = "STRINGS.UI.BUILDCATEGORIES.GRAVITAS.NAME"
     else:
         category = "STRINGS.UI.BUILDCATEGORIES."+str(category).upper()+".NAME"
     if sub_category is not None:
@@ -255,6 +275,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         if entity:
             item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)
             item['rocketModule'] = getRocketModule(entity)
+            item['rocketEngine'] = getRocketEngine(entity)
             item['rocketEngineCluster'] = getRocketEngineCluster(entity)
             item['storage'] = getStorageInfo(entity)
             item['tags'] = getEntityTags(entity)
