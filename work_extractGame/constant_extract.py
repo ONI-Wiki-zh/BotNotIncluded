@@ -24,6 +24,7 @@ dict_PATH_EXTRACT_FILE = {
     "item": PATH_EXTRACT_DIR + "items.json",
     "recipe": PATH_EXTRACT_DIR + "recipe.json",
     "db": PATH_EXTRACT_DIR + "db.json",
+    "attribute": PATH_EXTRACT_DIR + "attribute.json",
     "tags": PATH_EXTRACT_DIR + "tags.json",
     "po_string": PATH_EXTRACT_DIR + "po_string.json",
     "codex": PATH_EXTRACT_DIR + "codex.json",
@@ -50,6 +51,7 @@ class EntityType(Enum):
     Equipment = EntityInfo("Equipment", "EQUIPMENT", "Equipments")
     Item = EntityInfo("Item", "MiscellaneousItems".upper(), "Items")
     Disease = EntityInfo("Disease", "DISEASE", "Diseases")
+    Sickness = EntityInfo("Sickness", "Sickness", "Sicknesses")
     Biome = EntityInfo("Biomes", "BIOMES", "Biomes")
     Tech = EntityInfo("Tech", "TECH", "Tech")
     MaterialModifier = EntityInfo("MaterialModifier", "MaterialModifier", "MaterialModifier")
