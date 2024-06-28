@@ -7,6 +7,7 @@ from work_extractGame.util.DataUtils import save_lua_by_schema
 
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_sicknessModifier = {}
+    dict_ExposureType = {}
     dict_SicknessType = {}
     dict_Severity = {}
     dict_InfectionVector = {}
@@ -26,6 +27,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             dict_sicknessModifier[key] = list_modifier
         for item, hashCode in data['SicknessType'].items():
             dict_SicknessType[hashCode] = item
+        for item in data['ExposureType']:
+            dict_ExposureType[item['sickness_id']] = item
         for item, hashCode in data['Severity'].items():
             dict_Severity[hashCode] = item
         for item, hashCode in data['InfectionVector'].items():
@@ -45,11 +48,13 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             item['descSymptoms'] = DescriptiveSymptoms['String']
         sicknessType = item.get('sicknessType', None)
         if sicknessType is not None:
-            print(sicknessType)
             item['sicknessType'] = dict_SicknessType.get(sicknessType, None)
         severity = item.get('severity', None)
         if severity is not None:
             item['severity'] = dict_Severity.get(severity, None)
+        exposureType = dict_ExposureType.get(id, None)
+        if exposureType:
+            item['germId'] = exposureType['germ_id']
         infectionVectors = item.get('infectionVectors', None)
         if infectionVectors is not None:
             list_infectionVector = []

@@ -39,6 +39,9 @@
     },
     "descSymptoms": {
       "type": "string"
+    },
+    "germId": {
+      "type": "string"
     }
   },
   "required": [
