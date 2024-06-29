@@ -1,0 +1,217 @@
+{
+  "type": "object",
+  "properties": {
+    "": {
+      "type": "object",
+      "properties": {
+        "dlcId": {
+          "type": "string"
+        },
+        "skillGroup": {
+          "type": "string"
+        },
+        "tier": {
+          "type": "integer"
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "perks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "modifier": {
+                "type": "object",
+                "properties": {
+                  "AttributeId": {
+                    "type": "string"
+                  },
+                  "Value": {
+                    "type": "number"
+                  },
+                  "IsMultiplier": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "AttributeId",
+                  "IsMultiplier",
+                  "Value"
+                ]
+              },
+              "Id": {
+                "type": "string"
+              },
+              "Disabled": {
+                "type": "boolean"
+              },
+              "affectAll": {
+                "type": "boolean"
+              },
+              "effect": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "Disabled",
+              "Id",
+              "affectAll"
+            ]
+          }
+        },
+        "priorSkills": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Id": {
+          "type": "string"
+        },
+        "nextSkills": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "Id",
+        "Name",
+        "deprecated",
+        "dlcId",
+        "nextSkills",
+        "perks",
+        "priorSkills",
+        "skillGroup",
+        "tier"
+      ]
+    },
+    "EXPANSION1_ID": {
+      "type": "object",
+      "properties": {
+        "dlcId": {
+          "type": "string"
+        },
+        "skillGroup": {
+          "type": "string"
+        },
+        "tier": {
+          "type": "integer"
+        },
+        "deprecated": {
+          "type": "boolean"
+        },
+        "perks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "modifier": {
+                "type": "object",
+                "properties": {
+                  "AttributeId": {
+                    "type": "string"
+                  },
+                  "Value": {
+                    "type": "number"
+                  },
+                  "IsMultiplier": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "AttributeId",
+                  "IsMultiplier",
+                  "Value"
+                ]
+              },
+              "Id": {
+                "type": "string"
+              },
+              "Disabled": {
+                "type": "boolean"
+              },
+              "affectAll": {
+                "type": "boolean"
+              },
+              "effect": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "Disabled",
+              "Id",
+              "affectAll"
+            ]
+          }
+        },
+        "priorSkills": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Id": {
+          "type": "string"
+        },
+        "nextSkills": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "Id",
+        "Name",
+        "deprecated",
+        "dlcId",
+        "nextSkills",
+        "perks",
+        "priorSkills",
+        "skillGroup",
+        "tier"
+      ]
+    }
+  },
+  "required": [
+    "",
+    "EXPANSION1_ID"
+  ]
+}

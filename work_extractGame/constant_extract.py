@@ -31,6 +31,7 @@ dict_PATH_EXTRACT_FILE = {
 }
 dict_PATH_EXTRACT_FILE_BASE_ONLY = {
     "building": PATH_EXTRACT_DIR_BASE_ONLY + "building.json",
+    "db": PATH_EXTRACT_DIR_BASE_ONLY + "db.json",
 }
 LANGUAGE = "zh"
 PATH_PO_STRINGS_DIR = "C:/Program Files (x86)/Steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded_Data/StreamingAssets/strings/"
@@ -54,4 +55,5 @@ class EntityType(Enum):
     Sickness = EntityInfo("Sickness", "Sickness", "Sicknesses")
     Biome = EntityInfo("Biomes", "BIOMES", "Biomes")
     Tech = EntityInfo("Tech", "TECH", "Techs")
+    Skill = EntityInfo("Skill", "ROLES", "Skills")
     MaterialModifier = EntityInfo("MaterialModifier", "MaterialModifier", "MaterialModifier")
