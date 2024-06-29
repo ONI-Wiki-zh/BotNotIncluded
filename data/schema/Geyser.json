@@ -188,6 +188,81 @@
         "massYearOn"
       ]
     },
+    "geotunerEffect": {
+      "type": "object",
+      "properties": {
+        "material": {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string"
+            },
+            "IsValid": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "IsValid",
+            "Name"
+          ]
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "template": {
+          "type": "object",
+          "properties": {
+            "massPerCycleModifier": {
+              "type": "number"
+            },
+            "temperatureModifier": {
+              "type": "number"
+            },
+            "iterationDurationModifier": {
+              "type": "number"
+            },
+            "iterationPercentageModifier": {
+              "type": "number"
+            },
+            "yearDurationModifier": {
+              "type": "number"
+            },
+            "yearPercentageModifier": {
+              "type": "number"
+            },
+            "maxPressureModifier": {
+              "type": "number"
+            },
+            "modifyElement": {
+              "type": "boolean"
+            },
+            "newElement": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "iterationDurationModifier",
+            "iterationPercentageModifier",
+            "massPerCycleModifier",
+            "maxPressureModifier",
+            "modifyElement",
+            "newElement",
+            "temperatureModifier",
+            "yearDurationModifier",
+            "yearPercentageModifier"
+          ]
+        },
+        "duration": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "duration",
+        "material",
+        "quantity",
+        "template"
+      ]
+    },
     "decorProvider": {
       "type": "object",
       "properties": {
@@ -206,19 +281,7 @@
     "tags": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string"
-          },
-          "IsValid": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "IsValid",
-          "Name"
-        ]
+        "type": "string"
       }
     },
     "primaryElement": {
@@ -255,6 +318,7 @@
   },
   "required": [
     "decorProvider",
+    "geotunerEffect",
     "geyserType",
     "height",
     "id",

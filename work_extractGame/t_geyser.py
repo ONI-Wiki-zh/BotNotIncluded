@@ -184,10 +184,26 @@ def getOutputMassDict(gType, cache_pp=None):
     pass
 
 
+def getGeotunerEffect(gType, gHash, gSetting):
+    gId = gType.get('id', None)
+    if gId is None:
+        return None
+    gTypeHash = gHash.get(gId, None)
+    if gTypeHash is None:
+        return None
+    gTypeSetting = gSetting.get(gTypeHash, None)
+    if gTypeSetting:
+        return gTypeSetting
+    return None
+
+
 def convert_data_2_lua(entityInfo: EntityInfo):
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['geyser'], 'r', encoding='utf-8') as file:
-        data = json.load(file).get("geysers", None)
+        fData = json.load(file)
+        geyserIdHashDictionary = fData.get("geyserIdHashDictionary", None)
+        geotunerGeyserSettings = fData.get("geotunerGeyserSettings", None)
+        data = fData.get("geysers", None)
     if data is None:
         return False
     dict_SimHashes = DataUtils.loadSimHashed()
@@ -211,6 +227,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         print(id)
         item['outputRate'] = getOutputRateDict(geyserType, cache_pp)
         item['outputMass'] = getOutputMassDict(geyserType, cache_pp)
+        item['geotunerEffect'] = getGeotunerEffect(geyserType, geyserIdHashDictionary, geotunerGeyserSettings)
         dict_output[id] = item
     # multiEntities属性
     with open(constant.dict_PATH_EXTRACT_FILE['multiEntities'], 'r', encoding='utf-8') as file:
@@ -225,7 +242,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     geyser['decorProvider'] = decorProvider
                 tags = item.get("tags")
                 if tags:
-                    geyser['tags'] = tags
+                    geyser['tags'] = [tag['Name'] for tag in tags]
                 primaryElement = item.get("primaryElement")
                 if primaryElement:
                     geyser['primaryElement'] = primaryElement
