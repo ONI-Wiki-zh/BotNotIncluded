@@ -193,6 +193,7 @@ def getGeotunerEffect(gType, gHash, gSetting):
         return None
     gTypeSetting = gSetting.get(gTypeHash, None)
     if gTypeSetting:
+        gTypeSetting['material'] = gTypeSetting['material']['Name']
         return gTypeSetting
     return None
 

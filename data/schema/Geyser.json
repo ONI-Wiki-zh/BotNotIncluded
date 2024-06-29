@@ -192,19 +192,7 @@
       "type": "object",
       "properties": {
         "material": {
-          "type": "object",
-          "properties": {
-            "Name": {
-              "type": "string"
-            },
-            "IsValid": {
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "IsValid",
-            "Name"
-          ]
+          "type": "string"
         },
         "quantity": {
           "type": "number"
