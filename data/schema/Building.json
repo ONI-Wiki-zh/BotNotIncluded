@@ -142,9 +142,6 @@
         ]
       }
     },
-    "roomRequireTags": {
-      "type": "object"
-    },
     "tags": {
       "type": "array",
       "items": {
@@ -156,6 +153,12 @@
     },
     "requiredGrantSkill": {
       "type": "string"
+    },
+    "roomRequireTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "category": {
       "type": "string"
@@ -420,7 +423,6 @@
     "ingredients",
     "isKAnimTile",
     "isSolidTile",
-    "isUtility",
-    "roomRequireTags"
+    "isUtility"
   ]
 }

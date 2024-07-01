@@ -17,10 +17,13 @@ def getRoomRequireTags(entity, roomConstraintTags):
     if tags is None:
         return None
     res_list = []
-    for tag in tags:
+    for tagInfo in tags:
+        tag = tagInfo['Name']
         if tag in roomConstraintTags:
             res_list.append(tag)
-    return res_list
+    if len(res_list) > 0:
+        return res_list
+    return None
 
 
 def getIngredients(buildDef):
@@ -124,7 +127,7 @@ def getCategory(entity, dict_category):
     if category is None:
         if entity.get('rocketModule', None):
             category = "STRINGS.UI.UISIDESCREENS.ROCKETMODULESIDESCREEN.TITLE"
-        elif "Gravitas" in entity.get('tags', None):
+        elif entity.get('tags', None) and "Gravitas" in entity.get('tags', None):
             category = "STRINGS.UI.BUILDCATEGORIES.GRAVITAS.NAME"
     else:
         category = "STRINGS.UI.BUILDCATEGORIES."+str(category).upper()+".NAME"
