@@ -56,4 +56,5 @@ class EntityType(Enum):
     Biome = EntityInfo("Biomes", "BIOMES", "Biomes")
     Tech = EntityInfo("Tech", "TECH", "Techs")
     Skill = EntityInfo("Skill", "ROLES", "Skills")
+    RoomType = EntityInfo("RoomType", "ROOMS", "RoomTypes")
     MaterialModifier = EntityInfo("MaterialModifier", "MaterialModifier", "MaterialModifier")

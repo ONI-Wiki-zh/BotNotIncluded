@@ -1,0 +1,103 @@
+{
+  "type": "object",
+  "properties": {
+    "Name": {
+      "type": "string"
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Disabled": {
+      "type": "boolean"
+    },
+    "priority": {
+      "type": "integer"
+    },
+    "single_assignee": {
+      "type": "boolean"
+    },
+    "priority_building_use": {
+      "type": "boolean"
+    },
+    "category": {
+      "type": "string"
+    },
+    "sortKey": {
+      "type": "integer"
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string"
+          },
+          "Attribute": {
+            "type": "string"
+          },
+          "Value": {
+            "type": "number"
+          },
+          "Units": {
+            "type": "integer"
+          },
+          "Multiplier": {
+            "type": "boolean"
+          },
+          "Duration": {
+            "type": "number"
+          },
+          "ShowInUI": {
+            "type": "boolean"
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Disabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "Attribute",
+          "Disabled",
+          "Duration",
+          "Id",
+          "Multiplier",
+          "ShowInUI",
+          "Type",
+          "Units",
+          "Value"
+        ]
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prePaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nextPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "Disabled",
+    "Id",
+    "Name",
+    "category",
+    "priority",
+    "priority_building_use",
+    "single_assignee",
+    "sortKey"
+  ]
+}
