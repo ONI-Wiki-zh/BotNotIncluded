@@ -36,6 +36,9 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         item['id'] = id
         for name in list_name:
             if name.upper() == id.upper():
+                tags = item.get('tags', None)
+                if tags:
+                    item['tags'] = [tag['Name'] for tag in tags]
                 dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True

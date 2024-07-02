@@ -371,29 +371,10 @@
       ]
     },
     "tags": {
-      "anyOf": [
-        {
-          "type": "object"
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "IsValid": {
-                "type": "boolean"
-              },
-              "Name": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "IsValid",
-              "Name"
-            ]
-          }
-        }
-      ]
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "temperatureVulnerable": {
       "type": "object",
