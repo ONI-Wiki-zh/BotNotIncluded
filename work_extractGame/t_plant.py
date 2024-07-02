@@ -2,7 +2,7 @@ import json
 
 import work_extractGame.constant_extract as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-from work_extractGame.util.DataUtils import save_lua_by_schema
+from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
 
 
 def get_name_list(codex: str):
@@ -21,9 +21,34 @@ def get_name_list(codex: str):
     pass
 
 
+def getElementConsumer(item, dict_SimHashes):
+    elementConsumer = item.get('elementConsumer')
+    if elementConsumer:
+        elementConsumer['elementToConsume'] = dict_SimHashes.get(elementConsumer['elementToConsume'], None)
+        return elementConsumer
+    else:
+        return None
+
+
+def getElementConverters(item, dict_SimHashes, dict_Disease):
+    elementConverters = item.get('elementConverters', None)
+    if elementConverters and len(elementConverters) > 0:
+        for elementConverter in elementConverters:
+            outputElements = elementConverter.get('outputElements', None)
+            for outputElement in outputElements:
+                outputElement['element'] = dict_SimHashes.get(outputElement['elementHash'], None)
+                outputElement['diseaseName'] = dict_Disease.get(outputElement['addedDiseaseIdx'], None)
+                outputElement['diseaseCount'] = outputElement['addedDiseaseCount']
+        return elementConverters
+    else:
+        return None
+
+
 def convert_data_2_lua(entityInfo: EntityInfo):
     # 读取id列表
     list_name = get_name_list(entityInfo.codex.upper())
+    dict_SimHashes = DataUtils.loadSimHashed()
+    dict_Disease = DataUtils.loadSimHashed_disease()
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
         data = json.load(file).get("entities", None)
@@ -34,12 +59,25 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     for item in data:
         id = item.get('name', None)
         item['id'] = id
-        for name in list_name:
-            if name.upper() == id.upper():
-                tags = item.get('tags', None)
-                if tags:
-                    item['tags'] = [tag['Name'] for tag in tags]
-                dict_output[id] = item
+        if not(list_name and any(str(name).upper() == id.upper() for name in list_name)):
+            continue
+        tags = item.get('tags', None)
+        if tags:
+            item['tags'] = [tag['Name'] for tag in tags]
+        else:
+            item['tags'] = None
+        # 灌溉
+        irrigationDef = item.get('irrigationDef', None)
+        if irrigationDef:
+            item['irrigation'] = irrigationDef.get('consumedElements', None)
+        # 施肥
+        fertilizationDef = item.get('fertilizationDef', None)
+        if fertilizationDef:
+            item['fertilization'] = fertilizationDef.get('consumedElements', None)
+        # 环境吸收
+        item['elementConsumer'] = getElementConsumer(item, dict_SimHashes)
+        item['elementConverters'] = getElementConverters(item, dict_SimHashes, dict_Disease)
+        dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True
 

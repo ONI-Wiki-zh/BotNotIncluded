@@ -1,273 +1,26 @@
 {
   "type": "object",
   "properties": {
-    "cropVal": {
-      "type": "object",
-      "properties": {
-        "cropDuration": {
-          "type": "integer"
-        },
-        "cropId": {
-          "type": "string"
-        },
-        "numProduced": {
-          "type": "integer"
-        },
-        "renewable": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "cropDuration",
-        "cropId",
-        "numProduced",
-        "renewable"
-      ]
-    },
-    "decorProvider": {
-      "type": "object",
-      "properties": {
-        "baseDecor": {
-          "type": "integer"
-        },
-        "baseRadius": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "baseDecor",
-        "baseRadius"
-      ]
-    },
     "dlcIds": {
       "type": "array",
       "items": {
         "type": "string"
       }
     },
-    "elementConverters": {
-      "anyOf": [
-        {
-          "type": "object"
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "OperationalRequirement": {
-                "type": "integer"
-              },
-              "OutputMultiplier": {
-                "type": "integer"
-              },
-              "ShowInUI": {
-                "type": "boolean"
-              },
-              "consumedElements": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "Accumulator": {
-                      "type": "object",
-                      "properties": {
-                        "index": {
-                          "type": "integer"
-                        }
-                      },
-                      "required": [
-                        "index"
-                      ]
-                    },
-                    "IsActive": {
-                      "type": "boolean"
-                    },
-                    "MassConsumptionRate": {
-                      "type": "number"
-                    },
-                    "Tag": {
-                      "type": "object",
-                      "properties": {
-                        "IsValid": {
-                          "type": "boolean"
-                        },
-                        "Name": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "IsValid",
-                        "Name"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "Accumulator",
-                    "IsActive",
-                    "MassConsumptionRate",
-                    "Tag"
-                  ]
-                }
-              },
-              "outputElements": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "IsActive": {
-                      "type": "boolean"
-                    },
-                    "Name": {
-                      "type": "string"
-                    },
-                    "accumulator": {
-                      "type": "object",
-                      "properties": {
-                        "index": {
-                          "type": "integer"
-                        }
-                      },
-                      "required": [
-                        "index"
-                      ]
-                    },
-                    "addedDiseaseCount": {
-                      "type": "integer"
-                    },
-                    "addedDiseaseIdx": {
-                      "type": "integer"
-                    },
-                    "diseaseWeight": {
-                      "type": "number"
-                    },
-                    "elementHash": {
-                      "type": "integer"
-                    },
-                    "massGenerationRate": {
-                      "type": "number"
-                    },
-                    "minOutputTemperature": {
-                      "type": "integer"
-                    },
-                    "outputElementOffset": {
-                      "type": "object",
-                      "properties": {
-                        "magnitude": {
-                          "type": "integer"
-                        },
-                        "sqrMagnitude": {
-                          "type": "integer"
-                        },
-                        "x": {
-                          "type": "integer"
-                        },
-                        "y": {
-                          "type": "integer"
-                        }
-                      },
-                      "required": [
-                        "magnitude",
-                        "sqrMagnitude",
-                        "x",
-                        "y"
-                      ]
-                    },
-                    "storeOutput": {
-                      "type": "boolean"
-                    },
-                    "useEntityTemperature": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "IsActive",
-                    "Name",
-                    "accumulator",
-                    "addedDiseaseCount",
-                    "addedDiseaseIdx",
-                    "diseaseWeight",
-                    "elementHash",
-                    "massGenerationRate",
-                    "minOutputTemperature",
-                    "outputElementOffset",
-                    "storeOutput",
-                    "useEntityTemperature"
-                  ]
-                }
-              },
-              "showDescriptors": {
-                "type": "boolean"
-              }
-            },
-            "required": [
-              "OperationalRequirement",
-              "OutputMultiplier",
-              "ShowInUI",
-              "consumedElements",
-              "outputElements",
-              "showDescriptors"
-            ]
-          }
-        }
-      ]
-    },
-    "growing": {
-      "type": "object",
-      "properties": {
-        "maxAge": {
-          "type": "integer"
-        },
-        "shouldGrowOld": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "maxAge",
-        "shouldGrowOld"
-      ]
-    },
-    "id": {
-      "type": "string"
-    },
-    "irrigation": {
+    "tags": {
       "type": "array",
       "items": {
-        "type": "object",
-        "properties": {
-          "massConsumptionRate": {
-            "type": "number"
-          },
-          "tag": {
-            "type": "object",
-            "properties": {
-              "IsValid": {
-                "type": "boolean"
-              },
-              "Name": {
-                "type": "string"
-              }
-            },
-            "required": [
-              "IsValid",
-              "Name"
-            ]
-          }
-        },
-        "required": [
-          "massConsumptionRate",
-          "tag"
-        ]
+        "type": "string"
       }
     },
     "kBoxCollider2D": {
       "type": "object",
       "properties": {
         "x": {
-          "type": "integer"
+          "type": "number"
         },
         "y": {
-          "type": "integer"
+          "type": "number"
         }
       },
       "required": [
@@ -275,19 +28,49 @@
         "y"
       ]
     },
+    "decorProvider": {
+      "type": "object",
+      "properties": {
+        "baseRadius": {
+          "type": "number"
+        },
+        "baseDecor": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseDecor",
+        "baseRadius"
+      ]
+    },
+    "wiltConditions": {
+      "type": "object",
+      "properties": {
+        "minRad": {
+          "type": "number"
+        },
+        "maxRad": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "maxRad",
+        "minRad"
+      ]
+    },
     "pressureVulnerable": {
       "type": "object",
       "properties": {
-        "pressureLethal_High": {
+        "pressureLethal_Low": {
           "type": "number"
         },
-        "pressureLethal_Low": {
+        "pressureWarning_Low": {
           "type": "number"
         },
         "pressureWarning_High": {
           "type": "number"
         },
-        "pressureWarning_Low": {
+        "pressureLethal_High": {
           "type": "number"
         },
         "pressure_sensitive": {
@@ -320,26 +103,106 @@
         "testAreaElementSafe"
       ]
     },
+    "temperatureVulnerable": {
+      "type": "object",
+      "properties": {
+        "temperatureLethalLow": {
+          "type": "number"
+        },
+        "temperatureLethalHigh": {
+          "type": "number"
+        },
+        "temperatureWarningLow": {
+          "type": "number"
+        },
+        "temperatureWarningHigh": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "temperatureLethalHigh",
+        "temperatureLethalLow",
+        "temperatureWarningHigh",
+        "temperatureWarningLow"
+      ]
+    },
+    "cropVal": {
+      "type": "object",
+      "properties": {
+        "cropId": {
+          "type": "string"
+        },
+        "cropDuration": {
+          "type": "number"
+        },
+        "numProduced": {
+          "type": "integer"
+        },
+        "renewable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "cropDuration",
+        "cropId",
+        "numProduced",
+        "renewable"
+      ]
+    },
+    "growing": {
+      "type": "object",
+      "properties": {
+        "shouldGrowOld": {
+          "type": "boolean"
+        },
+        "maxAge": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "maxAge",
+        "shouldGrowOld"
+      ]
+    },
+    "seedInfo": {
+      "type": "object",
+      "properties": {
+        "seedId": {
+          "type": "string"
+        },
+        "productionType": {
+          "type": "integer"
+        },
+        "newSeedsProduced": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "newSeedsProduced",
+        "productionType",
+        "seedId"
+      ]
+    },
     "primaryElement": {
       "type": "object",
       "properties": {
         "DiseaseCount": {
           "type": "integer"
         },
+        "Name": {
+          "type": "string"
+        },
         "InternalTemperature": {
           "type": "number"
         },
         "Mass": {
-          "type": "integer"
-        },
-        "Name": {
-          "type": "string"
+          "type": "number"
         },
         "Temperature": {
           "type": "number"
         },
         "Units": {
-          "type": "integer"
+          "type": "number"
         }
       },
       "required": [
@@ -351,68 +214,38 @@
         "Units"
       ]
     },
-    "seedInfo": {
-      "type": "object",
-      "properties": {
-        "newSeedsProduced": {
-          "type": "integer"
-        },
-        "productionType": {
-          "type": "integer"
-        },
-        "seedId": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "newSeedsProduced",
-        "productionType",
-        "seedId"
-      ]
+    "id": {
+      "type": "string"
     },
-    "tags": {
+    "irrigation": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "tag": {
+            "type": "object",
+            "properties": {
+              "Name": {
+                "type": "string"
+              },
+              "IsValid": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "IsValid",
+              "Name"
+            ]
+          },
+          "massConsumptionRate": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "massConsumptionRate",
+          "tag"
+        ]
       }
-    },
-    "temperatureVulnerable": {
-      "type": "object",
-      "properties": {
-        "temperatureLethalHigh": {
-          "type": "number"
-        },
-        "temperatureLethalLow": {
-          "type": "number"
-        },
-        "temperatureWarningHigh": {
-          "type": "number"
-        },
-        "temperatureWarningLow": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "temperatureLethalHigh",
-        "temperatureLethalLow",
-        "temperatureWarningHigh",
-        "temperatureWarningLow"
-      ]
-    },
-    "wiltConditions": {
-      "type": "object",
-      "properties": {
-        "maxRad": {
-          "type": "integer"
-        },
-        "minRad": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "maxRad",
-        "minRad"
-      ]
     },
     "drowningMonitor": {
       "type": "object",
@@ -434,23 +267,23 @@
       "items": {
         "type": "object",
         "properties": {
-          "massConsumptionRate": {
-            "type": "number"
-          },
           "tag": {
             "type": "object",
             "properties": {
-              "IsValid": {
-                "type": "boolean"
-              },
               "Name": {
                 "type": "string"
+              },
+              "IsValid": {
+                "type": "boolean"
               }
             },
             "required": [
               "IsValid",
               "Name"
             ]
+          },
+          "massConsumptionRate": {
+            "type": "number"
           }
         },
         "required": [
@@ -459,19 +292,46 @@
         ]
       }
     },
+    "elementConsumer": {
+      "type": "object",
+      "properties": {
+        "elementToConsume": {
+          "type": "string"
+        },
+        "consumptionRate": {
+          "type": "number"
+        },
+        "consumptionRadius": {
+          "type": "integer"
+        },
+        "storeOnConsume": {
+          "type": "boolean"
+        },
+        "isRequired": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "consumptionRadius",
+        "consumptionRate",
+        "elementToConsume",
+        "isRequired",
+        "storeOnConsume"
+      ]
+    },
     "decorToggler": {
       "type": "object",
       "properties": {
-        "negDecor": {
-          "type": "integer"
-        },
-        "negRadius": {
-          "type": "integer"
-        },
         "posDecor": {
           "type": "integer"
         },
         "posRadius": {
+          "type": "integer"
+        },
+        "negDecor": {
+          "type": "integer"
+        },
+        "negRadius": {
           "type": "integer"
         }
       },
@@ -482,186 +342,175 @@
         "posRadius"
       ]
     },
-    "elementConsumer": {
-      "type": "object",
-      "properties": {
-        "capacityKG": {
-          "type": [
-            "integer",
-            "string"
-          ]
-        },
-        "configuration": {
-          "type": "integer"
-        },
-        "consumedMass": {
-          "type": "integer"
-        },
-        "consumedTemperature": {
-          "type": "integer"
-        },
-        "consumptionRadius": {
-          "type": "integer"
-        },
-        "consumptionRate": {
-          "type": "number"
-        },
-        "elementToConsume": {
-          "type": "integer"
-        },
-        "ignoreActiveChanged": {
-          "type": "boolean"
-        },
-        "isRequired": {
-          "type": "boolean"
-        },
-        "minimumMass": {
-          "type": "integer"
-        },
-        "showDescriptor": {
-          "type": "boolean"
-        },
-        "showInStatusPanel": {
-          "type": "boolean"
-        },
-        "storeOnConsume": {
-          "type": "boolean"
-        },
-        "storage": {
-          "type": "object",
-          "properties": {
-            "allowClearable": {
-              "type": "boolean"
-            },
-            "allowItemRemoval": {
-              "type": "boolean"
-            },
-            "allowSettingOnlyFetchMarkedItems": {
-              "type": "boolean"
-            },
-            "capacityKg": {
-              "type": "integer"
-            },
-            "doDiseaseTransfer": {
-              "type": "boolean"
-            },
-            "dropOnLoad": {
-              "type": "boolean"
-            },
-            "fetchCategory": {
-              "type": "integer"
-            },
-            "ignoreSourcePriority": {
-              "type": "boolean"
-            },
-            "items": {
-              "type": "object"
-            },
-            "onlyTransferFromLowerPriority": {
-              "type": "boolean"
-            },
-            "sendOnStoreOnSpawn": {
-              "type": "boolean"
-            },
-            "showCapacityAsMainStatus": {
-              "type": "boolean"
-            },
-            "showCapacityStatusItem": {
-              "type": "boolean"
-            },
-            "showDescriptor": {
-              "type": "boolean"
-            },
-            "showInUI": {
-              "type": "boolean"
-            },
-            "showSideScreenTitleBar": {
-              "type": "boolean"
-            },
-            "showUnreachableStatus": {
-              "type": "boolean"
-            },
-            "storageFullMargin": {
-              "type": "integer"
-            },
-            "storageNetworkID": {
-              "type": "integer"
-            },
-            "storageWorkTime": {
-              "type": "number"
-            },
-            "useGunForDelivery": {
-              "type": "boolean"
-            },
-            "useWideOffsets": {
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "allowClearable",
-            "allowItemRemoval",
-            "allowSettingOnlyFetchMarkedItems",
-            "capacityKg",
-            "doDiseaseTransfer",
-            "dropOnLoad",
-            "fetchCategory",
-            "ignoreSourcePriority",
-            "items",
-            "onlyTransferFromLowerPriority",
-            "sendOnStoreOnSpawn",
-            "showCapacityAsMainStatus",
-            "showCapacityStatusItem",
-            "showDescriptor",
-            "showInUI",
-            "showSideScreenTitleBar",
-            "showUnreachableStatus",
-            "storageFullMargin",
-            "storageNetworkID",
-            "storageWorkTime",
-            "useGunForDelivery",
-            "useWideOffsets"
-          ]
-        }
-      },
-      "required": [
-        "capacityKG",
-        "configuration",
-        "consumedMass",
-        "consumedTemperature",
-        "consumptionRadius",
-        "consumptionRate",
-        "elementToConsume",
-        "ignoreActiveChanged",
-        "isRequired",
-        "minimumMass",
-        "showDescriptor",
-        "showInStatusPanel",
-        "storeOnConsume"
-      ]
-    },
     "illuminationVulnerable": {
       "type": "object",
       "properties": {
-        "LightIntensityThreshold": {
-          "type": "integer"
-        },
         "prefersDarkness": {
           "type": "boolean"
+        },
+        "LightIntensityThreshold": {
+          "type": "integer"
         }
       },
       "required": [
         "LightIntensityThreshold",
         "prefersDarkness"
       ]
+    },
+    "elementConverters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "consumedElements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Accumulator": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "index"
+                  ]
+                },
+                "IsActive": {
+                  "type": "boolean"
+                },
+                "MassConsumptionRate": {
+                  "type": "number"
+                },
+                "Tag": {
+                  "type": "object",
+                  "properties": {
+                    "Name": {
+                      "type": "string"
+                    },
+                    "IsValid": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "IsValid",
+                    "Name"
+                  ]
+                }
+              },
+              "required": [
+                "Accumulator",
+                "IsActive",
+                "MassConsumptionRate",
+                "Tag"
+              ]
+            }
+          },
+          "outputElements": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "IsActive": {
+                  "type": "boolean"
+                },
+                "minOutputTemperature": {
+                  "type": "number"
+                },
+                "useEntityTemperature": {
+                  "type": "boolean"
+                },
+                "massGenerationRate": {
+                  "type": "number"
+                },
+                "storeOutput": {
+                  "type": "boolean"
+                },
+                "outputElementOffset": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                },
+                "accumulator": {
+                  "type": "object",
+                  "properties": {
+                    "index": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "index"
+                  ]
+                },
+                "diseaseWeight": {
+                  "type": "number"
+                },
+                "element": {
+                  "type": "string"
+                },
+                "diseaseName": {
+                  "type": "null"
+                },
+                "diseaseCount": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "IsActive",
+                "accumulator",
+                "diseaseCount",
+                "diseaseName",
+                "diseaseWeight",
+                "element",
+                "massGenerationRate",
+                "minOutputTemperature",
+                "outputElementOffset",
+                "storeOutput",
+                "useEntityTemperature"
+              ]
+            }
+          },
+          "OperationalRequirement": {
+            "type": "integer"
+          },
+          "OutputMultiplier": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "OperationalRequirement",
+          "OutputMultiplier",
+          "consumedElements",
+          "outputElements"
+        ]
+      }
     }
   },
   "required": [
     "decorProvider",
     "dlcIds",
-    "elementConverters",
     "id",
     "kBoxCollider2D",
-    "primaryElement",
-    "tags"
+    "primaryElement"
   ]
 }
