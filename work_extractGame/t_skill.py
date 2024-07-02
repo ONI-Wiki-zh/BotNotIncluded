@@ -19,7 +19,7 @@ def processSkill(db, dict_next_skills):
             if list_next_skill is None:
                 dict_next_skills[prior] = [skillId]
             else:
-                dict_next_skills[prior] = list_next_skill.extend(priorSkills)
+                list_next_skill.extend(priorSkills)
     else:
         db['priorSkills'] = None
     perks = db.get('perks', None)
