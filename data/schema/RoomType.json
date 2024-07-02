@@ -71,6 +71,18 @@
         ]
       }
     },
+    "roomRequireTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "buildings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "constraints": {
       "type": "array",
       "items": {
