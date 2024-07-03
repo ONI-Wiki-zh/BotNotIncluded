@@ -9,6 +9,40 @@ dict_Diseases = None
 dict_grantSkill = None
 
 
+def getEffectIds():
+    """获取效果Id列表"""
+    dict_effectIds = {}
+    with open(constant.dict_PATH_EXTRACT_FILE['codex'], 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        effectDescs = data.get('effectDescs', None)
+        if effectDescs:
+            for item in effectDescs:
+                bId = item['id']
+                effectId = item['effectId']
+                if bId is None or effectId is None:
+                    continue
+                if dict_effectIds.get(effectId, None):
+                    dict_effectIds[effectId].append(bId)
+                else:
+                    dict_effectIds[effectId] = [bId]
+    with open(constant.dict_PATH_EXTRACT_FILE_BASE_ONLY['codex'], 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        effectDescs = data.get('effectDescs', None)
+        if effectDescs:
+            for item in effectDescs:
+                bId = item['id']
+                effectId = item['effectId']
+                if bId is None or effectId is None:
+                    continue
+                if dict_effectIds.get(bId, None):
+                    dict_effectIds[effectId].append(bId)
+                else:
+                    dict_effectIds[effectId] = [bId]
+    # 添加例外
+    dict_effectIds['Telephone'] = ["TelephoneBabble", "TelephoneChat", "TelephoneLongDistance"]
+    return dict_effectIds
+
+
 def getRoomRequireTags(entity, roomConstraintTags):
     """返回房间需求tags"""
     if entity is None:
@@ -66,6 +100,7 @@ def getStorageInfo(entity):
 
 
 def getRocketEngine(entity):
+    """获取火箭引擎信息"""
     if entity is None:
         return None
     global dict_SimHashes
@@ -84,7 +119,7 @@ def getRocketEngine(entity):
 
 
 def getRocketEngineCluster(entity):
-    """获取火箭引擎信息"""
+    """获取火箭引擎模块信息"""
     if entity is None:
         return None
     global dict_SimHashes
@@ -188,11 +223,12 @@ def getLogicPorts(logicOutputPorts):
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
-    dict_entity = {}
-    dict_requiredSkillPerk = {}
-    dict_category = {}
-    data_buildDef = []
-    roomConstraintTags = []
+    data_buildDef = []      # 建筑信息
+    dict_entity = {}    # 建筑实体
+    dict_requiredSkillPerk = {}     # 建设建筑所需技能
+    dict_category = {}  # 建筑分类
+    dict_effectIds = getEffectIds()  # 建筑使用效果Id
+    roomConstraintTags = []     # 房间约束标签
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as file:
         data = json.load(file)
@@ -232,17 +268,20 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 dict_entity[id] = item
     if data_buildDef is None:
         return False
+    # 加载属性
     dict_building_tech = {}
     dict_perk_skill = {}
-    # 读取科技数据
+    dict_effects = {}
     with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as file:
         data = json.load(file)
+        # 技术
         for tech in data['techs']:
             unlockedItems = tech.get('unlockedItems', None)
             if unlockedItems is None:
                 continue
             for unlockedItem in unlockedItems:
                 dict_building_tech[unlockedItem['Id']] = unlockedItem.get('parentTechId')
+        # 技能
         for skill in data['skills']:
             if skill.get('deprecated', True):
                 continue
@@ -251,6 +290,16 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 continue
             for perk in perks:
                 dict_perk_skill[perk['Id']] = skill['Id']
+        # 使用效果
+        for effect in data['effects']:
+            bIds = dict_effectIds.get(effect['Id'], None)
+            if bIds is None:
+                continue
+            for bId in bIds:
+                if dict_effects.get(bId, None):
+                    dict_effects[bId].append(effect)
+                else:
+                    dict_effects[bId] = [effect]
     # 组装建筑
     dict_output = {}
     for item in data_buildDef:
@@ -263,23 +312,30 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         AttachmentSlotTag = item.get('AttachmentSlotTag', None)
         if AttachmentSlotTag:
             item['AttachmentSlotTag'] = AttachmentSlotTag['Name']
+        # 可被替换的建筑标签
         ReplacementTags = item.get('ReplacementTags', None)
         if ReplacementTags:
             item['ReplacementTags'] = [tag['Name'] for tag in ReplacementTags]
         item['requiredGrantSkill'] = getRequireGrantSkill(dict_perk_skill.get(dict_requiredSkillPerk.get(id, None), None))
+        # 逻辑端口-输入
         logicOutputPorts = item.get('LogicOutputPorts', None)
         if logicOutputPorts:
             item['LogicOutputPorts'] = getLogicPorts(logicOutputPorts)
+        # 逻辑端口-输出
         logicInputPorts = item.get('LogicInputPorts', None)
         if logicInputPorts:
             item['LogicInputPorts'] = getLogicPorts(logicInputPorts)
         # 实体信息
         entity = dict_entity.get(id, None)
         if entity:
+            item['roomTracker'] = entity.get('roomTracker', None)
+            item['rocketUsageRestrictionDef'] = entity.get('rocketUsageRestrictionDef', None)
             item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)
+            item['effects'] = dict_effects.get(id, None)
             item['rocketModule'] = getRocketModule(entity)
             item['rocketEngine'] = getRocketEngine(entity)
             item['rocketEngineCluster'] = getRocketEngineCluster(entity)
+            item['battery'] = entity.get('battery', None)
             item['storage'] = getStorageInfo(entity)
             item['tags'] = getEntityTags(entity)
         # 分类

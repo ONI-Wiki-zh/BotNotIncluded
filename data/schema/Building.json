@@ -154,6 +154,40 @@
     "requiredGrantSkill": {
       "type": "string"
     },
+    "roomTracker": {
+      "type": "object",
+      "properties": {
+        "requirement": {
+          "type": "integer"
+        },
+        "requiredRoomType": {
+          "type": "string"
+        },
+        "customStatusItemID": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "customStatusItemID",
+        "enabled",
+        "name",
+        "requiredRoomType",
+        "requirement",
+        "tag"
+      ]
+    },
     "roomRequireTags": {
       "type": "array",
       "items": {
@@ -226,6 +260,98 @@
         "useGunForDelivery"
       ]
     },
+    "rocketUsageRestrictionDef": {
+      "type": "object",
+      "properties": {
+        "initialControlledStateWhenBuilt": {
+          "type": "boolean"
+        },
+        "restrictOperational": {
+          "type": "boolean"
+        },
+        "preventStartSMIOnSpawn": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "initialControlledStateWhenBuilt",
+        "preventStartSMIOnSpawn",
+        "restrictOperational"
+      ]
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": "number"
+          },
+          "showInUI": {
+            "type": "boolean"
+          },
+          "isBad": {
+            "type": "boolean"
+          },
+          "stompGroup": {
+            "type": "string"
+          },
+          "stompPriority": {
+            "type": "integer"
+          },
+          "SelfModifiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Description": {
+                  "type": "string"
+                },
+                "AttributeId": {
+                  "type": "string"
+                },
+                "Value": {
+                  "type": "number"
+                },
+                "IsMultiplier": {
+                  "type": "boolean"
+                },
+                "UIOnly": {
+                  "type": "boolean"
+                },
+                "IsReadonly": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "AttributeId",
+                "Description",
+                "IsMultiplier",
+                "IsReadonly",
+                "UIOnly",
+                "Value"
+              ]
+            }
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Disabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "Disabled",
+          "Id",
+          "SelfModifiers",
+          "duration",
+          "isBad",
+          "showInUI",
+          "stompGroup",
+          "stompPriority"
+        ]
+      }
+    },
     "AttachmentSlotTag": {
       "type": "string"
     },
@@ -246,6 +372,44 @@
         "burden",
         "enginePower",
         "fuelKilogramPerDistance"
+      ]
+    },
+    "battery": {
+      "type": "object",
+      "properties": {
+        "capacity": {
+          "type": "number"
+        },
+        "joulesLostPerSecond": {
+          "type": "number"
+        },
+        "powerSortOrder": {
+          "type": "integer"
+        },
+        "connectedTags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Name": {
+                "type": "string"
+              },
+              "IsValid": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "IsValid",
+              "Name"
+            ]
+          }
+        }
+      },
+      "required": [
+        "capacity",
+        "connectedTags",
+        "joulesLostPerSecond",
+        "powerSortOrder"
       ]
     },
     "LogicOutputPorts": {
