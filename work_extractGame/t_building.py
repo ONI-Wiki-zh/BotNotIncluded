@@ -7,6 +7,7 @@ from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPO
 dict_SimHashes = None
 dict_Diseases = None
 dict_grantSkill = None
+dict_RoomTypes = None
 dict_UnitClass = None
 dict_TimeSlice = None
 
@@ -14,6 +15,9 @@ dict_TimeSlice = None
 def getEffectIds():
     """获取效果Id列表"""
     dict_effectIds = {}
+    # 添加例外
+    for effectId in ["TelephoneBabble", "TelephoneChat", "TelephoneLongDistance"]:
+        dict_effectIds[effectId] = ['Telephone']
     with open(constant.dict_PATH_EXTRACT_FILE['codex'], 'r', encoding='utf-8') as file:
         data = json.load(file)
         effectDescs = data.get('effectDescs', None)
@@ -40,8 +44,6 @@ def getEffectIds():
                     dict_effectIds[effectId].append(bId)
                 else:
                     dict_effectIds[effectId] = [bId]
-    # 添加例外
-    dict_effectIds['Telephone'] = ["TelephoneBabble", "TelephoneChat", "TelephoneLongDistance"]
     return dict_effectIds
 
 
@@ -258,6 +260,24 @@ def getLogicPorts(logicOutputPorts):
     return logicOutputPorts
 
 
+def getRoomTracker(entity):
+    global dict_RoomTypes
+    if dict_RoomTypes is None:
+        dict_RoomTypes = DataUtils.loadSimHashed_RoomType()
+    roomTracker = entity.get('roomTracker', None)
+    if roomTracker:
+        requiredRoomType = roomTracker.get('requiredRoomType', None)
+        if requiredRoomType:
+            roomType = dict_RoomTypes.get(requiredRoomType, None)
+            if roomType:
+                poEntry, _ = getPOEntry_by_nameString(roomType['Name'], msg_need=["ROOMS.TYPES."])
+                if poEntry:
+                    roomTracker['requiredRoomName'] = poEntry.msgctxt
+                else:
+                    roomTracker['requiredRoomName'] = None
+    return roomTracker
+
+
 def convert_data_2_lua(entityInfo: EntityInfo):
     data_buildDef = []      # 建筑信息
     dict_entity = {}    # 建筑实体
@@ -368,7 +388,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         # 实体信息
         entity = dict_entity.get(id, None)
         if entity:
-            item['roomTracker'] = entity.get('roomTracker', None)
+            item['roomTracker'] = getRoomTracker(entity)
             item['rocketUsageRestrictionDef'] = entity.get('rocketUsageRestrictionDef', None)
             item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)
             item['effects'] = dict_effects.get(id, None)

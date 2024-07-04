@@ -163,6 +163,9 @@
         "requiredRoomType": {
           "type": "string"
         },
+        "requiredRoomName": {
+          "type": "string"
+        },
         "customStatusItemID": {
           "type": [
             "null",

@@ -120,6 +120,16 @@ class DataUtils:
         return dict_SimHashes
 
     @staticmethod
+    def loadSimHashed_RoomType():
+        dict_RoomType = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for item in data['roomTypes']:
+                dict_RoomType[item['Id']] = item
+            pass
+        return dict_RoomType
+
+    @staticmethod
     def loadSimHashed_UnitClass():
         dict_UnitClass = {}
         with open(constant.dict_PATH_EXTRACT_FILE['attribute'], 'r', encoding='utf-8') as f:
