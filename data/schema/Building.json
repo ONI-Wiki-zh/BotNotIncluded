@@ -163,9 +163,6 @@
         "requiredRoomType": {
           "type": "string"
         },
-        "requiredRoomName": {
-          "type": "string"
-        },
         "customStatusItemID": {
           "type": [
             "null",
@@ -180,12 +177,16 @@
         },
         "name": {
           "type": "string"
+        },
+        "requiredRoomName": {
+          "type": "string"
         }
       },
       "required": [
         "customStatusItemID",
         "enabled",
         "name",
+        "requiredRoomName",
         "requiredRoomType",
         "requirement",
         "tag"
@@ -326,16 +327,10 @@
                   "type": "object",
                   "properties": {
                     "unitClass": {
-                      "type": [
-                        "integer",
-                        "string"
-                      ]
+                      "type": "string"
                     },
                     "DeltaTimeSlice": {
-                      "type": [
-                        "integer",
-                        "string"
-                      ]
+                      "type": "string"
                     }
                   },
                   "required": [

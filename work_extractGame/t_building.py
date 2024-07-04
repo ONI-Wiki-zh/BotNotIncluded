@@ -44,6 +44,8 @@ def getEffectIds():
                     dict_effectIds[effectId].append(bId)
                 else:
                     dict_effectIds[effectId] = [bId]
+    for effectId, effectIds in dict_effectIds.items():
+        dict_effectIds[effectId] = list(set(effectIds))
     return dict_effectIds
 
 
