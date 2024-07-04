@@ -32,6 +32,7 @@ dict_PATH_EXTRACT_FILE = {
 dict_PATH_EXTRACT_FILE_BASE_ONLY = {
     "building": PATH_EXTRACT_DIR_BASE_ONLY + "building.json",
     "db": PATH_EXTRACT_DIR_BASE_ONLY + "db.json",
+    "codex": PATH_EXTRACT_DIR_BASE_ONLY + "codex.json",
 }
 LANGUAGE = "zh"
 PATH_PO_STRINGS_DIR = "C:/Program Files (x86)/Steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded_Data/StreamingAssets/strings/"

@@ -304,9 +304,6 @@
             "items": {
               "type": "object",
               "properties": {
-                "Description": {
-                  "type": "string"
-                },
                 "AttributeId": {
                   "type": "string"
                 },
@@ -321,15 +318,36 @@
                 },
                 "IsReadonly": {
                   "type": "boolean"
+                },
+                "formatter": {
+                  "type": "object",
+                  "properties": {
+                    "unitClass": {
+                      "type": [
+                        "integer",
+                        "string"
+                      ]
+                    },
+                    "DeltaTimeSlice": {
+                      "type": [
+                        "integer",
+                        "string"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "DeltaTimeSlice",
+                    "unitClass"
+                  ]
                 }
               },
               "required": [
                 "AttributeId",
-                "Description",
                 "IsMultiplier",
                 "IsReadonly",
                 "UIOnly",
-                "Value"
+                "Value",
+                "formatter"
               ]
             }
           },

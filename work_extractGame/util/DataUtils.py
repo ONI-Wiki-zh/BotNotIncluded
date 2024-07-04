@@ -120,6 +120,26 @@ class DataUtils:
         return dict_SimHashes
 
     @staticmethod
+    def loadSimHashed_UnitClass():
+        dict_UnitClass = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['attribute'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for item, hashCode in data['UnitClass'].items():
+                dict_UnitClass[hashCode] = item
+            pass
+        return dict_UnitClass
+
+    @staticmethod
+    def loadSimHashed_TimeSlice():
+        dict_TimeSlice = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['attribute'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for item, hashCode in data['TimeSlice'].items():
+                dict_TimeSlice[hashCode] = item
+            pass
+        return dict_TimeSlice
+
+    @staticmethod
     def loadDbTraits():
         dict_traits = {}
         with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:

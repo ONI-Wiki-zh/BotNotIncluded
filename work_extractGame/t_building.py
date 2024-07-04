@@ -7,6 +7,8 @@ from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPO
 dict_SimHashes = None
 dict_Diseases = None
 dict_grantSkill = None
+dict_UnitClass = None
+dict_TimeSlice = None
 
 
 def getEffectIds():
@@ -41,6 +43,40 @@ def getEffectIds():
     # 添加例外
     dict_effectIds['Telephone'] = ["TelephoneBabble", "TelephoneChat", "TelephoneLongDistance"]
     return dict_effectIds
+
+
+def getEffectInfo(effect, dict_attribute):
+    """获取使用效果信息"""
+    global dict_UnitClass
+    if dict_UnitClass is None:
+        dict_UnitClass = DataUtils.loadSimHashed_UnitClass()
+    global dict_TimeSlice
+    if dict_TimeSlice is None:
+        dict_TimeSlice = DataUtils.loadSimHashed_TimeSlice()
+    mModifiers = effect.get('SelfModifiers', None)
+    if mModifiers:
+        list_new_modifier = []
+        for mModifier in mModifiers:
+            mAttributeId = mModifier.get('AttributeId', None)
+            if mAttributeId is None:
+                continue
+            mAttribute = dict_attribute.get(mAttributeId, None)
+            if mAttribute is None:
+                continue
+            formatter = mAttribute.get('formatter', None).copy()
+            if formatter:
+                unitClass = formatter.get('unitClass', None)
+                if unitClass:
+                    formatter['unitClass'] = dict_UnitClass.get(unitClass, None)
+                    pass
+                DeltaTimeSlice = formatter.get('DeltaTimeSlice', None)
+                if DeltaTimeSlice:
+                    formatter['DeltaTimeSlice'] = dict_TimeSlice.get(DeltaTimeSlice, formatter['DeltaTimeSlice'])
+                    pass
+                mModifier['formatter'] = formatter
+            list_new_modifier.append(mModifier)
+        effect['SelfModifiers'] = list_new_modifier
+    return effect
 
 
 def getRoomRequireTags(entity, roomConstraintTags):
@@ -271,6 +307,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     # 加载属性
     dict_building_tech = {}
     dict_perk_skill = {}
+    dict_attribute = {}
     dict_effects = {}
     with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as file:
         data = json.load(file)
@@ -281,6 +318,9 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 continue
             for unlockedItem in unlockedItems:
                 dict_building_tech[unlockedItem['Id']] = unlockedItem.get('parentTechId')
+        # 属性
+        for attribute in data['Attributes']:
+            dict_attribute[attribute['Id']] = attribute
         # 技能
         for skill in data['skills']:
             if skill.get('deprecated', True):
@@ -297,9 +337,9 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 continue
             for bId in bIds:
                 if dict_effects.get(bId, None):
-                    dict_effects[bId].append(effect)
+                    dict_effects[bId].append(getEffectInfo(effect, dict_attribute))
                 else:
-                    dict_effects[bId] = [effect]
+                    dict_effects[bId] = [getEffectInfo(effect, dict_attribute)]
     # 组装建筑
     dict_output = {}
     for item in data_buildDef:
