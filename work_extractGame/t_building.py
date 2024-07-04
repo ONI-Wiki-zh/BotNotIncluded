@@ -66,11 +66,11 @@ def getEffectInfo(effect, dict_attribute):
             formatter = mAttribute.get('formatter', None).copy()
             if formatter:
                 unitClass = formatter.get('unitClass', None)
-                if unitClass:
+                if unitClass is not None:
                     formatter['unitClass'] = dict_UnitClass.get(unitClass, None)
                     pass
                 DeltaTimeSlice = formatter.get('DeltaTimeSlice', None)
-                if DeltaTimeSlice:
+                if DeltaTimeSlice is not None:
                     formatter['DeltaTimeSlice'] = dict_TimeSlice.get(DeltaTimeSlice, formatter['DeltaTimeSlice'])
                     pass
                 mModifier['formatter'] = formatter
