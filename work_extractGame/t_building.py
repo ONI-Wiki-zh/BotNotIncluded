@@ -171,7 +171,7 @@ def getRecipes(entity):
                 produce.element = result['material']['Name']
                 produce.amount = result['amount']
                 list_produce.append(produce.getSerializer())
-            recipe = Recipe.getRecipeSerializer(entityId, list_consume, list_produce, 1)
+            recipe = Recipe.getRecipeSerializer(entityId, list_consume, list_produce, complexRecipe['time'])
             recipes.append(recipe)
     if recipes and len(recipes) > 0:
         return recipes
