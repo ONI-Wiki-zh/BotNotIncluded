@@ -148,6 +148,79 @@
         "type": "string"
       }
     },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fabricator": {
+            "type": "string"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "element": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "element"
+                  ]
+                }
+              }
+            ]
+          },
+          "output": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "element": {
+                      "type": "string"
+                    },
+                    "minTemperature": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "element"
+                  ]
+                }
+              }
+            ]
+          },
+          "workTime": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "fabricator",
+          "input",
+          "output",
+          "workTime"
+        ]
+      }
+    },
     "tech": {
       "type": "string"
     },

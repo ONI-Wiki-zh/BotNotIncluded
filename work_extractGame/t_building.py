@@ -1,11 +1,14 @@
 import json
 
 import work_extractGame.constant_extract as constant
+from work_extractGame.model.IIO import IIO
 from work_extractGame.model.EntityInfo import EntityInfo
+from work_extractGame.model.Recipe import Recipe
 from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPOEntry_by_nameString
 
 dict_SimHashes = None
 dict_Diseases = None
+dict_complexRecipes = None
 dict_grantSkill = None
 dict_RoomTypes = None
 dict_UnitClass = None
@@ -81,6 +84,98 @@ def getEffectInfo(effect, dict_attribute):
             list_new_modifier.append(mModifier)
         effect['SelfModifiers'] = list_new_modifier
     return effect
+
+
+def getRecipes(entity):
+    global dict_SimHashes
+    if dict_SimHashes is None:
+        dict_SimHashes = DataUtils.loadSimHashed()
+    global dict_Diseases
+    if dict_Diseases is None:
+        dict_Diseases = DataUtils.loadSimHashed_disease()
+    global dict_complexRecipes
+    if dict_complexRecipes is None:
+        dict_complexRecipes = DataUtils.loadComplexRecipes()
+    entityId = entity['name']
+    recipes = []
+    # elementConverters
+    elementConverters = entity.get('elementConverters', None)
+    if elementConverters:
+        for elementConverter in elementConverters:
+            mtp = elementConverter.get('OutputMultiplier', 1)
+            list_consume = []
+            consumedElements = elementConverter.get('consumedElements', None)
+            if consumedElements:
+                for consumedElement in consumedElements:
+                    consume = IIO()
+                    consume.element = consumedElement['Tag']['Name']
+                    consume.amount = consumedElement['MassConsumptionRate']
+                    list_consume.append(consume.getSerializer())
+            list_produce = []
+            outputElements = elementConverter.get('outputElements', None)
+            if outputElements:
+                for outputElement in outputElements:
+                    produce = IIO()
+                    produce.element = dict_SimHashes.get(outputElement['elementHash'], None)
+                    produce.amount = outputElement['massGenerationRate'] * mtp
+                    produce.minTemperature = outputElement['minOutputTemperature']
+                    list_produce.append(produce.getSerializer())
+            recipe = Recipe.getRecipeSerializer(entityId, list_consume, list_produce, 1)
+            recipes.append(recipe)
+    # energyGenerator
+    energyGenerator = entity.get('energyGenerator', None)
+    if energyGenerator:
+        formula = energyGenerator['formula']
+        list_consume = []
+        inputs = formula['inputs']
+        if inputs:
+            for input in inputs:
+                consume = IIO()
+                consume.element = input['tag']['Name']
+                consume.amount = input['consumptionRate']
+                list_consume.append(consume.getSerializer())
+        list_produce = []
+        outputs = formula['outputs']
+        if outputs:
+            for output in outputs:
+                produce = IIO()
+                produce.element = dict_SimHashes.get(output['element'], None)
+                produce.amount = output['creationRate']
+                produce.minTemperature = output['minTemperature']
+                list_produce.append(produce.getSerializer())
+        recipe = Recipe.getRecipeSerializer(entityId, list_consume, list_produce, 1)
+        recipes.append(recipe)
+    # elementConsumers
+    if elementConverters is None:
+        elementConsumers = entity.get('elementConsumers', None)
+        if elementConsumers:
+            for elementConsumer in elementConsumers:
+                consume = IIO()
+                consume.element = dict_SimHashes.get(elementConsumer['elementToConsume'], None)
+                consume.amount = elementConsumer['consumptionRate']
+                recipe = Recipe.getRecipeSerializer(entityId, [consume.getSerializer()], [], 1)
+                recipes.append(recipe)
+    # complexRecipes
+    complexRecipes = dict_complexRecipes.get(entityId, None)
+    if complexRecipes:
+        for complexRecipe in complexRecipes:
+            list_consume = []
+            for ingredient in complexRecipe['ingredients']:
+                consume = IIO()
+                consume.element = ingredient['material']['Name']
+                consume.amount = ingredient['amount']
+                list_consume.append(consume.getSerializer())
+            list_produce = []
+            for result in complexRecipe['results']:
+                produce = IIO()
+                produce.element = result['material']['Name']
+                produce.amount = result['amount']
+                list_produce.append(produce.getSerializer())
+            recipe = Recipe.getRecipeSerializer(entityId, list_consume, list_produce, 1)
+            recipes.append(recipe)
+    if recipes and len(recipes) > 0:
+        return recipes
+    return None
 
 
 def getRoomRequireTags(entity, roomConstraintTags):
@@ -400,6 +495,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             item['battery'] = entity.get('battery', None)
             item['storage'] = getStorageInfo(entity)
             item['tags'] = getEntityTags(entity)
+            item['recipes'] = getRecipes(entity)
         # 分类
         category, sub_category = getCategory(item, dict_category)
         item['category'] = category

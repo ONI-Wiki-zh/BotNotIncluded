@@ -167,3 +167,19 @@ class DataUtils:
             for entityId, tags in data['prefabIDs'].items():
                 dict_prefabID_tags[entityId] = tags
         return dict_prefabID_tags
+
+    @staticmethod
+    def loadComplexRecipes():
+        dict_complexRecipes = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['recipe'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            for item in data['recipes']:
+                fabricators = item.get('fabricators', None)
+                if fabricators:
+                    for fabricator in fabricators:
+                        fabName = fabricator['Name']
+                        if dict_complexRecipes.get(fabName, None) is None:
+                            dict_complexRecipes[fabName] = [item]
+                        else:
+                            dict_complexRecipes[fabName].append(item)
+        return dict_complexRecipes
