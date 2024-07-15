@@ -71,7 +71,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     with open(constant.dict_PATH_EXTRACT_FILE['recipe'], 'r', encoding='utf-8') as file:
         data = json.load(file).get("recipes", None)
         for item in data:
-            fabricators = [elem['Name'] for elem in recipe.get('fabricators', [])]
+            fabricators = [elem['Name'] for elem in item.get('fabricators', [])]
             results = item.get('results', None)
             if results is None or fabricators is None or len(fabricators) < 1:
                 continue
