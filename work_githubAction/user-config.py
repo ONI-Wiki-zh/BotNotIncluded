@@ -3,15 +3,5 @@ from pywikibot.config import usernames
 user_families_paths = ['../site_families']
 usernames['oni']['zh'] = "DDElephantBot"
 usernames['oni']['en'] = "DDElephantBot"
-usernames['shmetro']['zh'] = "DDElephantBot"
-usernames['re0']['zh'] = "DDElephantBot"
-usernames['pogo']['en'] = "DDElephant"
-usernames['feheroes']['en'] = "DDElephant"
-usernames['shironeko']['zh'] = "DDElephant"
-usernames['bolanqiu']['zh'] = "DDElephantBot"
-usernames['boni']['zh'] = "DDElephantBot"
-usernames['ucp']['zh'] = "DDElephantBot"
-usernames['companyball']['zh'] = "DDElephantBot"
-usernames['zhblq']['zh'] = "DDElephantBot"
 password_file = "../user-password.py"
 put_throttle = 0
