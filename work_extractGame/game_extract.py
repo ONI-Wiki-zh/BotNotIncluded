@@ -1,7 +1,7 @@
 """提取游戏数据"""
 import utils
 from work_extractGame import t_building, t_critter, t_disease, t_equipment, t_food, t_geyser, t_items, \
-    t_MaterialModifier, t_plant, t_room, t_sickness, t_skill, t_tech
+    t_MaterialModifier, t_plant, t_room, t_sickness, t_skill, t_tech, parse_entity
 import work_extractGame.constant_extract as constant
 
 logger = utils.getLogger("Game update CI")
@@ -20,6 +20,7 @@ def main():
     elements.main()
 
     # 处理实体数据
+    logger.info('Generating entity data')
     t_building.convert_data_2_lua(constant.EntityType.Building.value)
     t_critter.convert_data_2_lua(constant.EntityType.Critter.value)
     t_disease.convert_data_2_lua(constant.EntityType.Disease.value)
@@ -39,6 +40,10 @@ def main():
     logger.info('Generating codex data')
     from work_extractGame import get_codex
     get_codex.main()
+
+    # 实体id与po译名对应表
+    logger.info('Parse translation EntityId')
+    parse_entity.convert_data_2_lua()
 
     # 处理po翻译文件
     logger.info('Parse translation files')
