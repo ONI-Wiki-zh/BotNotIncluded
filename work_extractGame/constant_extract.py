@@ -1,4 +1,5 @@
 from enum import Enum
+from os import path
 
 from work_extractGame.model.EntityInfo import EntityInfo
 
@@ -9,8 +10,8 @@ PATH_OUTPUT_LUA = "./output_lua/"
 PATH_CACHE_percentile = PATH_CACHE+"percentile.json"
 
 KEY_EXTRACT_INFO_LIST = ["buildVersion", "ExportFileName", "DatabaseDirName", "dlcs"]
-PATH_EXTRACT_DIR = "C:/Users/admin/Documents/Klei/OxygenNotIncluded/export/database/"    # 修改为OniExtract数据导出的路径
-PATH_EXTRACT_DIR_BASE_ONLY = "C:/Users/admin/Documents/Klei/OxygenNotIncluded/export/database_base/"    # 修改为OniExtract数据导出的路径
+PATH_EXTRACT_DIR = path.join(path.expanduser("~"), "Documents/Klei/OxygenNotIncluded/export/database/")    # 修改为OniExtract数据导出的路径
+PATH_EXTRACT_DIR_BASE_ONLY = path.join(path.expanduser("~"), "Documents/Klei/OxygenNotIncluded/export/database_base/")    # 修改为OniExtract数据导出的路径
 dict_PATH_EXTRACT_FILE = {
     "building": PATH_EXTRACT_DIR + "building.json",
     "element": PATH_EXTRACT_DIR + "elements.json",
