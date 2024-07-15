@@ -16,7 +16,6 @@ import pywikibot.data.api
 DIR_DATA = "data"
 DIR_OUT = "out"
 DIR_CODE = path.join(DIR_DATA, "code")
-ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
 ONI_ROOT = os.environ.get(
     "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
 
