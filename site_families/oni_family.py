@@ -6,10 +6,10 @@ class Family(family.Family):
     langs = {
         'en': 'oxygennotincluded.wiki.gg',
         'zh': 'oxygennotincluded.wiki.gg',
-        'ja': 'oxygennotincluded.wiki.gg',
-        'pt-br': 'oxygennotincluded.wiki.gg',
-        'ru': 'oxygen-not-included.wiki.gg',
-        'th': 'oxygennotincluded.wiki.gg',
+        'ja': 'oxygennotincluded.fandom.com',
+        'pt-br': 'oxygennotincluded.fandom.com',
+        'ru': 'oxygen-not-included.fandom.com',
+        'th': 'oxygennotincluded.fandom.com',
     }
 
     def scriptpath(self, code):

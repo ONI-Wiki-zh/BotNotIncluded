@@ -97,6 +97,7 @@ def get_data_file_list() -> Dict[str, str]:
 
 def update_data(try_tag='bot-data-update', comment = None):
     site = pywikibot.Site("zh", "oni")
+    site.login()
     site_tags = utils.get_tags(site)
     if try_tag not in site_tags:
         logger.warning(f'Tag "{try_tag}" does not exist on "{site}")')
@@ -132,5 +133,7 @@ def update_data(try_tag='bot-data-update', comment = None):
 
 
 if __name__ == '__main__':
-    # update_data()
+    site = pywikibot.Site("zh", "oni")
+    site.login()
+    update_data(comment="U52-621068-SC")    #Set Current game vertion in comment
     pass
