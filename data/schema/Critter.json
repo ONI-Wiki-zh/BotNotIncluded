@@ -116,27 +116,43 @@
     "family": {
       "type": "string"
     },
-    "temperatureVulnerable": {
+    "critterTemperatureMonitorDef": {
       "type": "object",
       "properties": {
-        "temperatureLethalLow": {
+        "temperatureHotDeadly": {
           "type": "number"
         },
-        "temperatureLethalHigh": {
+        "temperatureHotUncomfortable": {
           "type": "number"
         },
-        "temperatureWarningLow": {
+        "temperatureColdDeadly": {
           "type": "number"
         },
-        "temperatureWarningHigh": {
+        "temperatureColdUncomfortable": {
           "type": "number"
+        },
+        "secondsUntilDamageStarts": {
+          "type": "number"
+        },
+        "damagePerSecond": {
+          "type": "number"
+        },
+        "isBammoth": {
+          "type": "boolean"
+        },
+        "preventStartSMIOnSpawn": {
+          "type": "boolean"
         }
       },
       "required": [
-        "temperatureLethalHigh",
-        "temperatureLethalLow",
-        "temperatureWarningHigh",
-        "temperatureWarningLow"
+        "damagePerSecond",
+        "isBammoth",
+        "preventStartSMIOnSpawn",
+        "secondsUntilDamageStarts",
+        "temperatureColdDeadly",
+        "temperatureColdUncomfortable",
+        "temperatureHotDeadly",
+        "temperatureHotUncomfortable"
       ]
     },
     "fertilityMonitorDef": {
