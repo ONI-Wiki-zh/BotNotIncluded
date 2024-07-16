@@ -1,0 +1,115 @@
+{
+  "type": "object",
+  "properties": {
+    "attributes": {
+      "type": "object"
+    },
+    "traits": {
+      "type": "object"
+    },
+    "headShape": {
+      "type": "integer"
+    },
+    "mouth": {
+      "type": "integer"
+    },
+    "neck": {
+      "type": "integer"
+    },
+    "eyes": {
+      "type": "integer"
+    },
+    "hair": {
+      "type": "integer"
+    },
+    "body": {
+      "type": "integer"
+    },
+    "belt": {
+      "type": "integer"
+    },
+    "cuff": {
+      "type": "integer"
+    },
+    "foot": {
+      "type": "integer"
+    },
+    "hand": {
+      "type": "integer"
+    },
+    "pelvis": {
+      "type": "integer"
+    },
+    "leg": {
+      "type": "integer"
+    },
+    "nameStringKey": {
+      "type": "string"
+    },
+    "genderStringKey": {
+      "type": "string"
+    },
+    "personalityType": {
+      "type": "string"
+    },
+    "stresstrait": {
+      "type": "string"
+    },
+    "joyTrait": {
+      "type": "string"
+    },
+    "stickerType": {
+      "type": "string"
+    },
+    "graveStone": {
+      "type": "string"
+    },
+    "startingMinion": {
+      "type": "boolean"
+    },
+    "requiredDlcId": {
+      "type": "string"
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Disabled": {
+      "type": "boolean"
+    },
+    "congenitaltrait": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "Disabled",
+    "Guid",
+    "Id",
+    "IdHash",
+    "Name",
+    "attributes",
+    "belt",
+    "body",
+    "cuff",
+    "description",
+    "eyes",
+    "foot",
+    "genderStringKey",
+    "graveStone",
+    "hair",
+    "hand",
+    "headShape",
+    "joyTrait",
+    "leg",
+    "mouth",
+    "nameStringKey",
+    "neck",
+    "pelvis",
+    "personalityType",
+    "requiredDlcId",
+    "startingMinion",
+    "stickerType",
+    "stresstrait",
+    "traits",
+    "unformattedDescription"
+  ]
+}

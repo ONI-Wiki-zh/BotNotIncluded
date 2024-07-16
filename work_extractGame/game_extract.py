@@ -1,7 +1,7 @@
 """提取游戏数据"""
 import utils
 from work_extractGame import t_building, t_critter, t_disease, t_equipment, t_food, t_geyser, t_items, \
-    t_MaterialModifier, t_plant, t_room, t_sickness, t_skill, t_tech, parse_entity
+    t_MaterialModifier, t_plant, t_room, t_sickness, t_skill, t_tech, parse_entity, t_personalities
 import constant
 
 logger = utils.getLogger("Game update CI")
@@ -29,6 +29,7 @@ def main():
     t_geyser.convert_data_2_lua(constant.EntityType.Geyser.value)
     t_items.convert_data_2_lua(constant.EntityType.Item.value)
     t_MaterialModifier.convert_data_2_lua(constant.EntityType.MaterialModifier.value)
+    t_personalities.convert_data_2_lua(constant.EntityType.Personalities.value)
     t_plant.convert_data_2_lua(constant.EntityType.Plant.value)
     t_room.convert_data_2_lua(constant.EntityType.RoomType.value)
     t_sickness.convert_data_2_lua(constant.EntityType.Sickness.value)

@@ -69,6 +69,7 @@ class EntityType(Enum):
     Food = EntityInfo("Food", "FOOD", "Food")
     Equipment = EntityInfo("Equipment", "EQUIPMENT", "Equipments")
     Item = EntityInfo("Item", "MiscellaneousItems".upper(), "Items")
+    Personalities = EntityInfo("Personalities", "Personalities".upper(), "Personalities")
     Disease = EntityInfo("Disease", "DISEASE", "Diseases")
     Sickness = EntityInfo("Sickness", "Sickness", "Sicknesses")
     Biome = EntityInfo("Biomes", "BIOMES", "Biomes")
