@@ -41,19 +41,19 @@ langs = {
 }
 ```
 
-打开根目录下的`user-config.py`文件，修改`usernames`为你的wiki机器人用户名。
+打开根目录下的`user-config.py`文件，修改`usernames`为你的wiki机器人用户名。详细参考文档[Manual:Pywikibot/user-config.py](https://www.mediawiki.org/wiki/Manual:Pywikibot/user-config.py)。
 
 ```
 usernames['oni']['zh'] = "xxxBot"
 usernames['oni']['en'] = "xxxBot"
 ```
 
-在根目录下创建一个`user-password.py`文件，配置你的机器人密码。
+在根目录下创建一个`user-password.py`文件，配置你的机器人密码。详细参考文档[Manual:Pywikibot/BotPasswords](https://www.mediawiki.org/wiki/Manual:Pywikibot/BotPasswords)。
 
 ```python
 from pywikibot.login import BotPassword
 
-("oni", "zh", "<your_user_name>", BotPassword("<your_user_name>@<your_bot_name>", "password"))
+("oni", "zh", "<your_user_name>", BotPassword("<your_bot_name>", "<your_bot_password>"))
 ```
 
 **注意：请不要将`user-password.py`文件上传至Github或泄漏给他人。**
