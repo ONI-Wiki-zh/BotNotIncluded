@@ -1,17 +1,34 @@
+import os
 from enum import Enum
 from os import path
 
 from work_extractGame.model.EntityInfo import EntityInfo
 
-PATH_SCHEMA = "../data/schema/"
-PATH_CACHE = "../data/cache/"
-PATH_OUTPUT_LUA = "./output_lua/"
+current_path = os.path.abspath(__file__)
+root_dir = os.path.dirname(current_path)
+DIR_DATA = path.join(root_dir, "data")
+DIR_OUT = path.join(root_dir, "out")
 
-PATH_CACHE_percentile = PATH_CACHE+"percentile.json"
+# Config
+DIR_CODE = path.join(DIR_DATA, "code")
+ONI_ROOT = os.environ.get(
+    "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
+# https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
+PO_HANT = os.environ.get(
+    "BNI_PO_HANT", path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
+                             'mods', 'Steam', '2906930548', 'strings.po'))
 
-KEY_EXTRACT_INFO_LIST = ["buildVersion", "ExportFileName", "DatabaseDirName", "dlcs"]
+# extract game data config
+PATH_PO_STRINGS_DIR = path.join(ONI_ROOT, "OxygenNotIncluded_Data/StreamingAssets/strings/")
+PATH_SCHEMA = path.join(DIR_DATA, "schema")
+PATH_CACHE = path.join(DIR_DATA, "cache")
+PATH_OUTPUT_LUA = path.join(root_dir, "output_lua")
+
+PATH_CACHE_percentile = path.join(PATH_CACHE, "percentile.json")
 PATH_EXTRACT_DIR = path.join(path.expanduser("~"), "Documents/Klei/OxygenNotIncluded/export/database/")    # 修改为OniExtract数据导出的路径
 PATH_EXTRACT_DIR_BASE_ONLY = path.join(path.expanduser("~"), "Documents/Klei/OxygenNotIncluded/export/database_base/")    # 修改为OniExtract数据导出的路径
+
+KEY_EXTRACT_INFO_LIST = ["buildVersion", "ExportFileName", "DatabaseDirName", "dlcs"]
 dict_PATH_EXTRACT_FILE = {
     "building": PATH_EXTRACT_DIR + "building.json",
     "element": PATH_EXTRACT_DIR + "elements.json",
@@ -36,7 +53,6 @@ dict_PATH_EXTRACT_FILE_BASE_ONLY = {
     "codex": PATH_EXTRACT_DIR_BASE_ONLY + "codex.json",
 }
 LANGUAGE = "zh"
-PATH_PO_STRINGS_DIR = "C:/Program Files (x86)/Steam/steamapps/common/OxygenNotIncluded/OxygenNotIncluded_Data/StreamingAssets/strings/"
 dict_PATH_PO_FILE = {
     "ko": PATH_PO_STRINGS_DIR+"strings_preinstalled_ko_klei.po",
     "ru": PATH_PO_STRINGS_DIR+"strings_preinstalled_ru_klei.po",

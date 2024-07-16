@@ -18,6 +18,9 @@ def main():
     import t_conversion
     t_conversion.update()
 
+    logger.info('Update Wiki End')
+    pass
+
 
 if __name__ == '__main__':
     main()

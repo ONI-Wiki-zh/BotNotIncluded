@@ -2,7 +2,7 @@
 import utils
 from work_extractGame import t_building, t_critter, t_disease, t_equipment, t_food, t_geyser, t_items, \
     t_MaterialModifier, t_plant, t_room, t_sickness, t_skill, t_tech, parse_entity
-import work_extractGame.constant_extract as constant
+import constant
 
 logger = utils.getLogger("Game update CI")
 
@@ -50,6 +50,7 @@ def main():
     from work_extractGame import parse_po
     parse_po.main()
 
+    logger.info('game_extract End')
     pass
 
 

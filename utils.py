@@ -1,7 +1,6 @@
 import collections
 import logging
 import os.path as path
-import os
 import pathlib
 import sys
 import re
@@ -13,16 +12,14 @@ import pandas as pd
 import pywikibot
 import pywikibot.data.api
 
-DIR_DATA = "data"
-DIR_OUT = "out"
-DIR_CODE = path.join(DIR_DATA, "code")
-ONI_ROOT = os.environ.get(
-    "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
+import constant
 
-# https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
-PO_HANT = os.environ.get(
-    "BNI_PO_HANT", path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
-                             'mods', 'Steam', '2906930548', 'strings.po'))
+# constant proxy
+DIR_DATA = constant.DIR_DATA
+DIR_OUT = constant.DIR_OUT
+DIR_CODE = constant.DIR_CODE
+ONI_ROOT = constant.ONI_ROOT
+PO_HANT = constant.PO_HANT
 
 
 def get_str_data(po_name=path.join(ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets", "strings", "strings_preinstalled_zh_klei.po")):

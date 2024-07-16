@@ -4,9 +4,9 @@ import luadata
 import polib as polib
 
 import utils
-import work_extractGame.constant_extract as constant
+import constant as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-from work_extractGame.constant_extract import PATH_SCHEMA, PATH_OUTPUT_LUA
+from constant import PATH_SCHEMA, PATH_OUTPUT_LUA
 
 data_po = None
 dict_po_strings = None
@@ -41,7 +41,7 @@ def save_lua_by_schema(entityInfo: EntityInfo, dict_output):
     output = luadata.serialize(dict_output, encoding="utf-8", indent=" " * 4)
     if not os.path.exists(PATH_OUTPUT_LUA):
         os.makedirs(PATH_OUTPUT_LUA)
-    filename_lua = PATH_OUTPUT_LUA + entityInfo.filename_lua + '.lua'
+    filename_lua = os.path.join(PATH_OUTPUT_LUA, entityInfo.filename_lua+'.lua')
     with open(filename_lua, 'wb') as f:
         f.write(("return " + output).encode("utf-8"))
 

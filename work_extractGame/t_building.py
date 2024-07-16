@@ -1,6 +1,6 @@
 import json
 
-import work_extractGame.constant_extract as constant
+import constant as constant
 from work_extractGame.model.IIO import IIO
 from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.model.Recipe import Recipe

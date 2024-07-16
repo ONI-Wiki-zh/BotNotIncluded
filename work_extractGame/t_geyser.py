@@ -1,7 +1,7 @@
 import json
 import os
 
-import work_extractGame.constant_extract as constant
+import constant as constant
 from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.util import X_alpha
 from work_extractGame.util.DataUtils import DataUtils, save_lua_by_schema
