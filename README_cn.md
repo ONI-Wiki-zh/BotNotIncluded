@@ -50,6 +50,12 @@ usernames['oni']['en'] = "xxxBot"
 
 在根目录下创建一个`user-password.py`文件，配置你的机器人密码。
 
+```python
+from pywikibot.login import BotPassword
+
+("oni", "zh", "<your_user_name>", BotPassword("<your_user_name>@<your_bot_name>", "password"))
+```
+
 **注意：请不要将`user-password.py`文件上传至Github或泄漏给他人。**
 
 

@@ -7,6 +7,7 @@ from typing import Dict
 
 import pywikibot
 
+import constant
 import utils
 
 logger = utils.getLogger('meta bot')
@@ -42,10 +43,21 @@ def get_data_file_list() -> Dict[str, str]:
 
     # fixed pairs
     name_map = {  # local data file name -> wiki page suffix
-        # "building": "Data/Buildings",
-        # "critter": "Data/Critters",
+        "Buildings": "Data/Buildings",
+        "Critters": "Data/Critters",
+        "Plants": "Data/Plants",
+        "Geysers": "Data/Geysers",
         "Elements": "Data/Elements",
-        "TextAsset/Personalities": "Data/TextAsset/Personalities",
+        "Food": "Data/Food",
+        "Equipments": "Data/Equipments",
+        "Items": "Data/Items",
+        "Diseases": "Data/Diseases",
+        "Sicknesses": "Data/Sicknesses",
+        "Techs": "Data/Techs",
+        "Skills": "Data/Skills",
+        "RoomTypes": "Data/RoomTypes",
+        "MaterialModifier": "Data/MaterialModifier",
+        "Personalities": "Data/TextAsset/Personalities",
         "codex": "Data/Codex",
         "temperatures": "Data/Worldgen/Temperatures",
     }
@@ -91,10 +103,12 @@ def update_data(try_tag='bot-data-update', comment = None):
 
     data_files = get_data_file_list()
     for local_file in data_files:
-        f_path = path.join(utils.DIR_OUT, local_file) + ".lua"
+        f_path = path.join(constant.DIR_OUT, local_file) + ".lua"
         if not path.exists(f_path):
-            logger.warning(f'"{f_path}" do not exists.')
-            continue
+            f_path = path.join(constant.PATH_OUTPUT_LUA, local_file) + ".lua"
+            if not path.exists(f_path):
+                logger.warning(f'"{f_path}" do not exists.')
+                continue
         page = pywikibot.Page(site, f"module:{data_files[local_file]}")
         with open(f_path, "rb") as f:
             new_text = f.read().decode('utf-8')
@@ -103,6 +117,10 @@ def update_data(try_tag='bot-data-update', comment = None):
                 if comment is None:
                     comment = input("Edit comment")
                 utils.try_tags_save(page, [try_tag], f"Pywikibot: {comment}")
+                # 需要更新
+                print(page.title(), ": updated")
+            else:
+                print(page.title(), ": No need to update")
 
         # doc page
         doc_page = pywikibot.Page(site, f"module:{data_files[local_file]}/doc")

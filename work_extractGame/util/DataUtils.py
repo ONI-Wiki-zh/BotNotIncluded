@@ -27,7 +27,7 @@ def check_substring(name_str: str, list_check):
 
 def save_lua_by_schema(entityInfo: EntityInfo, dict_output):
     # 格式规范化处理
-    filename_schema = PATH_SCHEMA + entityInfo.name + '.json'
+    filename_schema = os.path.join(PATH_SCHEMA, entityInfo.name + '.json')
     schema = None
     if os.path.exists(filename_schema):
         with open(filename_schema, 'r', encoding='utf-8') as f:
