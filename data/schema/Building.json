@@ -1,0 +1,681 @@
+{
+  "type": "object",
+  "properties": {
+    "RequiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "EnergyConsumptionWhenActive": {
+      "type": "number"
+    },
+    "GeneratorWattageRating": {
+      "type": "number"
+    },
+    "GeneratorBaseCapacity": {
+      "type": "number"
+    },
+    "MassForTemperatureModification": {
+      "type": "number"
+    },
+    "ExhaustKilowattsWhenActive": {
+      "type": "number"
+    },
+    "SelfHeatKilowattsWhenActive": {
+      "type": "number"
+    },
+    "ConstructionTime": {
+      "type": "number"
+    },
+    "ThermalConductivity": {
+      "type": "number"
+    },
+    "WidthInCells": {
+      "type": "integer"
+    },
+    "HeightInCells": {
+      "type": "integer"
+    },
+    "HitPoints": {
+      "type": "integer"
+    },
+    "RequiresPowerInput": {
+      "type": "boolean"
+    },
+    "AddLogicPowerPort": {
+      "type": "boolean"
+    },
+    "RequiresPowerOutput": {
+      "type": "boolean"
+    },
+    "UseWhitePowerOutputConnectorColour": {
+      "type": "boolean"
+    },
+    "Floodable": {
+      "type": "boolean"
+    },
+    "Entombable": {
+      "type": "boolean"
+    },
+    "Replaceable": {
+      "type": "boolean"
+    },
+    "Invincible": {
+      "type": "boolean"
+    },
+    "Overheatable": {
+      "type": "boolean"
+    },
+    "Repairable": {
+      "type": "boolean"
+    },
+    "OverheatTemperature": {
+      "type": "number"
+    },
+    "Breakable": {
+      "type": "boolean"
+    },
+    "ContinuouslyCheckFoundation": {
+      "type": "boolean"
+    },
+    "isSolidTile": {
+      "type": "boolean"
+    },
+    "UseStructureTemperature": {
+      "type": "boolean"
+    },
+    "BuildLocationRule": {
+      "type": "integer"
+    },
+    "AlwaysOperational": {
+      "type": "boolean"
+    },
+    "DebugOnly": {
+      "type": "boolean"
+    },
+    "PermittedRotations": {
+      "type": "integer"
+    },
+    "Deprecated": {
+      "type": "boolean"
+    },
+    "UseHighEnergyParticleInputPort": {
+      "type": "boolean"
+    },
+    "UseHighEnergyParticleOutputPort": {
+      "type": "boolean"
+    },
+    "isKAnimTile": {
+      "type": "boolean"
+    },
+    "isUtility": {
+      "type": "boolean"
+    },
+    "BlockTileIsTransparent": {
+      "type": "boolean"
+    },
+    "BaseDecor": {
+      "type": "number"
+    },
+    "BaseDecorRadius": {
+      "type": "number"
+    },
+    "id": {
+      "type": "string"
+    },
+    "ingredients": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "amount",
+          "name"
+        ]
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "fabricator": {
+            "type": "string"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "element": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "element"
+                  ]
+                }
+              }
+            ]
+          },
+          "output": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "element": {
+                      "type": "string"
+                    },
+                    "minTemperature": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "element"
+                  ]
+                }
+              }
+            ]
+          },
+          "workTime": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "fabricator",
+          "input",
+          "output",
+          "workTime"
+        ]
+      }
+    },
+    "tech": {
+      "type": "string"
+    },
+    "requiredGrantSkill": {
+      "type": "string"
+    },
+    "roomTracker": {
+      "type": "object",
+      "properties": {
+        "requirement": {
+          "type": "integer"
+        },
+        "requiredRoomType": {
+          "type": "string"
+        },
+        "customStatusItemID": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "tag": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "requiredRoomName": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "customStatusItemID",
+        "enabled",
+        "name",
+        "requiredRoomName",
+        "requiredRoomType",
+        "requirement",
+        "tag"
+      ]
+    },
+    "roomRequireTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "category": {
+      "type": "string"
+    },
+    "subCategory": {
+      "type": "string"
+    },
+    "LogicInputPorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "activeDescription": {
+            "type": "string"
+          },
+          "inactiveDescription": {
+            "type": "string"
+          },
+          "requiresConnection": {
+            "type": "boolean"
+          },
+          "displayCustomName": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activeDescription",
+          "description",
+          "displayCustomName",
+          "inactiveDescription",
+          "requiresConnection"
+        ]
+      }
+    },
+    "storage": {
+      "type": "object",
+      "properties": {
+        "allowItemRemoval": {
+          "type": "boolean"
+        },
+        "capacityKg": {
+          "type": "number"
+        },
+        "storageFilters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "useGunForDelivery": {
+          "type": "boolean"
+        },
+        "showInUI": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowItemRemoval",
+        "capacityKg",
+        "showInUI",
+        "storageFilters",
+        "useGunForDelivery"
+      ]
+    },
+    "rocketUsageRestrictionDef": {
+      "type": "object",
+      "properties": {
+        "initialControlledStateWhenBuilt": {
+          "type": "boolean"
+        },
+        "restrictOperational": {
+          "type": "boolean"
+        },
+        "preventStartSMIOnSpawn": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "initialControlledStateWhenBuilt",
+        "preventStartSMIOnSpawn",
+        "restrictOperational"
+      ]
+    },
+    "effects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": "number"
+          },
+          "showInUI": {
+            "type": "boolean"
+          },
+          "isBad": {
+            "type": "boolean"
+          },
+          "stompGroup": {
+            "type": "string"
+          },
+          "stompPriority": {
+            "type": "integer"
+          },
+          "SelfModifiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "AttributeId": {
+                  "type": "string"
+                },
+                "Value": {
+                  "type": "number"
+                },
+                "IsMultiplier": {
+                  "type": "boolean"
+                },
+                "UIOnly": {
+                  "type": "boolean"
+                },
+                "IsReadonly": {
+                  "type": "boolean"
+                },
+                "formatter": {
+                  "type": "object",
+                  "properties": {
+                    "unitClass": {
+                      "type": "string"
+                    },
+                    "DeltaTimeSlice": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "DeltaTimeSlice",
+                    "unitClass"
+                  ]
+                }
+              },
+              "required": [
+                "AttributeId",
+                "IsMultiplier",
+                "IsReadonly",
+                "UIOnly",
+                "Value",
+                "formatter"
+              ]
+            }
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Disabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "Disabled",
+          "Id",
+          "SelfModifiers",
+          "duration",
+          "isBad",
+          "showInUI",
+          "stompGroup",
+          "stompPriority"
+        ]
+      }
+    },
+    "AttachmentSlotTag": {
+      "type": "string"
+    },
+    "rocketModule": {
+      "type": "object",
+      "properties": {
+        "burden": {
+          "type": "number"
+        },
+        "fuelKilogramPerDistance": {
+          "type": "number"
+        },
+        "enginePower": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "burden",
+        "enginePower",
+        "fuelKilogramPerDistance"
+      ]
+    },
+    "battery": {
+      "type": "object",
+      "properties": {
+        "capacity": {
+          "type": "number"
+        },
+        "joulesLostPerSecond": {
+          "type": "number"
+        },
+        "powerSortOrder": {
+          "type": "integer"
+        },
+        "connectedTags": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Name": {
+                "type": "string"
+              },
+              "IsValid": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "IsValid",
+              "Name"
+            ]
+          }
+        }
+      },
+      "required": [
+        "capacity",
+        "connectedTags",
+        "joulesLostPerSecond",
+        "powerSortOrder"
+      ]
+    },
+    "LogicOutputPorts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "activeDescription": {
+            "type": "string"
+          },
+          "inactiveDescription": {
+            "type": "string"
+          },
+          "requiresConnection": {
+            "type": "boolean"
+          },
+          "spriteType": {
+            "type": "integer"
+          },
+          "displayCustomName": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "activeDescription",
+          "description",
+          "displayCustomName",
+          "inactiveDescription",
+          "requiresConnection",
+          "spriteType"
+        ]
+      }
+    },
+    "ReplacementTags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rocketEngineCluster": {
+      "type": "object",
+      "properties": {
+        "exhaustEmitRate": {
+          "type": "number"
+        },
+        "exhaustTemperature": {
+          "type": "number"
+        },
+        "explosionEffectHash": {
+          "type": "integer"
+        },
+        "exhaustElement": {
+          "type": "string"
+        },
+        "fuelTag": {
+          "type": "string"
+        },
+        "efficiency": {
+          "type": "number"
+        },
+        "requireOxidizer": {
+          "type": "boolean"
+        },
+        "maxModules": {
+          "type": "integer"
+        },
+        "maxHeight": {
+          "type": "integer"
+        },
+        "mainEngine": {
+          "type": "boolean"
+        },
+        "exhaustDiseaseIdx": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "exhaustDiseaseCount": {
+          "type": "integer"
+        },
+        "emitRadiation": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "efficiency",
+        "emitRadiation",
+        "exhaustDiseaseCount",
+        "exhaustDiseaseIdx",
+        "exhaustElement",
+        "exhaustEmitRate",
+        "exhaustTemperature",
+        "explosionEffectHash",
+        "fuelTag",
+        "mainEngine",
+        "maxHeight",
+        "maxModules",
+        "requireOxidizer"
+      ]
+    },
+    "rocketEngine": {
+      "type": "object",
+      "properties": {
+        "exhaustEmitRate": {
+          "type": "number"
+        },
+        "exhaustTemperature": {
+          "type": "number"
+        },
+        "exhaustElement": {
+          "type": "string"
+        },
+        "fuelTag": {
+          "type": "string"
+        },
+        "efficiency": {
+          "type": "number"
+        },
+        "requireOxidizer": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "efficiency",
+        "exhaustElement",
+        "exhaustEmitRate",
+        "exhaustTemperature",
+        "fuelTag",
+        "requireOxidizer"
+      ]
+    }
+  },
+  "required": [
+    "AddLogicPowerPort",
+    "AlwaysOperational",
+    "BaseDecor",
+    "BaseDecorRadius",
+    "BlockTileIsTransparent",
+    "Breakable",
+    "BuildLocationRule",
+    "ConstructionTime",
+    "ContinuouslyCheckFoundation",
+    "DebugOnly",
+    "Deprecated",
+    "EnergyConsumptionWhenActive",
+    "Entombable",
+    "ExhaustKilowattsWhenActive",
+    "Floodable",
+    "GeneratorBaseCapacity",
+    "GeneratorWattageRating",
+    "HeightInCells",
+    "HitPoints",
+    "Invincible",
+    "MassForTemperatureModification",
+    "OverheatTemperature",
+    "Overheatable",
+    "PermittedRotations",
+    "Repairable",
+    "Replaceable",
+    "RequiredDlcIds",
+    "RequiresPowerInput",
+    "RequiresPowerOutput",
+    "SelfHeatKilowattsWhenActive",
+    "ThermalConductivity",
+    "UseHighEnergyParticleInputPort",
+    "UseHighEnergyParticleOutputPort",
+    "UseStructureTemperature",
+    "UseWhitePowerOutputConnectorColour",
+    "WidthInCells",
+    "id",
+    "ingredients",
+    "isKAnimTile",
+    "isSolidTile",
+    "isUtility"
+  ]
+}

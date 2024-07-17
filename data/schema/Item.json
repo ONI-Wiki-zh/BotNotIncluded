@@ -1,0 +1,147 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kBoxCollider2D": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "IsValid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "IsValid",
+          "Name"
+        ]
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "tagFilter": {
+      "type": "string"
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fabricator": {
+            "type": "string"
+          },
+          "time": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "fabricator",
+          "ingredients",
+          "results",
+          "time"
+        ]
+      }
+    },
+    "msgctxt": {
+      "type": "string"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "medicineInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "effect": {
+          "type": "string"
+        },
+        "medicineType": {
+          "type": "integer"
+        },
+        "curedSicknesses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "medicineType"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "msgctxt",
+    "primaryElement",
+    "tagFilter",
+    "tags"
+  ]
+}

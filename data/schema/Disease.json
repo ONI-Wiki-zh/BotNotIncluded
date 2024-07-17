@@ -1,0 +1,516 @@
+{
+  "type": "object",
+  "properties": {
+    "strength": {
+      "type": "number"
+    },
+    "temperatureRange": {
+      "type": "object",
+      "properties": {
+        "minViable": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "minGrowth": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "maxGrowth": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "maxViable": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      },
+      "required": [
+        "maxGrowth",
+        "maxViable",
+        "minGrowth",
+        "minViable"
+      ]
+    },
+    "temperatureHalfLives": {
+      "type": "object",
+      "properties": {
+        "minViable": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "minGrowth": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "maxGrowth": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "maxViable": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      },
+      "required": [
+        "maxGrowth",
+        "maxViable",
+        "minGrowth",
+        "minViable"
+      ]
+    },
+    "pressureRange": {
+      "type": "object",
+      "properties": {
+        "minViable": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "minGrowth": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "maxGrowth": {
+          "type": [
+            "number",
+            "string"
+          ]
+        },
+        "maxViable": {
+          "type": [
+            "number",
+            "string"
+          ]
+        }
+      },
+      "required": [
+        "maxGrowth",
+        "maxViable",
+        "minGrowth",
+        "minViable"
+      ]
+    },
+    "pressureHalfLives": {
+      "type": "object",
+      "properties": {
+        "minViable": {
+          "type": "string"
+        },
+        "minGrowth": {
+          "type": "string"
+        },
+        "maxGrowth": {
+          "type": "string"
+        },
+        "maxViable": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "maxGrowth",
+        "maxViable",
+        "minGrowth",
+        "minViable"
+      ]
+    },
+    "overlayColourName": {
+      "type": "string"
+    },
+    "radiationKillRate": {
+      "type": "number"
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Disabled": {
+      "type": "boolean"
+    },
+    "exposureType": {
+      "type": "object",
+      "properties": {
+        "germ_id": {
+          "type": "string"
+        },
+        "sickness_id": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "infection_effect": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "exposure_threshold": {
+          "type": "integer"
+        },
+        "infect_immediately": {
+          "type": "boolean"
+        },
+        "excluded_traits": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "excluded_effects": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "base_resistance": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "base_resistance",
+        "excluded_effects",
+        "excluded_traits",
+        "exposure_threshold",
+        "germ_id",
+        "infect_immediately",
+        "infection_effect",
+        "sickness_id"
+      ]
+    },
+    "ruleGrowsOn": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "element": {
+            "type": "string"
+          },
+          "underPopulationDeathRate": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "populationHalfLife": {
+            "type": "number"
+          },
+          "overPopulationHalfLife": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "diffusionScale": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "maxCountPerKG": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "diffusionScale",
+          "maxCountPerKG",
+          "overPopulationHalfLife",
+          "populationHalfLife",
+          "underPopulationDeathRate"
+        ]
+      }
+    },
+    "ruleNeutralOn": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "element": {
+            "type": "string"
+          },
+          "underPopulationDeathRate": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "populationHalfLife": {
+            "type": "string"
+          },
+          "overPopulationHalfLife": {
+            "type": "number"
+          },
+          "diffusionScale": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "maxCountPerKG": {
+            "type": [
+              "null",
+              "number"
+            ]
+          }
+        },
+        "required": [
+          "diffusionScale",
+          "element",
+          "maxCountPerKG",
+          "overPopulationHalfLife",
+          "populationHalfLife",
+          "underPopulationDeathRate"
+        ]
+      }
+    },
+    "ruleDiesSlowlyOn": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "underPopulationDeathRate": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "populationHalfLife": {
+            "type": "number"
+          },
+          "overPopulationHalfLife": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "diffusionScale": {
+            "type": "number"
+          },
+          "minCountPerKG": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "maxCountPerKG": {
+            "type": "number"
+          },
+          "minDiffusionCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "minDiffusionInfestationTickCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "element": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "diffusionScale",
+          "maxCountPerKG",
+          "minCountPerKG",
+          "minDiffusionCount",
+          "minDiffusionInfestationTickCount",
+          "overPopulationHalfLife",
+          "populationHalfLife",
+          "underPopulationDeathRate"
+        ]
+      }
+    },
+    "ruleDiesOn": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "underPopulationDeathRate": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "populationHalfLife": {
+            "type": "number"
+          },
+          "overPopulationHalfLife": {
+            "type": "number"
+          },
+          "diffusionScale": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "minCountPerKG": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "maxCountPerKG": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "minDiffusionCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "minDiffusionInfestationTickCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "element": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "diffusionScale",
+          "maxCountPerKG",
+          "minCountPerKG",
+          "minDiffusionCount",
+          "minDiffusionInfestationTickCount",
+          "overPopulationHalfLife",
+          "populationHalfLife",
+          "underPopulationDeathRate"
+        ]
+      }
+    },
+    "ruleDiesQuicklyOn": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string"
+          },
+          "underPopulationDeathRate": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "populationHalfLife": {
+            "type": "number"
+          },
+          "overPopulationHalfLife": {
+            "type": "number"
+          },
+          "diffusionScale": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "minCountPerKG": {
+            "type": [
+              "null",
+              "number"
+            ]
+          },
+          "maxCountPerKG": {
+            "type": [
+              "null",
+              "number",
+              "string"
+            ]
+          },
+          "minDiffusionCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "minDiffusionInfestationTickCount": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "element": {
+            "type": "string"
+          },
+          "tag": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "diffusionScale",
+          "maxCountPerKG",
+          "minCountPerKG",
+          "minDiffusionCount",
+          "minDiffusionInfestationTickCount",
+          "overPopulationHalfLife",
+          "populationHalfLife",
+          "underPopulationDeathRate"
+        ]
+      }
+    }
+  },
+  "required": [
+    "Disabled",
+    "Id",
+    "exposureType",
+    "overlayColourName",
+    "pressureHalfLives",
+    "pressureRange",
+    "radiationKillRate",
+    "ruleDiesQuicklyOn",
+    "strength",
+    "temperatureHalfLives",
+    "temperatureRange"
+  ]
+}

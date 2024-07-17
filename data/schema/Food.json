@@ -1,0 +1,199 @@
+{
+  "type": "object",
+  "properties": {
+    "Id": {
+      "type": "string"
+    },
+    "CaloriesPerUnit": {
+      "type": "number"
+    },
+    "PreserveTemperature": {
+      "type": "number"
+    },
+    "RotTemperature": {
+      "type": "number"
+    },
+    "StaleTime": {
+      "type": "number"
+    },
+    "SpoilTime": {
+      "type": "number"
+    },
+    "CanRot": {
+      "type": "boolean"
+    },
+    "Quality": {
+      "type": "integer"
+    },
+    "Effects": {
+      "anyOf": [
+        {
+          "type": "object"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "MajorOrder": {
+      "type": "integer"
+    },
+    "MinorOrder": {
+      "type": "integer"
+    },
+    "Display": {
+      "type": "boolean"
+    },
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "IsValid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "IsValid",
+          "Name"
+        ]
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "calories": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "amount",
+                "calories",
+                "name"
+              ]
+            }
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "amount": {
+                  "type": "number"
+                },
+                "calories": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "amount",
+                "calories",
+                "name"
+              ]
+            }
+          },
+          "fabricators": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Name": {
+                  "type": "string"
+                },
+                "IsValid": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "IsValid",
+                "Name"
+              ]
+            }
+          },
+          "time": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "fabricators",
+          "ingredients",
+          "results",
+          "time"
+        ]
+      }
+    }
+  },
+  "required": [
+    "CaloriesPerUnit",
+    "CanRot",
+    "Display",
+    "Effects",
+    "Id",
+    "MajorOrder",
+    "MinorOrder",
+    "PreserveTemperature",
+    "Quality",
+    "RotTemperature",
+    "SpoilTime",
+    "StaleTime"
+  ]
+}

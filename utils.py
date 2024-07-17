@@ -1,7 +1,6 @@
 import collections
 import logging
 import os.path as path
-import os
 import pathlib
 import sys
 import re
@@ -13,17 +12,14 @@ import pandas as pd
 import pywikibot
 import pywikibot.data.api
 
-DIR_DATA = "data"
-DIR_OUT = "out"
-DIR_CODE = path.join(DIR_DATA, "code")
-ONI_CN_BASEURL = "https://raw.githubusercontent.com/onicn/oni-cn.com/main/priv/data/"
-ONI_ROOT = os.environ.get(
-    "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
+import constant
 
-# https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
-PO_HANT = os.environ.get(
-    "BNI_PO_HANT", path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
-                             'mods', 'Steam', '2906930548', 'strings.po'))
+# constant proxy
+DIR_DATA = constant.DIR_DATA
+DIR_OUT = constant.DIR_OUT
+DIR_CODE = constant.DIR_CODE
+ONI_ROOT = constant.ONI_ROOT
+PO_HANT = constant.PO_HANT
 
 
 def get_str_data(po_name=path.join(ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets", "strings", "strings_preinstalled_zh_klei.po")):
@@ -145,6 +141,37 @@ def getLogger(name: str):
     ch_fw.setLevel(logging.WARNING)
     logging.getLogger().addHandler(ch_fw)
     return logger
+
+
+def remove_nulls(value):
+    """
+    递归删除字典中所有值为None的键
+    """
+    if isinstance(value, dict):
+        return {k: remove_nulls(v) for k, v in value.items() if v is not None}
+    elif isinstance(value, list):
+        return [remove_nulls(v) for v in value if v is not None]
+    else:
+        return value
+
+
+def filter_data_by_schema(data, schema):
+    """根据schema规范，筛选json数据"""
+    if isinstance(data, dict):
+        filtered_data = {}
+        if schema.get('properties') is None:
+            return filtered_data
+        for k, v in data.items():
+            if k in schema['properties']:
+                filtered_data[k] = filter_data_by_schema(v, schema['properties'][k])
+        return filtered_data
+    elif isinstance(data, list):
+        if schema.get('items') is None:
+            return data
+        item_schema = schema['items']
+        return [filter_data_by_schema(item, item_schema) for item in data]
+    else:
+        return data
 
 
 pathlib.Path("out").mkdir(parents=True, exist_ok=True)

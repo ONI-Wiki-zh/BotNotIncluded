@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "fatalityDuration": {
+      "type": "number"
+    },
+    "sicknessType": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string"
+    },
+    "recoveryEffect": {
+      "type": "string"
+    },
+    "infectionVectors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cureSpeedBase": {
+      "type": "number"
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Disabled": {
+      "type": "boolean"
+    },
+    "SicknessDuration": {
+      "type": "number"
+    },
+    "symptoms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "descSymptoms": {
+      "type": "string"
+    },
+    "germId": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "Disabled",
+    "Id",
+    "SicknessDuration",
+    "cureSpeedBase",
+    "descSymptoms",
+    "fatalityDuration",
+    "infectionVectors",
+    "severity",
+    "sicknessType",
+    "symptoms"
+  ]
+}

@@ -1,3 +1,5 @@
+from pywikibot.config import usernames
+
 user_families_paths = ['site_families']
 usernames['oni']['zh'] = "DDElephantBot"
 usernames['oni']['en'] = "DDElephantBot"

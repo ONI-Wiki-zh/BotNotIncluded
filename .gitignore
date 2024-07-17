@@ -150,3 +150,6 @@ ImgHost/images
 aces*
 log.txt
 .DS_Store
+work_extractGame/output_lua
+output_lua
+*.lwp

@@ -1,0 +1,223 @@
+{
+  "type": "object",
+  "properties": {
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "slot": {
+      "type": "string"
+    },
+    "isWorn": {
+      "type": "boolean"
+    },
+    "suitTank": {
+      "type": "object",
+      "properties": {
+        "element": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "elementTag": {
+          "type": "object",
+          "properties": {
+            "Name": {
+              "type": "string"
+            },
+            "IsValid": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "IsValid",
+            "Name"
+          ]
+        },
+        "capacity": {
+          "type": "number"
+        },
+        "underwaterSupport": {
+          "type": "boolean"
+        },
+        "ShouldEmitCO2": {
+          "type": "boolean"
+        },
+        "ShouldStoreCO2": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ShouldEmitCO2",
+        "ShouldStoreCO2",
+        "amount",
+        "capacity",
+        "element",
+        "elementTag",
+        "underwaterSupport"
+      ]
+    },
+    "wornId": {
+      "type": "string"
+    },
+    "attribute": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "AttributeId": {
+            "type": "string"
+          },
+          "Value": {
+            "type": "number"
+          },
+          "IsMultiplier": {
+            "type": "boolean"
+          },
+          "UIOnly": {
+            "type": "boolean"
+          },
+          "IsReadonly": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "AttributeId",
+          "IsMultiplier",
+          "IsReadonly",
+          "UIOnly",
+          "Value"
+        ]
+      }
+    },
+    "effectImmunites": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": "number"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Id": {
+            "type": "string"
+          },
+          "Disabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "Disabled",
+          "Id",
+          "Name",
+          "duration"
+        ]
+      }
+    },
+    "kBoxCollider2D": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "onEquipEffect": {
+      "type": "object",
+      "properties": {
+        "decorMod": {
+          "type": "integer"
+        },
+        "conductivityMod": {
+          "type": "number"
+        },
+        "homeostasisEfficiencyMultiplier": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "conductivityMod",
+        "decorMod",
+        "homeostasisEfficiencyMultiplier"
+      ]
+    },
+    "leadSuitTank": {
+      "type": "object",
+      "properties": {
+        "batteryCharge": {
+          "type": "number"
+        },
+        "batteryDuration": {
+          "type": "number"
+        },
+        "coolingOperationalTemperature": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "batteryCharge",
+        "batteryDuration",
+        "coolingOperationalTemperature"
+      ]
+    }
+  },
+  "required": [
+    "dlcIds",
+    "id",
+    "primaryElement",
+    "slot",
+    "tags"
+  ]
+}

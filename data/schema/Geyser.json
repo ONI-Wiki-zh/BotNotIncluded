@@ -1,0 +1,320 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "width": {
+      "type": "integer"
+    },
+    "height": {
+      "type": "integer"
+    },
+    "geyserType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "element": {
+          "type": "string"
+        },
+        "shape": {
+          "type": "integer"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "minRatePerCycle": {
+          "type": "number"
+        },
+        "maxRatePerCycle": {
+          "type": "number"
+        },
+        "maxPressure": {
+          "type": "number"
+        },
+        "minIterationLength": {
+          "type": "number"
+        },
+        "maxIterationLength": {
+          "type": "number"
+        },
+        "minIterationPercent": {
+          "type": "number"
+        },
+        "maxIterationPercent": {
+          "type": "number"
+        },
+        "minYearLength": {
+          "type": "number"
+        },
+        "maxYearLength": {
+          "type": "number"
+        },
+        "minYearPercent": {
+          "type": "number"
+        },
+        "maxYearPercent": {
+          "type": "number"
+        },
+        "geyserTemperature": {
+          "type": "number"
+        },
+        "DlcID": {
+          "type": "string"
+        },
+        "diseaseId": {
+          "type": "string"
+        },
+        "diseaseCount": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "DlcID",
+        "element",
+        "geyserTemperature",
+        "id",
+        "maxIterationLength",
+        "maxIterationPercent",
+        "maxPressure",
+        "maxRatePerCycle",
+        "maxYearLength",
+        "maxYearPercent",
+        "minIterationLength",
+        "minIterationPercent",
+        "minRatePerCycle",
+        "minYearLength",
+        "minYearPercent",
+        "shape",
+        "temperature"
+      ]
+    },
+    "isGenericGeyser": {
+      "type": "boolean"
+    },
+    "outputRate": {
+      "type": "object",
+      "properties": {
+        "rateIterationOn": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        },
+        "rateYearOn": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        },
+        "rateYear": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        }
+      },
+      "required": [
+        "rateIterationOn",
+        "rateYear",
+        "rateYearOn"
+      ]
+    },
+    "outputMass": {
+      "type": "object",
+      "properties": {
+        "massIterationOn": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        },
+        "massYearOn": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "max",
+            "min"
+          ]
+        }
+      },
+      "required": [
+        "massIterationOn",
+        "massYearOn"
+      ]
+    },
+    "geotunerEffect": {
+      "type": "object",
+      "properties": {
+        "material": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "template": {
+          "type": "object",
+          "properties": {
+            "massPerCycleModifier": {
+              "type": "number"
+            },
+            "temperatureModifier": {
+              "type": "number"
+            },
+            "iterationDurationModifier": {
+              "type": "number"
+            },
+            "iterationPercentageModifier": {
+              "type": "number"
+            },
+            "yearDurationModifier": {
+              "type": "number"
+            },
+            "yearPercentageModifier": {
+              "type": "number"
+            },
+            "maxPressureModifier": {
+              "type": "number"
+            },
+            "modifyElement": {
+              "type": "boolean"
+            },
+            "newElement": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "iterationDurationModifier",
+            "iterationPercentageModifier",
+            "massPerCycleModifier",
+            "maxPressureModifier",
+            "modifyElement",
+            "newElement",
+            "temperatureModifier",
+            "yearDurationModifier",
+            "yearPercentageModifier"
+          ]
+        },
+        "duration": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "duration",
+        "material",
+        "quantity",
+        "template"
+      ]
+    },
+    "decorProvider": {
+      "type": "object",
+      "properties": {
+        "baseRadius": {
+          "type": "number"
+        },
+        "baseDecor": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseDecor",
+        "baseRadius"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    }
+  },
+  "required": [
+    "decorProvider",
+    "geotunerEffect",
+    "geyserType",
+    "height",
+    "id",
+    "isGenericGeyser",
+    "outputMass",
+    "outputRate",
+    "primaryElement",
+    "tags",
+    "width"
+  ]
+}

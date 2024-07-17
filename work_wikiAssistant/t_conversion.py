@@ -111,12 +111,16 @@ def get_rules(rule, source_field):
 
 def update_variant(variant, rule, source_field):
     oni = pywikibot.Site('zh', 'oni')
-    p_hant = pywikibot.Page(oni, f"MediaWiki:Conversiontable/zh-{variant}")
-    old = p_hant.text
+    page = pywikibot.Page(oni, f"MediaWiki:Conversiontable/zh-{variant}")
+    old = page.text
     new = re.sub(r'(<div[^>]*id *= *"rules-from-bot"[^>]*>)(?:.|\n)*?(</div>)',
                  f'\\1\n{get_rules(rule, source_field)}\n\\2', old)
-    p_hant.text = new
-    utils.try_tags_save(p_hant, ['bot-data-update'], f"pywikibot")
+    if not (page.exists() and page.text == new):
+        page.text = new
+        utils.try_tags_save(page, ['bot-data-update'], f"pywikibot")
+        print(str(variant), ": updated")
+    else:
+        print(str(variant), ": No need to update")
 
 
 def update():
