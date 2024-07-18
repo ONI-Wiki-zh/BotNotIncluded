@@ -75,7 +75,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         item['id'] = id
         tags = item.get('tags', None)
         if not(list_name and any(str(name).upper() == id.upper() for name in list_name)):
-            if not(tags and any(str(name).upper() in PLANT_TAGS for name in tags)):
+            if not(tags and any(str(tag['Name']) in PLANT_TAGS for tag in tags)):
                 continue
         if tags:
             item['tags'] = [tag['Name'] for tag in tags]
@@ -89,7 +89,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         fertilizationDef = item.get('fertilizationDef', None)
         if fertilizationDef:
             item['fertilization'] = fertilizationDef.get('consumedElements', None)
-        item['maturityMax'] = getTraitAttribute(id, "MaturityMax", dict_traits)
+        maturityMax = getTraitAttribute(id, "MaturityMax", dict_traits)
+        item['maturityMax'] = maturityMax * 600 if maturityMax else None
         # 环境吸收
         item['elementConsumer'] = getElementConsumer(item, dict_SimHashes)
         item['elementConverters'] = getElementConverters(item, dict_SimHashes, dict_Disease)
