@@ -58,7 +58,7 @@ def get_data_file_list() -> Dict[str, str]:
         "RoomTypes": "Data/RoomTypes",
         "MaterialModifier": "Data/MaterialModifier",
         "Personalities": "Data/Personalities",
-        "EntityIds": "Data/EntityIds",
+        "EntityIds": "I18n/EntityIds",
         "codex": "Data/Codex",
         "temperatures": "Data/Worldgen/Temperatures",
     }

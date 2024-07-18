@@ -83,6 +83,9 @@
             "advanced": {
               "type": "number"
             },
+            "space": {
+              "type": "number"
+            },
             "orbital": {
               "type": "number"
             },
@@ -198,6 +201,9 @@
               "type": "number"
             },
             "advanced": {
+              "type": "number"
+            },
+            "space": {
               "type": "number"
             }
           },
