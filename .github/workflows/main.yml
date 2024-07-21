@@ -56,7 +56,7 @@ jobs:
           
       - env:
           BOT_NAME: ${{ secrets.BOT_NAME }}
-          BOT_PASS: ${{ secrets.BOT_PASS }}
+          BOT_PASS: ${{ secrets.BOT_PASS_2 }}
           MS_CLIENT_ID: ${{secrets.MS_CLIENT_ID}}
           MS_SECRET: ${{secrets.MS_SECRET}}
           RC_IN_SECONDS: 86400
