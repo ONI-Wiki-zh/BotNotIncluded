@@ -23,4 +23,4 @@ class Family(family.Family):
         }[code]
 
     def protocol(self, code):
-        return 'HTTPS'
+        return 'https'
