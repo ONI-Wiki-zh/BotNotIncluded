@@ -56,7 +56,6 @@ def login(site: pywikibot.APISite):
             password=os.environ.get("BOT_PASS")
         )
         login_manager.login(retry=True)
-        site.login()
 
     if not site.logged_in():
         raise Exception("Can not login!")
