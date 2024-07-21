@@ -35,7 +35,6 @@ def main():
     t_sickness.convert_data_2_lua(constant.EntityType.Sickness.value)
     t_skill.convert_data_2_lua(constant.EntityType.Skill.value)
     t_tech.convert_data_2_lua(constant.EntityType.Tech.value)
-    # TODO: 处理复制人数据
 
     # 处理codex数据
     logger.info('Generating codex data')

@@ -1,19 +1,19 @@
-import collections
 import os.path as path
 import os
-
 import yaml
 
 import utils
 
 ASSETS_BASE = path.join(utils.ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets")
+ASSETS_DLC = path.join(ASSETS_BASE, "dlc")
+NAME_WORLD_GEN = "worldgen"
+NAME_TEMPLATES = "templates"
 
-clusters_base = path.join(ASSETS_BASE, "dlc", "expansion1", "worldgen", "worlds")
-
-version_paths = [
-    "",
-    path.join("dlc", "expansion1"),
-]
+version_paths = {
+    "": ASSETS_BASE,
+    "expansion1": path.join(ASSETS_DLC, "expansion1"),
+    "dlc2": path.join(ASSETS_DLC, "dlc2")
+}
 
 
 def read_yaml(folder):
@@ -29,27 +29,31 @@ def read_yaml(folder):
 
 
 def read_worldgen():
-    for version_path in version_paths:
-        worldgen_base = path.join(utils.ONI_ROOT, ASSETS_BASE, version_path, "worldgen")
-        for child in os.listdir(worldgen_base):
-            child_path = path.join(worldgen_base, child)
+    for dlc, path_dlc in version_paths.items():
+        path_worldgen = path.join(path_dlc, NAME_WORLD_GEN)
+        if not path.isdir(path_worldgen):
+            print("Not Dir: ", path_worldgen)
+            continue
+        for child in os.listdir(path_worldgen):
+            child_path = path.join(path_worldgen, child)
             if not path.isdir(child_path):
                 continue
-            suffix = '' if version_path == '' else '-' + path.split(version_path)[-1]
+            suffix = '' if dlc == '' else '-' + dlc
             utils.save_lua(path.join(utils.DIR_OUT, f"worldgen-{child}{suffix}.lua"),
                            read_yaml(child_path))
 
 
 def read_templates():
-    for version_path in version_paths:
-        templates_base = path.join(utils.ONI_ROOT, ASSETS_BASE, version_path, "templates")
-        suffix = '' if version_path == '' else '-' + path.split(version_path)[-1]
-
-        for child in os.listdir(templates_base):
-            child_path = path.join(templates_base, child)
+    for dlc, path_dlc in version_paths.items():
+        path_templates = path.join(path_dlc, NAME_TEMPLATES)
+        if not path.isdir(path_templates):
+            print("Not Dir: ", path_templates)
+            continue
+        suffix = '' if dlc == '' else '-' + dlc
+        for child in os.listdir(path_templates):
+            child_path = path.join(path_templates, child)
             if not path.isdir(child_path):
                 continue
-
             utils.save_lua(
                 path.join(utils.DIR_OUT, f"templates-{child}{suffix}.lua"),
                 read_yaml(child_path),
@@ -58,9 +62,10 @@ def read_templates():
 
 
 def read_temperatures():
-    with open(path.join(utils.ONI_ROOT, ASSETS_BASE, "worldgen", "temperatures.yaml"), 'r') as f:
+    with open(path.join(ASSETS_BASE, NAME_WORLD_GEN, "temperatures.yaml"), 'r') as f:
         data = yaml.safe_load(f)
         utils.save_lua(path.join(utils.DIR_OUT, f"temperatures.lua"), data)
+
 
 def main():
     read_worldgen()

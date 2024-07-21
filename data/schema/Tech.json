@@ -1,108 +1,239 @@
 {
   "type": "object",
   "properties": {
-    "Id": {
-      "type": "string"
-    },
-    "Disabled": {
-      "type": "boolean"
-    },
-    "unlockedTechIDs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "unlockedItems": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string"
-          },
-          "Disabled": {
-            "type": "boolean"
-          },
-          "parentTechId": {
-            "type": "string"
-          },
-          "dlcIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "Disabled",
-          "Id",
-          "dlcIds",
-          "parentTechId"
-        ]
-      }
-    },
-    "unlockedItemIDs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "tier": {
-      "type": "integer"
-    },
-    "costsByResearchTypeID": {
+    "EXPANSION1_ID": {
       "type": "object",
       "properties": {
-        "basic": {
+        "Id": {
+          "type": "string"
+        },
+        "Disabled": {
+          "type": "boolean"
+        },
+        "requiredTechIDs": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "unlockedTechIDs": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "unlockedItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Id": {
+                "type": "string"
+              },
+              "Disabled": {
+                "type": "boolean"
+              },
+              "parentTechId": {
+                "type": "string"
+              },
+              "dlcIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "Disabled",
+              "Id",
+              "dlcIds",
+              "parentTechId"
+            ]
+          }
+        },
+        "unlockedItemIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tier": {
+          "type": "integer"
+        },
+        "costsByResearchTypeID": {
+          "type": "object",
+          "properties": {
+            "basic": {
+              "type": "number"
+            },
+            "advanced": {
+              "type": "number"
+            },
+            "space": {
+              "type": "number"
+            },
+            "orbital": {
+              "type": "number"
+            },
+            "nuclear": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "basic"
+          ]
+        },
+        "category": {
+          "type": "string"
+        },
+        "width": {
           "type": "number"
         },
-        "advanced": {
-          "type": "number"
-        },
-        "orbital": {
-          "type": "number"
-        },
-        "nuclear": {
+        "height": {
           "type": "number"
         }
       },
       "required": [
-        "basic"
+        "Disabled",
+        "Id",
+        "category",
+        "costsByResearchTypeID",
+        "height",
+        "requiredTechIDs",
+        "tier",
+        "unlockedItemIDs",
+        "unlockedItems",
+        "unlockedTechIDs",
+        "width"
       ]
     },
-    "category": {
-      "type": "string"
-    },
-    "width": {
-      "type": "number"
-    },
-    "height": {
-      "type": "number"
-    },
-    "dlcIds": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "requiredTechIDs": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+    "": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string"
+        },
+        "Disabled": {
+          "type": "boolean"
+        },
+        "requiredTechIDs": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "unlockedTechIDs": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "unlockedItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Id": {
+                "type": "string"
+              },
+              "Disabled": {
+                "type": "boolean"
+              },
+              "parentTechId": {
+                "type": "string"
+              },
+              "dlcIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "Disabled",
+              "Id",
+              "dlcIds",
+              "parentTechId"
+            ]
+          }
+        },
+        "unlockedItemIDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tier": {
+          "type": "integer"
+        },
+        "costsByResearchTypeID": {
+          "type": "object",
+          "properties": {
+            "basic": {
+              "type": "number"
+            },
+            "advanced": {
+              "type": "number"
+            },
+            "space": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "basic"
+          ]
+        },
+        "category": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "Disabled",
+        "Id",
+        "category",
+        "costsByResearchTypeID",
+        "height",
+        "requiredTechIDs",
+        "tier",
+        "unlockedItemIDs",
+        "unlockedItems",
+        "unlockedTechIDs",
+        "width"
+      ]
     }
-  },
-  "required": [
-    "Disabled",
-    "Id",
-    "category",
-    "costsByResearchTypeID",
-    "dlcIds",
-    "height",
-    "tier",
-    "unlockedItemIDs",
-    "unlockedItems",
-    "width"
-  ]
+  }
 }

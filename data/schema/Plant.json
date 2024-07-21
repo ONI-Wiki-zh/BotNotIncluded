@@ -7,12 +7,6 @@
         "type": "string"
       }
     },
-    "tags": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "kBoxCollider2D": {
       "type": "object",
       "properties": {
@@ -42,6 +36,76 @@
         "baseDecor",
         "baseRadius"
       ]
+    },
+    "drowningMonitor": {
+      "type": "object",
+      "properties": {
+        "canDrownToDeath": {
+          "type": "boolean"
+        },
+        "livesUnderWater": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "canDrownToDeath",
+        "livesUnderWater"
+      ]
+    },
+    "seedInfo": {
+      "type": "object",
+      "properties": {
+        "seedId": {
+          "type": "string"
+        },
+        "productionType": {
+          "type": "integer"
+        },
+        "newSeedsProduced": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "newSeedsProduced",
+        "productionType",
+        "seedId"
+      ]
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
     "wiltConditions": {
       "type": "object",
@@ -164,60 +228,7 @@
         "shouldGrowOld"
       ]
     },
-    "seedInfo": {
-      "type": "object",
-      "properties": {
-        "seedId": {
-          "type": "string"
-        },
-        "productionType": {
-          "type": "integer"
-        },
-        "newSeedsProduced": {
-          "type": "integer"
-        }
-      },
-      "required": [
-        "newSeedsProduced",
-        "productionType",
-        "seedId"
-      ]
-    },
-    "primaryElement": {
-      "type": "object",
-      "properties": {
-        "DiseaseCount": {
-          "type": "integer"
-        },
-        "Name": {
-          "type": "string"
-        },
-        "InternalTemperature": {
-          "type": "number"
-        },
-        "Mass": {
-          "type": "number"
-        },
-        "Temperature": {
-          "type": "number"
-        },
-        "Units": {
-          "type": "number"
-        }
-      },
-      "required": [
-        "DiseaseCount",
-        "InternalTemperature",
-        "Mass",
-        "Name",
-        "Temperature",
-        "Units"
-      ]
-    },
-    "id": {
-      "type": "string"
-    },
-    "irrigation": {
+    "fertilization": {
       "type": "array",
       "items": {
         "type": "object",
@@ -247,22 +258,10 @@
         ]
       }
     },
-    "drowningMonitor": {
-      "type": "object",
-      "properties": {
-        "canDrownToDeath": {
-          "type": "boolean"
-        },
-        "livesUnderWater": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "canDrownToDeath",
-        "livesUnderWater"
-      ]
+    "maturityMax": {
+      "type": "number"
     },
-    "fertilization": {
+    "irrigation": {
       "type": "array",
       "items": {
         "type": "object",
@@ -340,6 +339,21 @@
         "negRadius",
         "posDecor",
         "posRadius"
+      ]
+    },
+    "plantBranchGrowerDef": {
+      "type": "object",
+      "properties": {
+        "BRANCH_PREFAB_NAME": {
+          "type": "string"
+        },
+        "MAX_BRANCH_COUNT": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "BRANCH_PREFAB_NAME",
+        "MAX_BRANCH_COUNT"
       ]
     },
     "illuminationVulnerable": {

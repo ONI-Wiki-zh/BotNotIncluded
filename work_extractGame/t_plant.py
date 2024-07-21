@@ -4,6 +4,19 @@ import constant as constant
 from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
 
+PLANT_TAGS = ["PlantBranch", "Plant"]
+
+
+def getTraitAttribute(entityId: str, attributeId: str, dict_trait):
+    maturityMax = None
+    trait = dict_trait.get(entityId+"Original", None)
+    if trait is not None:
+        for modifierSet in trait['SelfModifiers']:
+            if modifierSet['AttributeId'] == attributeId:
+                maturityMax = modifierSet['Value']
+        pass
+    return maturityMax
+
 
 def get_name_list(codex: str):
     res_list = []
@@ -49,6 +62,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     list_name = get_name_list(entityInfo.codex.upper())
     dict_SimHashes = DataUtils.loadSimHashed()
     dict_Disease = DataUtils.loadSimHashed_disease()
+    dict_traits = DataUtils.loadDbTraits()
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
         data = json.load(file).get("entities", None)
@@ -59,9 +73,10 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     for item in data:
         id = item.get('name', None)
         item['id'] = id
-        if not(list_name and any(str(name).upper() == id.upper() for name in list_name)):
-            continue
         tags = item.get('tags', None)
+        if not(list_name and any(str(name).upper() == id.upper() for name in list_name)):
+            if not(tags and any(str(tag['Name']) in PLANT_TAGS for tag in tags)):
+                continue
         if tags:
             item['tags'] = [tag['Name'] for tag in tags]
         else:
@@ -74,6 +89,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         fertilizationDef = item.get('fertilizationDef', None)
         if fertilizationDef:
             item['fertilization'] = fertilizationDef.get('consumedElements', None)
+        maturityMax = getTraitAttribute(id, "MaturityMax", dict_traits)
+        item['maturityMax'] = maturityMax * 600 if maturityMax else None
         # 环境吸收
         item['elementConsumer'] = getElementConsumer(item, dict_SimHashes)
         item['elementConverters'] = getElementConverters(item, dict_SimHashes, dict_Disease)
