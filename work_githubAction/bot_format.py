@@ -90,7 +90,7 @@ def format_page(p: pywikibot.Page):
     new_text = format_str(old_text)
     if old_text != new_text:
         p.text = new_text
-        utils.try_tags_save(p, ['auto-format'], summary="[[Project:格式指导|统一格式]]", watch=False)
+        utils.try_tags_save(p, ['auto-format'], summary="[[Project:格式指导|统一格式]]", watch="nochange")
 
 
 if __name__ == '__main__':
