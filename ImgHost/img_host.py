@@ -75,7 +75,7 @@ def download(site=pywikibot.Site("zh", "oni")):
         with open(JSON_DIR, 'r') as f:
             file_records = json.load(f)
     for i, f in enumerate(files):
-        time.sleep(random.uniform(0.5, 1))
+        time.sleep(random.uniform(0.8, 1.2))
         if i % 10 == 0:
             logger.info(f"Downloaded {i} of {len(files)}")
         if not isinstance(f, pywikibot.FilePage):
