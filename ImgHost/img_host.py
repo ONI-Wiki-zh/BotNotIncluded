@@ -2,7 +2,9 @@ import atexit
 import json
 import os
 import pathlib
+import random
 import sys
+import time
 
 import msal
 import pywikibot
@@ -75,6 +77,7 @@ def download(site=pywikibot.Site("zh", "oni")):
     for i, f in enumerate(files):
         if i % 10 == 0:
             logger.info(f"Downloaded {i} of {len(files)}")
+            time.sleep(random.uniform(1, 2))
         if not isinstance(f, pywikibot.FilePage):
             continue
         t = f.title(with_ns=False)
