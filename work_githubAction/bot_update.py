@@ -26,7 +26,7 @@ def bot_update(site: pywikibot.Site, target: pywikibot.Site):
     all_pages = list(site.allpages(content=True))
     for i, p in enumerate(all_pages):
         p: pywikibot.Page
-        time.sleep(random.uniform(1, 2))
+        time.sleep(random.uniform(1, 1.5))
         if i % 10 == 0:
             logger.info(f"Page inter-lang checked: {i}/{len(all_pages)}")
         try:

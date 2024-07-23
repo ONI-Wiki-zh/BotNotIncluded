@@ -2,7 +2,9 @@ import atexit
 import json
 import os
 import pathlib
+import random
 import sys
+import time
 
 import msal
 import pywikibot
@@ -82,6 +84,7 @@ def download(site=pywikibot.Site("zh", "oni")):
             continue
         if file_sha1(os.path.join(IMG_DIR, t)) != f.latest_file_info.sha1:
             f.download(os.path.join(IMG_DIR, t))
+            time.sleep(random.uniform(1, 1.5))
         file_records[t] = {
             "url": f.get_file_url(),
             "sha1": f.latest_file_info.sha1,
