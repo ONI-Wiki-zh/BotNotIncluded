@@ -14,6 +14,7 @@ if 'GITHUB_ACTIONS' in os.environ:
 
 import pywikibot
 import pywikibot.data.api
+from pywikibot.login import ClientLoginManager
 
 import utils
 
