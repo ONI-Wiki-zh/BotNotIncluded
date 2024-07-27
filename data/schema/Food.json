@@ -47,6 +47,12 @@
     "Display": {
       "type": "boolean"
     },
+    "qualityEffect": {
+      "type": "string"
+    },
+    "qualityOfLife": {
+      "type": "number"
+    },
     "dlcIds": {
       "type": "array",
       "items": {
@@ -74,9 +80,6 @@
     "primaryElement": {
       "type": "object",
       "properties": {
-        "DiseaseCount": {
-          "type": "integer"
-        },
         "Name": {
           "type": "string"
         },
@@ -88,6 +91,9 @@
         },
         "Temperature": {
           "type": "number"
+        },
+        "DiseaseCount": {
+          "type": "integer"
         },
         "Units": {
           "type": "number"
@@ -154,19 +160,7 @@
           "fabricators": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "Name": {
-                  "type": "string"
-                },
-                "IsValid": {
-                  "type": "boolean"
-                }
-              },
-              "required": [
-                "IsValid",
-                "Name"
-              ]
+              "type": "string"
             }
           },
           "time": {

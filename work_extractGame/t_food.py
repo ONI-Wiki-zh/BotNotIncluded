@@ -1,7 +1,7 @@
 import json
 import constant as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-from work_extractGame.util.DataUtils import save_lua_by_schema
+from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
 
 
 class Material:
@@ -40,16 +40,32 @@ def get_recipe(ingredients, results, fabricators, time, dict_food):
     }
 
 
+def getQualityOfLife(effectId: str, attributeId: str, dict_effect):
+    qualityOfLife = None
+    trait = dict_effect.get(effectId, None)
+    if trait is not None:
+        for modifierSet in trait['SelfModifiers']:
+            if modifierSet['AttributeId'] == attributeId:
+                qualityOfLife = modifierSet['Value']
+        pass
+    return qualityOfLife
+
+
 def convert_data_2_lua(entityInfo: EntityInfo):
+    dict_output = {}
+    dict_effects = DataUtils.loadDbEffects()
     # 读取数据
     with open(constant.dict_PATH_EXTRACT_FILE['food'], 'r', encoding='utf-8') as file:
-        data = json.load(file).get("foodInfoList", None)
-    if data is None:
-        return False
-    dict_output = {}
-    for item in data:
-        id = item.get('Id', None)
-        dict_output[id] = item
+        data = json.load(file)
+        dict_qualityEffects = dict(data['qualityEffects'])
+        for item in data['foodInfoList']:
+            id = item.get('Id', None)
+            quality = item.get('Quality', None)
+            if quality is not None:
+                qEffectId = dict_qualityEffects[str(quality)]
+                item['qualityEffect'] = qEffectId
+                item['qualityOfLife'] = getQualityOfLife(qEffectId, "QualityOfLife", dict_effects)
+            dict_output[id] = item
     list_food_name = dict_output.keys()
     # entities属性
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
