@@ -53,7 +53,7 @@ usernames['oni']['en'] = "xxxBot"
 ```python
 from pywikibot.login import BotPassword
 
-("oni", "zh", "<your_user_name>", BotPassword("<your_bot_name>", "<your_bot_password>"))
+("zh", "oni", "<your_user_name>", BotPassword("<your_bot_name>", "<your_bot_password>"))
 ```
 
 **注意：请不要将`user-password.py`文件上传至Github或泄漏给他人。**

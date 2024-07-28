@@ -160,6 +160,16 @@ class DataUtils:
         return dict_traits
 
     @staticmethod
+    def loadDbEffects():
+        dict_effects = {}
+        with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            effects = data['effects']
+            for effect in effects:
+                dict_effects[effect['Id']] = effect
+        return dict_effects
+
+    @staticmethod
     def loadKPrefabIDDict():
         dict_prefabID_tags = {}
         with open(constant.dict_PATH_EXTRACT_FILE['tags'], 'r', encoding='utf-8') as f:
