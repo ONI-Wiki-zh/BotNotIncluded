@@ -65,6 +65,7 @@ class EntityType(Enum):
     Critter = EntityInfo("Critter", "CREATURES", "Critters")
     Plant = EntityInfo("Plant", "PLANTS", "Plants")
     Geyser = EntityInfo("Geyser", "GEYSERS", "Geysers")
+    MeteorShower = EntityInfo("MeteorShower", "MeteorShower", "MeteorShowers")
     Element = EntityInfo("Element", "ELEMENTS", "Elements")
     Food = EntityInfo("Food", "FOOD", "Food")
     Equipment = EntityInfo("Equipment", "EQUIPMENT", "Equipments")

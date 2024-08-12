@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "bombardmentInfo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "prefab": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "prefab",
+          "weight"
+        ]
+      }
+    },
+    "secondsBombardmentOff": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "max",
+        "min"
+      ]
+    },
+    "secondsBombardmentOn": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "max",
+        "min"
+      ]
+    },
+    "secondsPerMeteor": {
+      "type": "number"
+    },
+    "duration": {
+      "type": "number"
+    },
+    "clusterMapMeteorShowerID": {
+      "type": "string"
+    },
+    "affectedByDifficulty": {
+      "type": "boolean"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "numTimesAllowed": {
+      "type": "integer"
+    },
+    "allowMultipleEventInstances": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "affectedByDifficulty",
+    "allowMultipleEventInstances",
+    "bombardmentInfo",
+    "clusterMapMeteorShowerID",
+    "duration",
+    "id",
+    "numTimesAllowed",
+    "secondsBombardmentOff",
+    "secondsBombardmentOn",
+    "secondsPerMeteor",
+    "tags"
+  ]
+}
