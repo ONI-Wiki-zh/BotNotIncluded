@@ -58,9 +58,6 @@
     "duration": {
       "type": "number"
     },
-    "clusterMapMeteorShowerID": {
-      "type": "string"
-    },
     "affectedByDifficulty": {
       "type": "boolean"
     },
@@ -75,13 +72,21 @@
     },
     "allowMultipleEventInstances": {
       "type": "boolean"
+    },
+    "seasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "clusterMapMeteorShowerID": {
+      "type": "string"
     }
   },
   "required": [
     "affectedByDifficulty",
     "allowMultipleEventInstances",
     "bombardmentInfo",
-    "clusterMapMeteorShowerID",
     "duration",
     "id",
     "numTimesAllowed",

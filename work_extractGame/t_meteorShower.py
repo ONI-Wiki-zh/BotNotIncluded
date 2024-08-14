@@ -16,8 +16,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 for eventId in eventIds:
                     if not dict_seasons.get(eventId, None):
                         dict_seasons[eventId] = []
-                    else:
-                        dict_seasons[eventId].append(season['Id'])
+                    dict_seasons[eventId].append(season['Id'])
 
     with open(constant.dict_PATH_EXTRACT_FILE['multiEntities'], 'r', encoding='utf-8') as file:
         data = json.load(file).get("meteorShowerEventMap", None)
@@ -26,8 +25,10 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     # id筛选
     dict_output = {}
     for eventId, item in data.items():
-        tags = [tag['Name'] for tag in item['tags']]
-        item['tags'] = tags
+        if item.get('tags', None) is not None:
+            tags = [tag['Name'] for tag in item['tags']]
+            item['tags'] = tags
+        item['seasons'] = dict_seasons.get(eventId, None)
         dict_output[eventId] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True
