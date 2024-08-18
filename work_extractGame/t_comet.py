@@ -2,7 +2,15 @@ import json
 
 import constant as constant
 from work_extractGame.model.EntityInfo import EntityInfo
-from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
+from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPOEntry_by_nameString
+
+
+def getProperName(nameString):
+    poEntry, _ = getPOEntry_by_nameString(nameString, msg_need=['UI.SPACEDESTINATIONS.COMETS.'])
+    if poEntry:
+        return poEntry.msgctxt
+    return None
+    pass
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
@@ -15,6 +23,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             if item.get('comet', None):
                 dict_output[item['name']] = item
     for eventId, item in dict_output.items():
+        item['Id'] = item['name']
+        item['Name'] = getProperName(item['nameString'])
         if item.get('tags', None) is not None:
             tags = [tag['Name'] for tag in item['tags']]
             item['tags'] = tags

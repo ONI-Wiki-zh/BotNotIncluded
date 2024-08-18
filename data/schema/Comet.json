@@ -1,9 +1,6 @@
 {
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string"
-    },
     "dlcIds": {
       "type": "array",
       "items": {
@@ -167,9 +164,6 @@
         },
         "entityDamage": {
           "type": "integer"
-        },
-        "exhaustElement": {
-          "type": "string"
         },
         "EXHAUST_RATE": {
           "type": "number"
@@ -642,10 +636,12 @@
         },
         "windowDamageMultiplier": {
           "type": "number"
+        },
+        "exhaustElement": {
+          "type": "string"
         }
       },
       "required": [
-        "EXHAUST_ELEMENT",
         "EXHAUST_RATE",
         "Targeted",
         "addDiseaseCount",
@@ -660,6 +656,7 @@
         "diseaseIdx",
         "elementReplaceTileTemperatureRange",
         "entityDamage",
+        "exhaustElement",
         "explosionEffectHash",
         "explosionSpeedRange",
         "explosionTemperatureRange",
@@ -677,12 +674,19 @@
         "velocity",
         "windowDamageMultiplier"
       ]
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
     }
   },
   "required": [
+    "Id",
+    "Name",
     "comet",
     "dlcIds",
-    "name",
     "primaryElement",
     "tags"
   ]
