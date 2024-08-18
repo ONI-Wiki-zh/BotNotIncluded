@@ -168,8 +168,8 @@
         "entityDamage": {
           "type": "integer"
         },
-        "EXHAUST_ELEMENT": {
-          "type": "integer"
+        "exhaustElement": {
+          "type": "string"
         },
         "EXHAUST_RATE": {
           "type": "number"

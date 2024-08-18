@@ -6,6 +6,7 @@ from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
+    dict_SimHashes = DataUtils.loadSimHashed()
     # id筛选
     dict_output = {}
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
@@ -17,6 +18,11 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         if item.get('tags', None) is not None:
             tags = [tag['Name'] for tag in item['tags']]
             item['tags'] = tags
+        comet = item.get('comet', None)
+        if comet:
+            exhaustElementId = comet.get('EXHAUST_ELEMENT', None)
+            if exhaustElementId is not None:
+                comet['exhaustElement'] = dict_SimHashes[exhaustElementId]
         dict_output[eventId] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True
