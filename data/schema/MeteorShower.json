@@ -81,6 +81,9 @@
     },
     "clusterMapMeteorShowerID": {
       "type": "string"
+    },
+    "clusterMapName": {
+      "type": "string"
     }
   },
   "required": [
