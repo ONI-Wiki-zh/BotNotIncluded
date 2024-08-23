@@ -85,8 +85,8 @@
         "destroyOnExplode": {
           "type": "boolean"
         },
-        "diseaseIdx": {
-          "type": "integer"
+        "diseaseId": {
+          "type": "string"
         },
         "affectedByDifficulty": {
           "type": "boolean"

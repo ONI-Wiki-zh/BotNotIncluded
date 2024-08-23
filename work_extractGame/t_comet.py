@@ -15,6 +15,7 @@ def getProperName(nameString):
 
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_SimHashes = DataUtils.loadSimHashed()
+    dict_Dieases = DataUtils.loadSimHashed_disease()
     # id筛选
     dict_output = {}
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
@@ -33,6 +34,9 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             exhaustElementId = comet.get('EXHAUST_ELEMENT', None)
             if exhaustElementId is not None:
                 comet['exhaustElement'] = dict_SimHashes[exhaustElementId]
+            diseaseId = dict_Dieases[comet.get('diseaseIdx', 255)]
+            if diseaseId:
+                comet['diseaseId'] = diseaseId
         dict_output[eventId] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True
