@@ -51,6 +51,7 @@ def get_data_file_list() -> Dict[str, str]:
         "GameplaySeasons": "Data/GameplaySeasons",
         "Comets": "Data/Comets",
         "HarvestablePOI": "Data/HarvestablePOI",
+        "ArtifactPOI": "Data/ArtifactPOI",
         "Elements": "Data/Elements",
         "Food": "Data/Food",
         "Equipments": "Data/Equipments",

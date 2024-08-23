@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "artifactPOIType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "destroyOnHarvest": {
+          "type": "boolean"
+        },
+        "poiRechargeTimeMin": {
+          "type": "number"
+        },
+        "poiRechargeTimeMax": {
+          "type": "number"
+        },
+        "dlcID": {
+          "type": "string"
+        },
+        "orbitalObject": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "destroyOnHarvest",
+        "dlcID",
+        "id",
+        "orbitalObject",
+        "poiRechargeTimeMax",
+        "poiRechargeTimeMin"
+      ]
+    },
+    "anim": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "anim",
+    "artifactPOIType",
+    "name"
+  ]
+}
