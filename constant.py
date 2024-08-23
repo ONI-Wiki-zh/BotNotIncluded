@@ -67,6 +67,7 @@ class EntityType(Enum):
     Geyser = EntityInfo("Geyser", "GEYSERS", "Geysers")
     MeteorShower = EntityInfo("MeteorShower", "MeteorShower", "MeteorShowers")
     Comet = EntityInfo("Comet", "Comet", "Comets")
+    HarvestablePOI = EntityInfo("HarvestablePOI", "HarvestablePOI", "HarvestablePOI")
     GameplaySeason = EntityInfo("GameplaySeason", "GameplaySeason", "GameplaySeasons")
     Element = EntityInfo("Element", "ELEMENTS", "Elements")
     Food = EntityInfo("Food", "FOOD", "Food")

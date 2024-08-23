@@ -49,6 +49,8 @@ def get_data_file_list() -> Dict[str, str]:
         "Geysers": "Data/Geysers",
         "MeteorShower": "Data/MeteorShowers",
         "GameplaySeasons": "Data/GameplaySeasons",
+        "Comets": "Data/Comets",
+        "HarvestablePOI": "Data/HarvestablePOI",
         "Elements": "Data/Elements",
         "Food": "Data/Food",
         "Equipments": "Data/Equipments",
