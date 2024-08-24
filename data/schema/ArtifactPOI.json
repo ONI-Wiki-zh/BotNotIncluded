@@ -10,6 +10,12 @@
         "id": {
           "type": "string"
         },
+        "harvestableArtifactID": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
         "destroyOnHarvest": {
           "type": "boolean"
         },
@@ -32,6 +38,7 @@
       "required": [
         "destroyOnHarvest",
         "dlcID",
+        "harvestableArtifactID",
         "id",
         "orbitalObject",
         "poiRechargeTimeMax",
