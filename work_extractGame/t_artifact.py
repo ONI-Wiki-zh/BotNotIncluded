@@ -18,6 +18,7 @@ def getMsgctxt(nameString):
 def convert_data_2_lua(entityInfo: EntityInfo):
     # id筛选
     dict_output = {}
+    artifactDlcsMap = {}
     with open(constant.dict_PATH_EXTRACT_FILE['multiEntities'], 'r', encoding='utf-8') as file:
         fileData = json.load(file)
         multiEntities = fileData.get('multiEntities', None)
@@ -25,9 +26,19 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             entityType = multiEntity.get('entityType', None)
             if entityType == "ArtifactConfig" or entityType == "KeepsakeConfig":
                 dict_output[multiEntity['name']] = multiEntity
+        for key, dlcIds in fileData.get('artifactDlcsMap', None).items():
+            print(key, dlcIds)
+            artifactDlcsMap[str(key).lower()] = {
+                "id": key,
+                "dlcIds": dlcIds
+            }
     for id, item in dict_output.items():
         item['id'] = item.get('name', None)
         item['Name'] = getMsgctxt(item.get('nameString', None))
+        rawId = str(id).replace("artifact_", "").replace("keepsake_", "").lower()
+        artifactDlcsItem = artifactDlcsMap.get(rawId, None)
+        if artifactDlcsItem:
+            item['dlcIds'] = artifactDlcsItem['dlcIds']
     save_lua_by_schema(entityInfo, dict_output)
     return True
 

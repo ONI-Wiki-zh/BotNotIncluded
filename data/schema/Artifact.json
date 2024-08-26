@@ -152,6 +152,12 @@
     "Name": {
       "type": "string"
     },
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "light2D": {
       "type": "object",
       "properties": {
