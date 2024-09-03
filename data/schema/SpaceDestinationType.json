@@ -1,0 +1,759 @@
+{
+  "type": "object",
+  "properties": {
+    "iconSize": {
+      "type": "integer"
+    },
+    "spriteName": {
+      "type": "string"
+    },
+    "elementTable": {
+      "type": "object",
+      "properties": {
+        "Steel": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Copper": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Glass": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Iron": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Obsidian": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Cuprite": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SedimentaryRock": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "IgneousRock": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "RefinedCarbon": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Carbon": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Diamond": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Ice": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SolidCarbonDioxide": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SolidOxygen": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SlimeMold": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Algae": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "ContaminatedOxygen": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Regolith": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "MaficRock": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Water": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Oxygen": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Dirt": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Magma": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Katairite": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Methane": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Hydrogen": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SolidMethane": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SaltWater": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Brine": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Rust": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "AluminumOre": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Aluminum": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "LiquidMethane": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Fossil": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Gold": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Fullerene": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "FoolsGold": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "LiquidHydrogen": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Niobium": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "CrudeOil": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Petroleum": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Tungsten": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Wolframite": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "SolidChlorine": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "BleachStone": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Salt": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "CrushedRock": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Vacuum": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Cinnabar": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        },
+        "Mercury": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            }
+          },
+          "required": ["max", "min"]
+        }
+      }
+    },
+    "artifactDropTable": {
+      "type": "object",
+      "properties": {
+        "rates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "first": {
+                "type": "object",
+                "properties": {
+                  "decorValues": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "integer"
+                      },
+                      "radius": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": ["amount", "radius"]
+                  },
+                  "name_key": {
+                    "type": "object",
+                    "properties": {
+                      "String": {
+                        "type": "string"
+                      },
+                      "Hash": {
+                        "type": "integer"
+                      }
+                    },
+                    "required": ["Hash", "String"]
+                  },
+                  "payloadDropChance": {
+                    "type": "number"
+                  }
+                },
+                "required": ["decorValues", "name_key", "payloadDropChance"]
+              },
+              "second": {
+                "type": "number"
+              }
+            },
+            "required": ["first", "second"]
+          }
+        },
+        "totalWeight": {
+          "type": "number"
+        },
+        "IdHash": {
+          "type": "object",
+          "properties": {
+            "IsValid": {
+              "type": "boolean"
+            },
+            "HashValue": {
+              "type": "integer"
+            }
+          },
+          "required": ["HashValue", "IsValid"]
+        },
+        "Disabled": {
+          "type": "boolean"
+        }
+      },
+      "required": ["Disabled", "IdHash", "rates", "totalWeight"]
+    },
+    "visitable": {
+      "type": "boolean"
+    },
+    "cyclesToRecover": {
+      "type": "integer"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Disabled": {
+      "type": "boolean"
+    },
+    "maxiumMass": {
+      "type": "integer"
+    },
+    "minimumMass": {
+      "type": "integer"
+    },
+    "replishmentPerCycle": {
+      "type": ["number", "string"]
+    },
+    "replishmentPerSim1000ms": {
+      "type": ["number", "string"]
+    },
+    "recoverableEntities": {
+      "type": "object",
+      "properties": {
+        "HatchMetal": {
+          "type": "integer"
+        },
+        "HatchHard": {
+          "type": "integer"
+        },
+        "ColdBreatherSeed": {
+          "type": "integer"
+        },
+        "ColdWheatSeed": {
+          "type": "integer"
+        },
+        "Moo": {
+          "type": "integer"
+        },
+        "GasGrassSeed": {
+          "type": "integer"
+        },
+        "PrickleFlowerSeed": {
+          "type": "integer"
+        },
+        "PacuEgg": {
+          "type": "integer"
+        },
+        "SaltPlantSeed": {
+          "type": "integer"
+        },
+        "Squirrel": {
+          "type": "integer"
+        },
+        "ForestTreeSeed": {
+          "type": "integer"
+        },
+        "Crab": {
+          "type": "integer"
+        },
+        "WoodDeer": {
+          "type": "integer"
+        },
+        "HardSkinBerryPlantSeed": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
