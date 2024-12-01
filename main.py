@@ -89,12 +89,12 @@ def main(recent_seconds: typing.Optional[int] = None):
     bot_update.bot_update(site, oni_en)
 
     # Image host
-    login(site)
-    logger.info("Start checking Image host")
-    img_host.download(site)
-    img_host.upload('ms')
-    img_host.create_css()
-    img_host.upload_css(site)
+    # login(site)
+    # logger.info("Start checking Image host")
+    # img_host.download(site)
+    # img_host.upload('ms')
+    # img_host.create_css()
+    # img_host.upload_css(site)
 
     return pages
 
