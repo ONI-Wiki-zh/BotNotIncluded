@@ -127,7 +127,7 @@ python
 进入python命令行后，逐行输入以下代码，执行脚本
 
 ```python
-from work_extractGame import game_update
+from work_wikiAssistant import game_update
 game_update.main()
 exit()
 ```
