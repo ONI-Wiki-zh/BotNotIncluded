@@ -102,7 +102,7 @@ def getPercentileRange(input_tuples, cache_pp, opt: int = 0, p1=0.01, p2=0.99):
         l1, h1 = unequal_results[0]
         # 获取范围-单参数
         if opt == 1:
-            dict_resample = X_alpha.get_percentile(l_eq / l1, h_eq / h1)
+            dict_resample = X_alpha.get_percentile(l_eq / h1, h_eq / l1)
         else:
             dict_resample = X_alpha.get_percentile(l_eq * l1, h_eq * h1)
         return dict_resample[p1], dict_resample[p2]
