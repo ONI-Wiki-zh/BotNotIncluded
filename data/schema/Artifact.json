@@ -1,0 +1,354 @@
+{
+  "type": "object",
+  "properties": {
+    "entityType": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "IsValid": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "IsValid",
+          "Name"
+        ]
+      }
+    },
+    "kBoxCollider2D": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "decorProvider": {
+      "type": "object",
+      "properties": {
+        "baseRadius": {
+          "type": "number"
+        },
+        "baseDecor": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseDecor",
+        "baseRadius"
+      ]
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "spaceArtifact": {
+      "type": "object",
+      "properties": {
+        "ui_anim": {
+          "type": "string"
+        },
+        "artifactTier": {
+          "type": "object",
+          "properties": {
+            "decorValues": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "integer"
+                },
+                "radius": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "amount",
+                "radius"
+              ]
+            },
+            "name_key": {
+              "type": "object",
+              "properties": {
+                "String": {
+                  "type": "string"
+                },
+                "Hash": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "Hash",
+                "String"
+              ]
+            },
+            "payloadDropChance": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "decorValues",
+            "name_key",
+            "payloadDropChance"
+          ]
+        },
+        "artifactType": {
+          "type": "integer"
+        },
+        "uniqueAnimNameFragment": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "artifactTier",
+        "artifactType",
+        "ui_anim",
+        "uniqueAnimNameFragment"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "light2D": {
+      "type": "object",
+      "properties": {
+        "Angle": {
+          "type": "number"
+        },
+        "Direction": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "drawOverlay": {
+          "type": "boolean"
+        },
+        "overlayColour": {
+          "type": "object",
+          "properties": {
+            "r": {
+              "type": "number"
+            },
+            "g": {
+              "type": "number"
+            },
+            "b": {
+              "type": "number"
+            },
+            "a": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "a",
+            "b",
+            "g",
+            "r"
+          ]
+        },
+        "shape": {
+          "type": "integer"
+        },
+        "emitter": {
+          "type": "object"
+        },
+        "Color": {
+          "type": "object",
+          "properties": {
+            "r": {
+              "type": "number"
+            },
+            "g": {
+              "type": "number"
+            },
+            "b": {
+              "type": "number"
+            },
+            "a": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "a",
+            "b",
+            "g",
+            "r"
+          ]
+        },
+        "Lux": {
+          "type": "integer"
+        },
+        "Range": {
+          "type": "number"
+        },
+        "FalloffRate": {
+          "type": "number"
+        },
+        "IntensityAnimation": {
+          "type": "number"
+        },
+        "Offset": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "normalized": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "magnitude",
+                "normalized",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        }
+      },
+      "required": [
+        "Angle",
+        "Color",
+        "Direction",
+        "FalloffRate",
+        "IntensityAnimation",
+        "Lux",
+        "Offset",
+        "Range",
+        "drawOverlay",
+        "emitter",
+        "overlayColour",
+        "shape"
+      ]
+    }
+  },
+  "required": [
+    "Name",
+    "decorProvider",
+    "entityType",
+    "id",
+    "kBoxCollider2D",
+    "primaryElement",
+    "tags"
+  ]
+}

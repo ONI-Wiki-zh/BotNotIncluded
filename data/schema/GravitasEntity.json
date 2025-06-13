@@ -1,0 +1,124 @@
+{
+  "type": "object",
+  "properties": {
+    "dlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "kBoxCollider2D": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ]
+    },
+    "decorProvider": {
+      "type": "object",
+      "properties": {
+        "baseRadius": {
+          "type": "number"
+        },
+        "baseDecor": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "baseDecor",
+        "baseRadius"
+      ]
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "DiseaseIdx": {
+          "type": "integer"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "DiseaseIdx",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "storage": {
+      "type": "object",
+      "properties": {
+        "allowItemRemoval": {
+          "type": "boolean"
+        },
+        "capacityKg": {
+          "type": "number"
+        },
+        "storageFilters": {
+          "type": "null"
+        },
+        "useGunForDelivery": {
+          "type": "boolean"
+        },
+        "showInUI": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowItemRemoval",
+        "capacityKg",
+        "showInUI",
+        "storageFilters",
+        "useGunForDelivery"
+      ]
+    }
+  },
+  "required": [
+    "Name",
+    "decorProvider",
+    "dlcIds",
+    "id",
+    "kBoxCollider2D",
+    "primaryElement",
+    "tags"
+  ]
+}
