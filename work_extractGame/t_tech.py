@@ -5,15 +5,6 @@ from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.util.DataUtils import save_lua_by_schema
 
 
-def getContainDlcs(unlockedItems):
-    list_dlcs = []
-    for unlockedItem in unlockedItems:
-        dlcIds = unlockedItem.get('dlcIds')
-        if dlcIds:
-            list_dlcs.extend(dlcIds)
-    return list(set(list_dlcs))
-
-
 def setTech(item, dic_output, dlc):
     id = item.get('Id', None)
     requiredTechIDs = item.get('requiredTechIDs', None)

@@ -31,7 +31,7 @@ def check_category(msgctxt: str):
 
 
 def setOutputDic(mId: str, name_str: str, dict_output, msg_need=None, msg_not_need=None):
-    if mId == "BasicRadPill":
+    if mId == "Staterpillar":
         print(mId, msg_need, msg_not_need)
     poEntity, category = getPOEntry_by_nameString(name_str, msg_need=msg_need, msg_not_need=msg_not_need)
     if poEntity is None:
@@ -45,6 +45,8 @@ def setOutputDic(mId: str, name_str: str, dict_output, msg_need=None, msg_not_ne
             return
     if dict_output.get(category, None) is None:
         dict_output[category] = {}
+    if mId == "Staterpillar":
+        print(poEntity.msgctxt)
     dict_output[category][mId] = poEntity.msgctxt
 
 
@@ -73,7 +75,7 @@ def convert_data_2_lua():
         data = json.load(f)
         for item in data['entities']:
             if item.get('creatureBrain', None):
-                setOutputDic(item['name'], item['nameString'], dict_output, msg_not_need=["BUILDING."])
+                setOutputDic(item['name'], item['nameString'], dict_output, msg_not_need=["BUILDING.", "BUILDINGS."])
                 continue
             setOutputDic(item['name'], item['nameString'], dict_output, msg_not_need=["DUPLICANTS."])
             pass

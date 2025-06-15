@@ -1,7 +1,13 @@
 {
   "type": "object",
   "properties": {
-    "dlcIds": {
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
       "type": "array",
       "items": {
         "type": "string"
@@ -307,7 +313,6 @@
     "ageMax",
     "caloriesPerCycle",
     "caloriesStomachSize",
-    "dlcIds",
     "drownVulnerable",
     "entombVulnerable",
     "family",

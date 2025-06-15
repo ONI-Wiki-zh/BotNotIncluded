@@ -1,7 +1,13 @@
 {
   "type": "object",
   "properties": {
-    "RequiredDlcIds": {
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
       "type": "array",
       "items": {
         "type": "string"
@@ -662,7 +668,6 @@
     "PermittedRotations",
     "Repairable",
     "Replaceable",
-    "RequiredDlcIds",
     "RequiresPowerInput",
     "RequiresPowerOutput",
     "SelfHeatKilowattsWhenActive",

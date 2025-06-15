@@ -53,7 +53,13 @@
     "qualityOfLife": {
       "type": "number"
     },
-    "dlcIds": {
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
       "type": "array",
       "items": {
         "type": "string"
@@ -113,65 +119,71 @@
       "items": {
         "type": "object",
         "properties": {
-          "ingredients": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "number"
-                },
-                "calories": {
-                  "type": "number"
-                }
+          "fabricator": {
+            "type": "string"
+          },
+          "input": {
+            "anyOf": [
+              {
+                "type": "object"
               },
-              "required": [
-                "amount",
-                "calories",
-                "name"
-              ]
-            }
-          },
-          "results": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "amount": {
-                  "type": "number"
-                },
-                "calories": {
-                  "type": "number"
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "element": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "element"
+                  ]
                 }
+              }
+            ]
+          },
+          "output": {
+            "anyOf": [
+              {
+                "type": "object"
               },
-              "required": [
-                "amount",
-                "calories",
-                "name"
-              ]
-            }
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "element": {
+                      "type": "string"
+                    },
+                    "minTemperature": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "element"
+                  ]
+                }
+              }
+            ]
           },
-          "fabricators": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "time": {
-            "type": "number"
+          "workTime": {
+            "type": "integer"
           }
         },
         "required": [
-          "fabricators",
-          "ingredients",
-          "results",
-          "time"
+          "fabricator",
+          "input",
+          "output",
+          "workTime"
         ]
       }
     }

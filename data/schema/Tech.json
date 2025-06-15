@@ -50,7 +50,16 @@
               "parentTechId": {
                 "type": "string"
               },
-              "dlcIds": {
+              "isPOIUnlock": {
+                "type": "boolean"
+              },
+              "requiredDlcIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "forbiddenDlcIds": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -60,7 +69,8 @@
             "required": [
               "Disabled",
               "Id",
-              "dlcIds",
+              "requiredDlcIds",
+              "forbiddenDlcIds",
               "parentTechId"
             ]
           }
@@ -170,7 +180,13 @@
               "parentTechId": {
                 "type": "string"
               },
-              "dlcIds": {
+              "requiredDlcIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "forbiddenDlcIds": {
                 "type": "array",
                 "items": {
                   "type": "string"
@@ -180,7 +196,8 @@
             "required": [
               "Disabled",
               "Id",
-              "dlcIds",
+              "requiredDlcIds",
+              "forbiddenDlcIds",
               "parentTechId"
             ]
           }

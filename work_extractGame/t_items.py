@@ -136,7 +136,7 @@ def get_misc_tag_dict():
 def convert_data_2_lua(entityInfo: EntityInfo):
     dict_output = {}
     with open(constant.dict_PATH_EXTRACT_FILE['recipe'], 'r', encoding='utf-8') as file:
-        list_recipes = json.load(file).get("recipes", None)
+        list_recipes = json.load(file).get('preProcessRecipes', None)
     # 读取id列表
     dict_misc_tag = get_misc_tag_dict()
     # 处理已导出的杂项

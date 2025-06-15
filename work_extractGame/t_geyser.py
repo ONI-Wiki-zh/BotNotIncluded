@@ -241,7 +241,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                 decorProvider = item.get("decorProvider")
                 if decorProvider:
                     geyser['decorProvider'] = decorProvider
-                tags = item.get("tags")
+                tags = item['kPrefabID'].get("tags")
                 if tags:
                     geyser['tags'] = [tag['Name'] for tag in tags]
                 primaryElement = item.get("primaryElement")

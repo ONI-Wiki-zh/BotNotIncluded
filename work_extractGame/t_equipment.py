@@ -49,6 +49,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             if entityId is None:
                 continue
             item['id'] = entityId
+            item['requiredDlcIds'] = item['kPrefabID'].get('requiredDlcIds', None)
+            item['forbiddenDlcIds'] = item['kPrefabID'].get('forbiddenDlcIds', None)
             if item.get('tags', None):
                 item['tags'] = [mItem['Name'] for mItem in item['tags']]
             equipDef = dict_equipmentDefs[entityId]

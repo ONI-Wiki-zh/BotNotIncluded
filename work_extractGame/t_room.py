@@ -22,7 +22,7 @@ def getRoomEffects(effects, dict_modifierInfos):
 def setRoomRequireTags(item, name, roomRequireTags):
     # 形成房间建筑标签
     for rTag in roomRequireTags:
-        tag = "BUILDCATEGORYREQUIREMENTCLASS"+str(rTag).upper()
+        tag = "REQUIREMENTCLASS"+str(rTag).upper()
         if tag in name:
             if item.get('roomRequireTags', None) is None:
                 item['roomRequireTags'] = [rTag]
@@ -80,7 +80,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             tags = [tag['Name'] for tag in mRoomConstraintTags]
             roomConstraintTags.extend(tags)
         for building in buildData['bBuildingDefList']:
-            tags = building.get('tags', None)
+            tags = building['kPrefabID'].get('tags', None)
             if tags:
                 tags = [tag['Name'] for tag in tags]
                 dict_building_tags[building['name']] = tags
@@ -92,7 +92,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             tags = [tag['Name'] for tag in mRoomConstraintTags]
             roomConstraintTags.extend(tags)
         for building in buildData['bBuildingDefList']:
-            tags = building.get('tags', None)
+            tags = building['kPrefabID'].get('tags', None)
             if tags:
                 tags = [tag['Name'] for tag in tags]
                 buildId = building['name']
