@@ -210,7 +210,7 @@
             ]
           },
           "workTime": {
-            "type": "integer"
+            "type": "number"
           }
         },
         "required": [
@@ -222,6 +222,12 @@
       }
     },
     "tech": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "subCategory": {
       "type": "string"
     },
     "requiredGrantSkill": {
@@ -270,12 +276,6 @@
       "items": {
         "type": "string"
       }
-    },
-    "category": {
-      "type": "string"
-    },
-    "subCategory": {
-      "type": "string"
     },
     "LogicInputPorts": {
       "type": "array",
@@ -603,6 +603,12 @@
         "requireOxidizer"
       ]
     },
+    "ForbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "rocketEngine": {
       "type": "object",
       "properties": {
@@ -662,7 +668,6 @@
     "PermittedRotations",
     "Repairable",
     "Replaceable",
-    "RequiredDlcIds",
     "RequiresPowerInput",
     "RequiresPowerOutput",
     "SelfHeatKilowattsWhenActive",
