@@ -183,7 +183,7 @@ class DataUtils:
         dict_complexRecipes = {}
         with open(constant.dict_PATH_EXTRACT_FILE['recipe'], 'r', encoding='utf-8') as f:
             data = json.load(f)
-            for item in data['recipes']:
+            for item in data['preProcessRecipes']:
                 fabricators = item.get('fabricators', None)
                 if fabricators:
                     for fabricator in fabricators:

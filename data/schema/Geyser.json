@@ -61,8 +61,17 @@
         "geyserTemperature": {
           "type": "number"
         },
-        "DlcID": {
-          "type": "string"
+        "requiredDlcIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbiddenDlcIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "diseaseId": {
           "type": "string"
@@ -72,7 +81,7 @@
         }
       },
       "required": [
-        "DlcID",
+        "requiredDlcIds",
         "element",
         "geyserTemperature",
         "id",

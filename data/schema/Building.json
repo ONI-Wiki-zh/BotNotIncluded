@@ -1,7 +1,13 @@
 {
   "type": "object",
   "properties": {
-    "RequiredDlcIds": {
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
       "type": "array",
       "items": {
         "type": "string"

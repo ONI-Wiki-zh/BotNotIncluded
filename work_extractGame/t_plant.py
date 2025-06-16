@@ -73,7 +73,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     for item in data:
         id = item.get('name', None)
         item['id'] = id
-        tags = item.get('tags', None)
+        tags = item['kPrefabID'].get('tags', None)
         if not(list_name and any(str(name).upper() == id.upper() for name in list_name)):
             if not(tags and any(str(tag['Name']) in PLANT_TAGS for tag in tags)):
                 continue

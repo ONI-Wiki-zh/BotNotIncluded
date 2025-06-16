@@ -2,6 +2,7 @@ import json
 import constant as constant
 from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils
+from work_extractGame.util.transferUtils import TransferUtil
 
 
 class Material:
@@ -58,45 +59,43 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     with open(constant.dict_PATH_EXTRACT_FILE['food'], 'r', encoding='utf-8') as file:
         data = json.load(file)
         dict_qualityEffects = dict(data['qualityEffects'])
+        requiredDlcIdsMap = dict(data['requiredDlcIdsMap'])
+        forbiddenDlcIdsMap = dict(data['forbiddenDlcIdsMap'])
         for item in data['foodInfoList']:
-            id = item.get('Id', None)
+            entityId = item.get('Id', None)
+            item['requiredDlcIds'] = requiredDlcIdsMap.get(entityId, None)
+            item['forbiddenDlcIds'] = forbiddenDlcIdsMap.get(entityId, None)
             quality = item.get('Quality', None)
             if quality is not None:
                 qEffectId = dict_qualityEffects[str(quality)]
                 item['qualityEffect'] = qEffectId
                 item['qualityOfLife'] = getQualityOfLife(qEffectId, "QualityOfLife", dict_effects)
-            dict_output[id] = item
+            dict_output[entityId] = item
     list_food_name = dict_output.keys()
     # entities属性
     with open(constant.dict_PATH_EXTRACT_FILE['entities'], 'r', encoding='utf-8') as file:
         data = json.load(file).get("entities", None)
         for item in data:
-            id = item.get('name', None)
-            if id in list_food_name:
-                foodInfo = dict_output.get(id)
-                dlcIds = item.get("dlcIds")
-                if dlcIds:
-                    foodInfo['dlcIds'] = dlcIds
-                tags = item.get("tags")
+            entityId = item.get('name', None)
+            if entityId in list_food_name:
+                foodInfo = dict_output.get(entityId)
+                tags = item['kPrefabID'].get("tags")
                 if tags:
                     foodInfo['tags'] = tags
                 primaryElement = item.get("primaryElement")
                 if primaryElement:
                     foodInfo['primaryElement'] = primaryElement
     # 生产配方
-    with open(constant.dict_PATH_EXTRACT_FILE['recipe'], 'r', encoding='utf-8') as file:
-        data = json.load(file).get("recipes", None)
-        for item in data:
-            fabricators = [elem['Name'] for elem in item.get('fabricators', [])]
-            results = item.get('results', None)
-            if results is None or fabricators is None or len(fabricators) < 1:
+    for fabricator, complexRecipes in TransferUtil.loadComplexRecipes2IRecipeMap().items():
+        for complexRecipe in complexRecipes:
+            output = complexRecipe.get('output', None)
+            if output is None:
                 continue
-            for id in list_food_name:
-                if any((obj.get('material', {}).get('Name') == id) for obj in results):
-                    recipe = get_recipe(item.get('ingredients', []), results, fabricators, item.get('time', 0), dict_output)
-                    recipes = dict_output[id].get('recipes', [])
-                    recipes.append(recipe)
-                    dict_output[id]['recipes'] = recipes
+            for entityId in list_food_name:
+                if any((obj.get('element', None) == entityId) for obj in output):
+                    recipes = dict_output[entityId].get('recipes', [])
+                    recipes.append(complexRecipe)
+                    dict_output[entityId]['recipes'] = recipes
     save_lua_by_schema(entityInfo, dict_output)
     return True
 

@@ -5,6 +5,7 @@ from work_extractGame.model.IIO import IIO
 from work_extractGame.model.EntityInfo import EntityInfo
 from work_extractGame.model.Recipe import Recipe
 from work_extractGame.util.DataUtils import save_lua_by_schema, DataUtils, getPOEntry_by_nameString
+from work_extractGame.util.transferUtils import TransferUtil
 
 dict_SimHashes = None
 dict_Diseases = None
@@ -158,21 +159,7 @@ def getRecipes(entity):
     # complexRecipes
     complexRecipes = dict_complexRecipes.get(entityId, None)
     if complexRecipes:
-        for complexRecipe in complexRecipes:
-            list_consume = []
-            for ingredient in complexRecipe['ingredients']:
-                consume = IIO()
-                consume.element = ingredient['material']['Name']
-                consume.amount = ingredient['amount']
-                list_consume.append(consume.getSerializer())
-            list_produce = []
-            for result in complexRecipe['results']:
-                produce = IIO()
-                produce.element = result['material']['Name']
-                produce.amount = result['amount']
-                list_produce.append(produce.getSerializer())
-            recipe = Recipe.getRecipeSerializer(entityId, list_consume, list_produce, complexRecipe['time'])
-            recipes.append(recipe)
+        recipes.extend(TransferUtil.getComplexRecipes(entityId, complexRecipes))
     if recipes and len(recipes) > 0:
         return recipes
     return None
@@ -283,7 +270,7 @@ def getEntityTags(entity):
     """获取建筑标签tags"""
     if entity is None:
         return None
-    tags = entity.get('tags', None)
+    tags = entity['kPrefabID'].get('tags', None)
     if tags:
         return [name['Name'] for name in tags]
     return None
@@ -488,6 +475,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         # 实体信息
         entity = dict_entity.get(id, None)
         if entity:
+            item['requiredDlcIds'] = entity['kPrefabID'].get('requiredDlcIds', None)
+            item['forbiddenDlcIds'] = entity['kPrefabID'].get('forbiddenDlcIds', None)
             item['roomTracker'] = getRoomTracker(entity)
             item['rocketUsageRestrictionDef'] = entity.get('rocketUsageRestrictionDef', None)
             item['roomRequireTags'] = getRoomRequireTags(entity, roomConstraintTags)

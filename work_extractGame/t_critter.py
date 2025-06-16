@@ -71,6 +71,9 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     # 组装数据
     for entityId, item in dict_output.items():
         item['id'] = entityId
+        item['requiredDlcIds'] = item['kPrefabID'].get('requiredDlcIds', None)
+        item['forbiddenDlcIds'] = item['kPrefabID'].get('forbiddenDlcIds', None)
+        item['tags'] = item['kPrefabID'].get('tags', None)
         overcrowdingMonitorDef = item.get('overcrowdingMonitorDef', None)
         if overcrowdingMonitorDef:
             item['spaceRequired'] = overcrowdingMonitorDef.get('spaceRequiredPerCreature', 0)
