@@ -30,7 +30,7 @@ jobs:
           architecture: 'x64'
 
       - name: Python dependences cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         if: startsWith(runner.os, 'Linux')
         with:
           path: ~/.cache/pip
@@ -45,7 +45,7 @@ jobs:
 
       - name: MS credential cache
         id: restore-ms-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ImgHost/ms_cache.bin.gpg
           key: ms-cache-${{ secrets.MS_CACHE_VERSION }}
