@@ -609,12 +609,6 @@
         "requireOxidizer"
       ]
     },
-    "ForbiddenDlcIds": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "rocketEngine": {
       "type": "object",
       "properties": {

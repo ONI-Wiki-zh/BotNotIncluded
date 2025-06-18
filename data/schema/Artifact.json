@@ -22,6 +22,18 @@
         ]
       }
     },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "kBoxCollider2D": {
       "type": "object",
       "properties": {
@@ -151,12 +163,6 @@
     },
     "Name": {
       "type": "string"
-    },
-    "dlcIds": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
     },
     "light2D": {
       "type": "object",

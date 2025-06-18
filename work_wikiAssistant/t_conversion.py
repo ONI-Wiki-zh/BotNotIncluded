@@ -111,7 +111,7 @@ def get_rules(rule, source_field):
 
 def update_variant(variant, rule, source_field):
     oni = pywikibot.Site('zh', 'oni')
-    page = pywikibot.Page(oni, f"MediaWiki:Conversiontable/zh-{variant}")
+    page = pywikibot.Page(oni, f"User:ONIzhBot/Conversiontable/zh-{variant}")
     old = page.text
     new = re.sub(r'(<div[^>]*id *= *"rules-from-bot"[^>]*>)(?:.|\n)*?(</div>)',
                  f'\\1\n{get_rules(rule, source_field)}\n\\2', old)

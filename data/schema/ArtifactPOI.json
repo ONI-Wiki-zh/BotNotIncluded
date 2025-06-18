@@ -47,6 +47,18 @@
     },
     "anim": {
       "type": "string"
+    },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [

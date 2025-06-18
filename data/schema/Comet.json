@@ -1,12 +1,6 @@
 {
   "type": "object",
   "properties": {
-    "dlcIds": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "tags": {
       "type": "array",
       "items": {
@@ -680,13 +674,24 @@
     },
     "Name": {
       "type": "string"
+    },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [
     "Id",
     "Name",
     "comet",
-    "dlcIds",
     "primaryElement",
     "tags"
   ]

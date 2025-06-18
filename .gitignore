@@ -153,3 +153,7 @@ log.txt
 work_extractGame/output_lua
 output_lua
 *.lwp
+constant.py
+requirements_temp.txt
+requirements_temp.txt
+env.ps1

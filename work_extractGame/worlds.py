@@ -12,7 +12,9 @@ NAME_TEMPLATES = "templates"
 version_paths = {
     "": ASSETS_BASE,
     "expansion1": path.join(ASSETS_DLC, "expansion1"),
-    "dlc2": path.join(ASSETS_DLC, "dlc2")
+    "dlc2": path.join(ASSETS_DLC, "dlc2"),
+    "dlc3": path.join(ASSETS_DLC, "dlc3"),
+    "dlc4": path.join(ASSETS_DLC, "dlc4"),
 }
 
 

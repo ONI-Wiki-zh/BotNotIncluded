@@ -35,6 +35,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             continue
         item['tags'] = tags
         item['Name'] = getMsgctxt(item['nameString'])
+        item['requiredDlcIds'] = item['kPrefabID'].get('requiredDlcIds', None)
+        item['forbiddenDlcIds'] = item['kPrefabID'].get('forbiddenDlcIds', None)
         dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True

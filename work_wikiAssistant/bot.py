@@ -47,7 +47,7 @@ def get_data_file_list() -> Dict[str, str]:
         "Critters": "Data/Critters",
         "Plants": "Data/Plants",
         "Geysers": "Data/Geysers",
-        "MeteorShower": "Data/MeteorShowers",
+        "MeteorShowers": "Data/MeteorShowers",
         "GameplaySeasons": "Data/GameplaySeasons",
         "Comets": "Data/Comets",
         "HarvestablePOI": "Data/HarvestablePOI",
@@ -117,6 +117,7 @@ def update_data(try_tag='bot-data-update', comment = None):
                 logger.warning(f'"{f_path}" do not exists.')
                 continue
         page = pywikibot.Page(site, f"module:{data_files[local_file]}")
+        print(page.title(),":")
         with open(f_path, "rb") as f:
             new_text = f.read().decode('utf-8')
             if not (page.exists() and page.text == new_text):
@@ -125,9 +126,9 @@ def update_data(try_tag='bot-data-update', comment = None):
                     comment = input("Edit comment")
                 utils.try_tags_save(page, [try_tag], f"Pywikibot: {comment}")
                 # 需要更新
-                print(page.title(), ": updated")
+                print("Updated")
             else:
-                print(page.title(), ": No need to update")
+                print("No need to update")
 
         # doc page
         doc_page = pywikibot.Page(site, f"module:{data_files[local_file]}/doc")
@@ -141,5 +142,5 @@ def update_data(try_tag='bot-data-update', comment = None):
 if __name__ == '__main__':
     site = pywikibot.Site("zh", "oni")
     site.login()
-    update_data(comment="U52-621068-SC")    #Set Current game vertion in comment
+    update_data(comment="U52-621068-SC")    #Set Current game version in comment
     pass

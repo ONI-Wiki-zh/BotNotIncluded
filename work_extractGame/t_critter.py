@@ -110,13 +110,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             item['diet'] = list_diet
         butcherable = item.get('butcherable', None)
         if butcherable:
-            dict_drops = {}
-            for drop in butcherable['drops']:
-                if dict_drops.get(drop, None) is None:
-                    dict_drops[drop] = 0
-                dict_drops[drop] += 1
             list_drops = []
-            for key, value in dict_drops.items():
+            for key, value in butcherable['drops'].items():
                 list_drops.append({
                     "deathDropItem": key,
                     "deathDropItemAmount": value

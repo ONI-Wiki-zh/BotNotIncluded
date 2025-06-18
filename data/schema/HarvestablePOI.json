@@ -1,247 +1,259 @@
 {
-    "type": "object",
-    "properties": {
-      "name": {
-        "type": "string"
-      },
-      "harvestablePOIType": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "harvestableElements": {
-            "type": "object",
-            "properties": {
-              "RefinedCarbon": {
-                "type": "number"
-              },
-              "Carbon": {
-                "type": "number"
-              },
-              "MoltenIron": {
-                "type": "number"
-              },
-              "Cuprite": {
-                "type": "number"
-              },
-              "Obsidian": {
-                "type": "number"
-              },
-              "Sand": {
-                "type": "number"
-              },
-              "IronOre": {
-                "type": "number"
-              },
-              "MoltenCopper": {
-                "type": "number"
-              },
-              "Glass": {
-                "type": "number"
-              },
-              "SedimentaryRock": {
-                "type": "number"
-              },
-              "IgneousRock": {
-                "type": "number"
-              },
-              "Ice": {
-                "type": "number"
-              },
-              "SolidCarbonDioxide": {
-                "type": "number"
-              },
-              "SolidOxygen": {
-                "type": "number"
-              },
-              "SlimeMold": {
-                "type": "number"
-              },
-              "Algae": {
-                "type": "number"
-              },
-              "ContaminatedOxygen": {
-                "type": "number"
-              },
-              "Dirt": {
-                "type": "number"
-              },
-              "Oxygen": {
-                "type": "number"
-              },
-              "SolidMethane": {
-                "type": "number"
-              },
-              "Methane": {
-                "type": "number"
-              },
-              "LiquidMethane": {
-                "type": "number"
-              },
-              "Hydrogen": {
-                "type": "number"
-              },
-              "Chlorine": {
-                "type": "number"
-              },
-              "BleachStone": {
-                "type": "number"
-              },
-              "Gold": {
-                "type": "number"
-              },
-              "Fullerene": {
-                "type": "number"
-              },
-              "Regolith": {
-                "type": "number"
-              },
-              "MoltenTungsten": {
-                "type": "number"
-              },
-              "Wolframite": {
-                "type": "number"
-              },
-              "CarbonDioxide": {
-                "type": "number"
-              },
-              "Water": {
-                "type": "number"
-              },
-              "CrudeOil": {
-                "type": "number"
-              },
-              "Rust": {
-                "type": "number"
-              },
-              "SaltWater": {
-                "type": "number"
-              },
-              "Brine": {
-                "type": "number"
-              },
-              "DirtyIce": {
-                "type": "number"
-              },
-              "Snow": {
-                "type": "number"
-              },
-              "AluminumOre": {
-                "type": "number"
-              },
-              "Mud": {
-                "type": "number"
-              },
-              "ToxicSand": {
-                "type": "number"
-              },
-              "Cobaltite": {
-                "type": "number"
-              },
-              "SandStone": {
-                "type": "number"
-              },
-              "UraniumOre": {
-                "type": "number"
-              },
-              "Sulfur": {
-                "type": "number"
-              },
-              "Salt": {
-                "type": "number"
-              },
-              "Cinnabar": {
-                "type": "number"
-              },
-              "Mercury": {
-                "type": "number"
-              }
-            }
-          },
-          "poiCapacityMin": {
-            "type": "number"
-          },
-          "poiCapacityMax": {
-            "type": "number"
-          },
-          "poiRechargeMin": {
-            "type": "number"
-          },
-          "poiRechargeMax": {
-            "type": "number"
-          },
-          "canProvideArtifacts": {
-            "type": "boolean"
-          },
-          "dlcID": {
-            "type": "string"
-          },
-          "orbitalObject": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "maxNumOrbitingObjects": {
-            "type": "integer"
-          }
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "harvestablePOIType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
         },
-        "required": [
-          "canProvideArtifacts",
-          "dlcID",
-          "harvestableElements",
-          "id",
-          "maxNumOrbitingObjects",
-          "orbitalObject",
-          "poiCapacityMax",
-          "poiCapacityMin",
-          "poiRechargeMax",
-          "poiRechargeMin"
-        ]
-      },
-      "artifactPOIType": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "destroyOnHarvest": {
-            "type": "boolean"
-          },
-          "poiRechargeTimeMin": {
-            "type": "number"
-          },
-          "poiRechargeTimeMax": {
-            "type": "number"
-          },
-          "dlcID": {
-            "type": "string"
-          },
-          "orbitalObject": {
-            "type": "array",
-            "items": {
-              "type": "string"
+        "harvestableElements": {
+          "type": "object",
+          "properties": {
+            "RefinedCarbon": {
+              "type": "number"
+            },
+            "Carbon": {
+              "type": "number"
+            },
+            "MoltenIron": {
+              "type": "number"
+            },
+            "Cuprite": {
+              "type": "number"
+            },
+            "Obsidian": {
+              "type": "number"
+            },
+            "Sand": {
+              "type": "number"
+            },
+            "IronOre": {
+              "type": "number"
+            },
+            "MoltenCopper": {
+              "type": "number"
+            },
+            "Glass": {
+              "type": "number"
+            },
+            "SedimentaryRock": {
+              "type": "number"
+            },
+            "IgneousRock": {
+              "type": "number"
+            },
+            "Ice": {
+              "type": "number"
+            },
+            "SolidCarbonDioxide": {
+              "type": "number"
+            },
+            "SolidOxygen": {
+              "type": "number"
+            },
+            "SlimeMold": {
+              "type": "number"
+            },
+            "Algae": {
+              "type": "number"
+            },
+            "ContaminatedOxygen": {
+              "type": "number"
+            },
+            "Dirt": {
+              "type": "number"
+            },
+            "Oxygen": {
+              "type": "number"
+            },
+            "SolidMethane": {
+              "type": "number"
+            },
+            "Methane": {
+              "type": "number"
+            },
+            "LiquidMethane": {
+              "type": "number"
+            },
+            "Hydrogen": {
+              "type": "number"
+            },
+            "Chlorine": {
+              "type": "number"
+            },
+            "BleachStone": {
+              "type": "number"
+            },
+            "Gold": {
+              "type": "number"
+            },
+            "Fullerene": {
+              "type": "number"
+            },
+            "Regolith": {
+              "type": "number"
+            },
+            "MoltenTungsten": {
+              "type": "number"
+            },
+            "Wolframite": {
+              "type": "number"
+            },
+            "CarbonDioxide": {
+              "type": "number"
+            },
+            "Water": {
+              "type": "number"
+            },
+            "CrudeOil": {
+              "type": "number"
+            },
+            "Rust": {
+              "type": "number"
+            },
+            "SaltWater": {
+              "type": "number"
+            },
+            "Brine": {
+              "type": "number"
+            },
+            "DirtyIce": {
+              "type": "number"
+            },
+            "Snow": {
+              "type": "number"
+            },
+            "AluminumOre": {
+              "type": "number"
+            },
+            "Mud": {
+              "type": "number"
+            },
+            "ToxicSand": {
+              "type": "number"
+            },
+            "Cobaltite": {
+              "type": "number"
+            },
+            "SandStone": {
+              "type": "number"
+            },
+            "UraniumOre": {
+              "type": "number"
+            },
+            "Sulfur": {
+              "type": "number"
+            },
+            "Salt": {
+              "type": "number"
+            },
+            "Cinnabar": {
+              "type": "number"
+            },
+            "Mercury": {
+              "type": "number"
             }
           }
         },
-        "required": [
-          "destroyOnHarvest",
-          "dlcID",
-          "id",
-          "orbitalObject",
-          "poiRechargeTimeMax",
-          "poiRechargeTimeMin"
-        ]
+        "poiCapacityMin": {
+          "type": "number"
+        },
+        "poiCapacityMax": {
+          "type": "number"
+        },
+        "poiRechargeMin": {
+          "type": "number"
+        },
+        "poiRechargeMax": {
+          "type": "number"
+        },
+        "canProvideArtifacts": {
+          "type": "boolean"
+        },
+        "dlcID": {
+          "type": "string"
+        },
+        "orbitalObject": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "maxNumOrbitingObjects": {
+          "type": "integer"
+        }
       },
-      "anim": {
+      "required": [
+        "canProvideArtifacts",
+        "dlcID",
+        "harvestableElements",
+        "id",
+        "maxNumOrbitingObjects",
+        "orbitalObject",
+        "poiCapacityMax",
+        "poiCapacityMin",
+        "poiRechargeMax",
+        "poiRechargeMin"
+      ]
+    },
+    "artifactPOIType": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "destroyOnHarvest": {
+          "type": "boolean"
+        },
+        "poiRechargeTimeMin": {
+          "type": "number"
+        },
+        "poiRechargeTimeMax": {
+          "type": "number"
+        },
+        "dlcID": {
+          "type": "string"
+        },
+        "orbitalObject": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "destroyOnHarvest",
+        "dlcID",
+        "id",
+        "orbitalObject",
+        "poiRechargeTimeMax",
+        "poiRechargeTimeMin"
+      ]
+    },
+    "anim": {
+      "type": "string"
+    },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
         "type": "string"
       }
     },
-    "required": [
-      "anim",
-      "artifactPOIType",
-      "harvestablePOIType",
-      "name"
-    ]
-  }
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "anim",
+    "artifactPOIType",
+    "harvestablePOIType",
+    "name"
+  ]
+}

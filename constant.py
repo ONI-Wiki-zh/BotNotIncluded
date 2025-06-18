@@ -15,7 +15,7 @@ ONI_ROOT = os.environ.get(
     "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
 # https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
 PO_HANT = os.environ.get(
-    "BNI_PO_HANT", path.join(path.expanduser("~"), 'Documents', 'Klei', 'OxygenNotIncluded',
+    "BNI_PO_HANT", path.join('C:\\Data\\Users\\sszx7\\', 'Documents', 'Klei', 'OxygenNotIncluded',
                              'mods', 'Steam', '2906930548', 'strings.po'))
 
 # extract game data config
@@ -25,8 +25,8 @@ PATH_CACHE = path.join(DIR_DATA, "cache")
 PATH_OUTPUT_LUA = path.join(root_dir, "output_lua")
 
 PATH_CACHE_percentile = path.join(PATH_CACHE, "percentile.json")
-PATH_EXTRACT_DIR = path.join(path.expanduser("~"), "Documents/Klei/OxygenNotIncluded/export/database/")    # 修改为OniExtract数据导出的路径
-PATH_EXTRACT_DIR_BASE_ONLY = path.join(path.expanduser("~"), "Documents/Klei/OxygenNotIncluded/export/database_base/")    # 修改为OniExtract数据导出的路径
+PATH_EXTRACT_DIR = path.join('C:\\Data\\Users\\sszx7\\', "Documents/Klei/OxygenNotIncluded/export/database/")    # 修改为OniExtract数据导出的路径
+PATH_EXTRACT_DIR_BASE_ONLY = path.join('C:\\Data\\Users\\sszx7\\', "Documents/Klei/OxygenNotIncluded/export/database_base/")    # 修改为OniExtract数据导出的路径
 
 KEY_EXTRACT_INFO_LIST = ["buildVersion", "ExportFileName", "DatabaseDirName", "dlcs"]
 dict_PATH_EXTRACT_FILE = {

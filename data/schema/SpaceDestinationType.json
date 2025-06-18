@@ -754,6 +754,18 @@
           "type": "integer"
         }
       }
+    },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   }
 }

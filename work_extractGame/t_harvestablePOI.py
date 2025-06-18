@@ -19,6 +19,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         harvestablePOIClusterGridEntity = item.get('harvestablePOIClusterGridEntity', None)
         if harvestablePOIClusterGridEntity:
             item['anim'] = harvestablePOIClusterGridEntity.get('m_Anim', None)
+        item['requiredDlcIds'] = item['harvestablePOIType'].get('requiredDlcIds', None)
+        item['forbiddenDlcIds'] = item['harvestablePOIType'].get('forbiddenDlcIds', None)
     save_lua_by_schema(entityInfo, dict_output)
     return True
 

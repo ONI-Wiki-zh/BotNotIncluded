@@ -26,9 +26,12 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     for eventId, item in dict_output.items():
         item['Id'] = item['name']
         item['Name'] = getProperName(item['nameString'])
-        if item.get('tags', None) is not None:
-            tags = [tag['Name'] for tag in item['tags']]
-            item['tags'] = tags
+        if item.get('kPrefabID', None) is not None:
+            item['requiredDlcIds'] = item['kPrefabID'].get('requiredDlcIds', None)
+            item['forbiddenDlcIds'] = item['kPrefabID'].get('forbiddenDlcIds', None)
+            if item.get('tags', None) is not None:
+                tags = [tag['Name'] for tag in item['tags']]
+                item['tags'] = tags
         comet = item.get('comet', None)
         if comet:
             exhaustElementId = comet.get('EXHAUST_ELEMENT', None)
