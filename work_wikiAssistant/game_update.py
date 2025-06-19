@@ -5,8 +5,8 @@ logger = utils.getLogger("Game update CI")
 def main():
     comment = input("Current game version: ")
 
-    # from work_extractGame import game_extract
-    # game_extract.main()
+    from work_extractGame import game_extract
+    game_extract.main()
 
     # 更新wiki数据模块
     logger.info('Uploading generated data')

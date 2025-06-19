@@ -142,5 +142,5 @@ def update_data(try_tag='bot-data-update', comment = None):
 if __name__ == '__main__':
     site = pywikibot.Site("zh", "oni")
     site.login()
-    update_data(comment="U52-621068-SC")    #Set Current game version in comment
+    # update_data(comment="U52-621068-SC")    #Set Current game version in comment
     pass
