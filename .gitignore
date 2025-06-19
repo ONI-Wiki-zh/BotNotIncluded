@@ -147,6 +147,7 @@ ImgHost/images
 */secrets*
 
 # some private side project
+constants.py
 aces*
 log.txt
 .DS_Store
