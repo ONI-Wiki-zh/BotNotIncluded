@@ -15,8 +15,7 @@ ONI_ROOT = os.environ.get(
     "BNI_ONI_ROOT",  "C:\\Program Files (x86)\\Steam\\steamapps\\common\\OxygenNotIncluded")
 # https://steamcommunity.com/sharedfiles/filedetails/?id=2906930548
 PO_HANT = os.environ.get(
-    "BNI_PO_HANT", path.join('C:\\Data\\Users\\sszx7\\', 'Documents', 'Klei', 'OxygenNotIncluded',
-                             'mods', 'Steam', '2906930548', 'strings.po'))
+    "BNI_PO_HANT", "C:\\Users\\sszx7\\source\\repos\\DstTranslate\\workshop-2906930548\\strings.po")
 
 # extract game data config
 PATH_PO_STRINGS_DIR = path.join(ONI_ROOT, "OxygenNotIncluded_Data/StreamingAssets/strings/")
