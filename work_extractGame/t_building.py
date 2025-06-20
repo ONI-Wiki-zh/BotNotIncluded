@@ -363,7 +363,7 @@ def getRoomTracker(entity):
 
 
 def convert_data_2_lua(entityInfo: EntityInfo):
-    data_buildDef = []      # 建筑信息
+    data_buildDef = {}      # 建筑信息
     dict_entity = {}    # 建筑实体
     dict_requiredSkillPerk = {}     # 建设建筑所需技能
     dict_category = {}  # 建筑分类
@@ -373,7 +373,10 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     with open(constant.dict_PATH_EXTRACT_FILE['building'], 'r', encoding='utf-8') as file:
         data = json.load(file)
         # 建筑信息
-        data_buildDef.extend(data.get("buildingDefs", None))
+        for item in data.get('buildingDefs', None):
+            id = item['name']
+            if id not in data_buildDef.keys():
+                data_buildDef[id] = item
         # 房间建筑类型标签
         for item in data.get('roomConstraintTags', None):
             if item.get('IsValid', None):
@@ -393,8 +396,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
         # 建筑信息
         for item in data.get('buildingDefs', None):
             id = item['name']
-            if id not in dict_entity.keys():
-                data_buildDef.append(item)
+            if id not in data_buildDef.keys():
+                data_buildDef[id] = item
         # 建筑分类
         for category, cateList in data.get('buildingAndSubcategoryDataPairs', None).items():
             for cateInfo in cateList:
@@ -446,7 +449,7 @@ def convert_data_2_lua(entityInfo: EntityInfo):
                     dict_effects[bId] = [getEffectInfo(effect, dict_attribute)]
     # 组装建筑
     dict_output = {}
-    for item in data_buildDef:
+    for item in data_buildDef.values():
         id = item.get('name', None)
         if id is None:
             continue

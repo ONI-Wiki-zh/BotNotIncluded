@@ -1,0 +1,698 @@
+{
+  "type": "object",
+  "properties": {
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "primaryElement": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "InternalTemperature": {
+          "type": "number"
+        },
+        "Mass": {
+          "type": "number"
+        },
+        "Temperature": {
+          "type": "number"
+        },
+        "DiseaseCount": {
+          "type": "integer"
+        },
+        "DiseaseIdx": {
+          "type": "integer"
+        },
+        "Units": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "DiseaseCount",
+        "DiseaseIdx",
+        "InternalTemperature",
+        "Mass",
+        "Name",
+        "Temperature",
+        "Units"
+      ]
+    },
+    "comet": {
+      "type": "object",
+      "properties": {
+        "addDiseaseCount": {
+          "type": "integer"
+        },
+        "addTiles": {
+          "type": "integer"
+        },
+        "addTilesMaxHeight": {
+          "type": "integer"
+        },
+        "addTilesMinHeight": {
+          "type": "integer"
+        },
+        "bunkerDamageMultiplier": {
+          "type": "number"
+        },
+        "canHitDuplicants": {
+          "type": "boolean"
+        },
+        "craterPrefabs": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "destroyOnExplode": {
+          "type": "boolean"
+        },
+        "diseaseId": {
+          "type": "string"
+        },
+        "affectedByDifficulty": {
+          "type": "boolean"
+        },
+        "elementReplaceTileTemperatureRange": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "normalized": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "magnitude",
+                "normalized",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "entityDamage": {
+          "type": "integer"
+        },
+        "EXHAUST_RATE": {
+          "type": "number"
+        },
+        "explosionEffectHash": {
+          "type": "integer"
+        },
+        "explosionSpeedRange": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "magnitude",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "explosionTemperatureRange": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                },
+                "normalized": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                }
+              },
+              "required": [
+                "magnitude",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "flyingSoundID": {
+          "type": "integer"
+        },
+        "impactSound": {
+          "type": "string"
+        },
+        "lootOnDestroyedByMissile": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "massRange": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "normalized": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "normalized": {
+                      "type": "object",
+                      "properties": {
+                        "x": {
+                          "type": "number"
+                        },
+                        "y": {
+                          "type": "number"
+                        },
+                        "magnitude": {
+                          "type": "number"
+                        },
+                        "sqrMagnitude": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "magnitude",
+                        "sqrMagnitude",
+                        "x",
+                        "y"
+                      ]
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "magnitude",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "spawnAngle": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "magnitude",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "spawnVelocity": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "normalized": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "magnitude",
+                "normalized",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "spawnWithOffset": {
+          "type": "boolean"
+        },
+        "splashRadius": {
+          "type": "integer"
+        },
+        "Targeted": {
+          "type": "boolean"
+        },
+        "temperatureRange": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "normalized": {
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "number"
+                },
+                "y": {
+                  "type": "number"
+                },
+                "magnitude": {
+                  "type": "number"
+                },
+                "sqrMagnitude": {
+                  "type": "number"
+                },
+                "normalized": {
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "magnitude": {
+                      "type": "number"
+                    },
+                    "sqrMagnitude": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "magnitude",
+                    "sqrMagnitude",
+                    "x",
+                    "y"
+                  ]
+                }
+              },
+              "required": [
+                "magnitude",
+                "sqrMagnitude",
+                "x",
+                "y"
+              ]
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "normalized",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "totalTileDamage": {
+          "type": "number"
+        },
+        "typeID": {
+          "type": "object",
+          "properties": {
+            "IsValid": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "IsValid"
+          ]
+        },
+        "velocity": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "magnitude": {
+              "type": "number"
+            },
+            "sqrMagnitude": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "magnitude",
+            "sqrMagnitude",
+            "x",
+            "y"
+          ]
+        },
+        "windowDamageMultiplier": {
+          "type": "number"
+        },
+        "exhaustElement": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "EXHAUST_RATE",
+        "Targeted",
+        "addDiseaseCount",
+        "addTiles",
+        "addTilesMaxHeight",
+        "addTilesMinHeight",
+        "affectedByDifficulty",
+        "bunkerDamageMultiplier",
+        "canHitDuplicants",
+        "craterPrefabs",
+        "destroyOnExplode",
+        "diseaseIdx",
+        "elementReplaceTileTemperatureRange",
+        "entityDamage",
+        "exhaustElement",
+        "explosionEffectHash",
+        "explosionSpeedRange",
+        "explosionTemperatureRange",
+        "flyingSoundID",
+        "impactSound",
+        "lootOnDestroyedByMissile",
+        "massRange",
+        "spawnAngle",
+        "spawnVelocity",
+        "spawnWithOffset",
+        "splashRadius",
+        "temperatureRange",
+        "totalTileDamage",
+        "typeID",
+        "velocity",
+        "windowDamageMultiplier"
+      ]
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Name": {
+      "type": "string"
+    },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "Id",
+    "Name",
+    "comet",
+    "primaryElement",
+    "tags"
+  ]
+}

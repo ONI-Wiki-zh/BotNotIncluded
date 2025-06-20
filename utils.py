@@ -24,7 +24,7 @@ PO_HANT = constant.PO_HANT
 
 def get_str_data(po_name=path.join(ONI_ROOT, "OxygenNotIncluded_Data", "StreamingAssets", "strings", "strings_preinstalled_zh_klei.po")):
     with open(path.join(DIR_DATA, po_name), 'rb') as f:
-        while (l := f.readline()) != b'\n':  # skip first
+        while (l := f.readline()).__len__() > 2:  # skip first
             pass
         catalog = pofile.read_po(f)
     df = pd.DataFrame([(m.context, m.id, m.string) for m in iter(catalog)])
@@ -33,7 +33,7 @@ def get_str_data(po_name=path.join(ONI_ROOT, "OxygenNotIncluded_Data", "Streamin
     df = df.astype({"context": "string"}, copy=False)
 
     with open(PO_HANT, 'rb') as ft:
-        while (l := ft.readline()) != b'\n':  # skip first
+        while (l := ft.readline()).__len__() > 2:  # skip first
             pass
         catalog_t = pofile.read_po(ft)
     df_t = pd.DataFrame([(m.context, m.string) for m in iter(catalog_t)])
@@ -84,7 +84,7 @@ def _get_try_tags_save_func():
         if p.site not in sites_tags:
             sites_tags[p.site] = get_tags(p.site)
         available_tags = [t for t in tags if t in sites_tags[p.site]]
-        return p.save(*args, tags=available_tags, **kwargs)
+        return p.save(*args, force=True, tags=available_tags, **kwargs)
 
     return inner
 

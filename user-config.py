@@ -1,8 +1,8 @@
 from pywikibot.config import usernames
 
 user_families_paths = ['site_families']
-usernames['oni']['zh'] = "DDElephantBot"
-usernames['oni']['en'] = "DDElephantBot"
+usernames['oni']['zh'] = "ONIzhBot"
+usernames['oni']['en'] = "ONIzhBot"
 usernames['shmetro']['zh'] = "DDElephantBot"
 usernames['re0']['zh'] = "DDElephantBot"
 usernames['pogo']['en'] = "DDElephant"

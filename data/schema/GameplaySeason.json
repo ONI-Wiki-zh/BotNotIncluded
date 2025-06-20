@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "properties": {
+    "affectedByDifficultySettings": {
+      "type": "boolean"
+    },
+    "clusterTravelDuration": {
+      "type": "number"
+    },
+    "period": {
+      "type": "number"
+    },
+    "synchronizedToPeriod": {
+      "type": "boolean"
+    },
+    "randomizedEventStartTime": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "max",
+        "min"
+      ]
+    },
+    "finishAfterNumEvents": {
+      "type": "integer"
+    },
+    "startActive": {
+      "type": "boolean"
+    },
+    "numEventsToStartEachPeriod": {
+      "type": "integer"
+    },
+    "minCycle": {
+      "type": "number"
+    },
+    "maxCycle": {
+      "type": "string"
+    },
+    "type": {
+      "type": "integer"
+    },
+    "dlcId": {
+      "type": "string"
+    },
+    "Id": {
+      "type": "string"
+    },
+    "Disabled": {
+      "type": "boolean"
+    },
+    "eventIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requiredDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "forbiddenDlcIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "Disabled",
+    "Id",
+    "affectedByDifficultySettings",
+    "clusterTravelDuration",
+    "dlcId",
+    "finishAfterNumEvents",
+    "maxCycle",
+    "minCycle",
+    "numEventsToStartEachPeriod",
+    "period",
+    "randomizedEventStartTime",
+    "startActive",
+    "synchronizedToPeriod",
+    "type"
+  ]
+}
