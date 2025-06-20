@@ -131,6 +131,14 @@ def convert_data_2_lua():
             id = item['name']
             setOutputDic(id, item['nameString'], dict_output)
 
+    # 特殊的技术节点
+    with open(constant.dict_PATH_EXTRACT_FILE['db'], 'r', encoding='utf-8') as f:
+        data = json.load(f)
+        for item in data['techItems']:
+            id = item['Id']
+            setOutputDic(id, item['Name'], dict_output)
+            pass
+
     print("finish! total:" + str(count_elements(dict_output)))
     save_lua_by_schema(EntityInfo("entityIds", "po_string", "EntityIds"), dict_output)
     pass

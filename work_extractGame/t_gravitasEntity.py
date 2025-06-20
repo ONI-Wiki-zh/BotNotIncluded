@@ -25,9 +25,12 @@ def convert_data_2_lua(entityInfo: EntityInfo):
     # id筛选
     dict_output = {}
     for item in data:
-        id = item.get('name', None)
+        kPrefabID = item.get('kPrefabID', None)
+        if kPrefabID is None:
+            continue
+        id = kPrefabID.get('name', None)
         item['id'] = id
-        tags = item.get('tags', None)
+        tags = kPrefabID.get('tags', None)
         if tags is None:
             continue
         tags = [tag['Name'] for tag in tags]
@@ -35,8 +38,8 @@ def convert_data_2_lua(entityInfo: EntityInfo):
             continue
         item['tags'] = tags
         item['Name'] = getMsgctxt(item['nameString'])
-        item['requiredDlcIds'] = item['kPrefabID'].get('requiredDlcIds', None)
-        item['forbiddenDlcIds'] = item['kPrefabID'].get('forbiddenDlcIds', None)
+        item['requiredDlcIds'] = kPrefabID.get('requiredDlcIds', None)
+        item['forbiddenDlcIds'] = kPrefabID.get('forbiddenDlcIds', None)
         dict_output[id] = item
     save_lua_by_schema(entityInfo, dict_output)
     return True
